@@ -3,34 +3,32 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
-
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
-
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+Minimal space for things i am/have worked on. I'm a staff developer focusing mainly on the frontend right now. I've developed embedded systems as well as frontend. I started web development back in the mid 90's in middleschool. The amount of changes ive seen feels insane. from no style sheets (think writing a site styled... without CSS) to frameworks like jquery and angular. Currently working in React, and playing with Qwik/Astro.
 
 <div>
   <img src="/assets/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
 </div>
 
-## Tech Stack
+## Tech I've used
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
+<ul class="bullet-list">
+  <li>HTML</li>
+  <li>CSS</li>
+  <li>Typescript</li>
+  <li>Python</li>
+  <li>Java</li>
+  <li>C/C++</li>
+  <li>Rust</li>
+</ul>
 
-## Features
+## Thank you to AstroPaper
 
-Here are certain features of this site.
+If you like this theme, you can star/contribute to the [AstroPaper repo](https://github.com/satnaing/astro-paper).
 
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
-
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+<style>
+  .bullet-list {
+    @apply gap-2 color-blue-10;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+  }
+</style>
