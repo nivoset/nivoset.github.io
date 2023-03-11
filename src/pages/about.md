@@ -26,7 +26,9 @@ Minimal space for things I am/have worked on. I'm a staff developer focusing mai
   <li>HTML</li>
   <li>CSS</li>
 </ul>
-### libraries
+
+### Libraries
+
 <ul class="bullet-list">
   <li>React</li>
   <li>Angular</li>
