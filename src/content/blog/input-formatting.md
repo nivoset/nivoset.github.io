@@ -50,3 +50,10 @@ only type so fast and you wont be doing this on multiple inputs at the same time
 
 The other thing to think/worry about is what value is actually being outputted to your form. a formatted number is very nice for humans,
 437867965345 is much harder to read than 437,867,965,345. however if your form is expecting a number, this can cause other issues.
+
+## Lets work on a number format input.
+
+I will write some of this in more simplistic JSX looking code for simplicity, however i will always try to be explanatory.
+
+So next we will work on a basic number formatter. this is a very simple but useful case where you want to add in the comma between the digit groups. This is where
+knowing what the browser can do now will help.
