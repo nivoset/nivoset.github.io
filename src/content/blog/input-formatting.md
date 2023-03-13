@@ -9,6 +9,7 @@ tags:
   - HTML
   - TypeScript
   - input
+  - formatting
 description: We see them, and some people have made them, but what exactly goes into a good auto formatting input element
 ---
 
@@ -140,4 +141,4 @@ function formatNumberWithCursor(
 }
 ```
 
-Notes are always a useful thing for yourself, and also to help break downw hat each bit of code does. if the chunks get too big, I normally refactor them out. however I think this makes this more readable for now.
+Notes are always a useful thing for yourself, and also to help break down what each bit of code does. if the chunks get too big, I normally refactor them out. however I think this makes this more readable for now.
