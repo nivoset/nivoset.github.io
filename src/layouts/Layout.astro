@@ -75,6 +75,29 @@ const socialImageURL = new URL(
     }
 
     <script is:inline src="/toggle-theme.js"></script>
+
+    <!-- OpenReplay Tracking Code with Partytown -->
+    <script type="text/partytown">
+      import("@openreplay/tracker")
+        .then(({ default: Tracker }) => {
+          const tracker = new Tracker({
+            projectKey: "A6Pb8Dru60qnIrmjj9Ni",
+            defaultInputMode: 2,
+            __DISABLE_SECURE_MODE: false,
+            respectDoNotTrack: true,
+            capturePerformance: true,
+            captureResourceLoadFailure: true,
+          });
+
+          tracker.start();
+
+          // Make tracker available globally
+          window.openReplayTracker = tracker;
+        })
+        .catch(error => {
+          console.warn("OpenReplay failed to load:", error);
+        });
+    </script>
   </head>
   <body>
     <slot />
