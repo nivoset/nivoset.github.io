@@ -1,0 +1,31 @@
+---
+import '../global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = 'Nomad Poker - The innovative two-dimensional card game by Randy Glover, creator of Jumpman. Perfect for bars and casinos.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Nomad Poker</title>
+	</head>
+	<body class="min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-900 text-amber-50 flex flex-col">
+		<Header />
+		<main class="flex-grow">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

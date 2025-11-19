@@ -1,45 +1,64 @@
 ---
-import Hr from "./Hr.astro";
-import Socials from "./Socials.astro";
-
 const currentYear = new Date().getFullYear();
-
-export interface Props {
-  noMarginTop?: boolean;
-}
-
-const { noMarginTop = false } = Astro.props;
 ---
 
-<footer class={`${noMarginTop ? "" : "mt-auto"}`}>
-  <Hr noPadding />
-  <div class="footer-wrapper">
-    <Socials centered />
-    <div class="copyright-wrapper">
-      <span>Copyright &#169; {currentYear}</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
-      <span>All rights reserved.</span>
-    </div>
-  </div>
+<footer class="bg-emerald-900/95 border-t-2 border-yellow-500/30 mt-auto shadow-lg">
+	<div class="container mx-auto px-4 py-8">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			<!-- About -->
+			<div>
+				<h3 class="text-lg font-semibold text-yellow-400 mb-4">Nomad Poker</h3>
+				<p class="text-amber-100/80 text-sm">
+					The innovative two-dimensional card game perfect for bars and casinos.
+				</p>
+			</div>
+			
+			<!-- Contact -->
+			<div>
+				<h3 class="text-lg font-semibold text-yellow-400 mb-4">Contact</h3>
+				<ul class="space-y-2 text-amber-100/80 text-sm">
+					<li>
+						<a href="mailto:randy@NomadPoker.com" class="hover:text-yellow-400 transition-colors">
+							randy@NomadPoker.com
+						</a>
+					</li>
+					<li class="text-amber-100/60">Roseville, CA 95747</li>
+				</ul>
+			</div>
+			
+			<!-- Social -->
+			<div>
+				<h3 class="text-lg font-semibold text-yellow-400 mb-4">Follow Us</h3>
+				<div class="flex space-x-4">
+					<a 
+						href="https://www.youtube.com/channel/UCYQJCfrUhQUWxdUbposHeXg" 
+						target="_blank" 
+						rel="noopener noreferrer"
+						class="text-amber-100/80 hover:text-yellow-400 transition-colors"
+						aria-label="YouTube Channel"
+					>
+						<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+						</svg>
+					</a>
+					<a 
+						href="https://www.facebook.com/profile.php?id=61578170496335&sk=about" 
+						target="_blank" 
+						rel="noopener noreferrer"
+						class="text-amber-100/80 hover:text-yellow-400 transition-colors"
+						aria-label="Facebook Page"
+					>
+						<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mt-8 pt-8 border-t border-yellow-500/20 text-center text-amber-100/60 text-sm">
+			<p>&copy; {currentYear} Nomad Poker d.b.a. RLG Technologies. All rights reserved.</p>
+			<p class="mt-2">Made in the USA!</p>
+		</div>
+	</div>
 </footer>
-
-<style>
-  footer {
-    @apply w-full;
-  }
-  .footer-wrapper {
-    @apply flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4;
-  }
-  .link-button {
-    @apply my-1 p-2 hover:rotate-6;
-  }
-  .link-button svg {
-    @apply scale-125;
-  }
-  .copyright-wrapper {
-    @apply my-2 flex flex-col items-center whitespace-nowrap sm:flex-row;
-  }
-  .separator {
-    @apply hidden sm:inline;
-  }
-</style>

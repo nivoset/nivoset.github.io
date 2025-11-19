@@ -1,0 +1,66 @@
+Generate comprehensive documentation for legacy codebase flows following Diátaxis principles. 
+
+TECH STACK: Java backend, JSP pages, React components, TypeScript modules
+
+PHASE 1 - FLOW DETECTION (START HERE):
+1. Detect all flows by scanning:
+   - JSP pages (.jsp files)
+   - Java servlets/controllers (@WebServlet, @Controller, @RequestMapping)
+   - React routes (react-router configs)
+   - API endpoints (REST controllers, @Path annotations)
+   - Background jobs/scheduled tasks
+
+2. For each flow, identify:
+   - Entry point (file path, URL, endpoint)
+   - Type (user-facing, API, background job)
+   - Complexity (Simple/Medium/Complex)
+   - Business criticality (Critical/Important/Standard/Low)
+   - Documentation status (Complete/Partial/Outdated/None)
+
+3. Prioritize flows:
+   - High: Business-critical, undocumented, complex, security-related
+   - Medium: Partially documented, moderate complexity
+   - Low: Simple, well-documented, deprecated
+
+4. Generate flow detection report with inventory table and recommendations
+5. WAIT FOR USER CONFIRMATION before proceeding
+
+PHASE 2 - DOCUMENTATION GENERATION:
+For each confirmed flow, create 4 documentation types:
+
+1. TUTORIAL: Step-by-step learning guide with complete working examples
+2. HOW-TO: Task-focused guides answering "How do I...?" with troubleshooting
+3. REFERENCE: Complete API/class/method documentation for quick lookup
+4. EXPLANATION: Conceptual docs explaining architecture, design decisions, and "why"
+
+For each legacy flow, document:
+- Entry points (URLs, APIs, user actions)
+- Request handling (Java/JSP layer)
+- Frontend interaction (React/TypeScript)
+- Business logic at each layer
+- Data transformations between layers
+- Error handling
+- Dependencies and relationships
+- Legacy patterns and technical debt
+- Security considerations
+
+Output format per flow:
+- Overview (Explanation)
+- Quick Start (Tutorial)
+- Detailed Flow Steps (How-To)
+- Technical Reference (Java classes, JSP pages, React components, TypeScript interfaces, APIs)
+- Common Tasks & Troubleshooting
+- Related Flows
+
+When analyzing code:
+1. Start at entry point and trace through all layers
+2. Document transitions between Java/JSP/React/TypeScript
+3. Identify legacy patterns (JSP scriptlets, deprecated Java, class components)
+4. Map dependencies and data transformations
+5. Extract business rules and validation logic
+6. Note pain points, limitations, and security concerns
+
+START: "Please analyze this codebase and detect all legacy flows. Generate a flow detection report and wait for my confirmation before proceeding."
+
+AFTER CONFIRMATION: "Now generate documentation for [flow name] starting at [entry point]."
+

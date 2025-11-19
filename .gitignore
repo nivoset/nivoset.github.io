@@ -1,6 +1,7 @@
 # build output
 dist/
-.output/
+# generated types
+.astro/
 
 # dependencies
 node_modules/
@@ -11,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+.astro.swp
 
 # environment variables
 .env
@@ -19,5 +21,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# ignore .astro directory
-.astro
+# jetbrains setting folder
+.idea/
+
+# simulation saves and weights
+simulation-save.json
+weights/

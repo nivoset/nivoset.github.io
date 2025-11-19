@@ -1,0 +1,551 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo" description="Interactive Nomad Poker demo - Play the game!">
+	<section class="py-8 bg-emerald-950 min-h-screen">
+		<div class="container mx-auto px-4">
+			<div class="max-w-4xl mx-auto">
+				<h1 class="text-4xl font-bold text-yellow-400 text-center mb-8">Nomad Poker Demo</h1>
+				
+				<!-- Credit Display -->
+				<div class="text-center mb-4">
+					<div class="flex justify-center gap-6 text-amber-50">
+						<div>
+							<span class="text-sm">Credits: </span>
+							<span id="credits-display" class="text-yellow-400 font-bold text-lg">100</span>
+						</div>
+						<div>
+							<span class="text-sm">Pot: </span>
+							<span id="pot-display" class="text-yellow-400 font-bold text-lg">0</span>
+						</div>
+						<div>
+							<span class="text-sm">Buy-in: </span>
+							<span class="text-yellow-400 font-bold text-lg">10</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Star Row (Best Hand Indicator) -->
+				<div class="flex justify-center mb-2">
+					<div id="star-row" class="grid grid-cols-5 gap-4" style="width: fit-content;">
+						<!-- Stars will be generated here -->
+					</div>
+				</div>
+
+				<!-- Card Grid -->
+				<div class="flex justify-center mb-4">
+					<div id="card-grid" class="grid grid-cols-5 gap-4">
+						<!-- Cards will be generated here -->
+					</div>
+				</div>
+
+				<!-- Player Marker Row -->
+				<div class="flex justify-center mb-8">
+					<div id="marker-row" class="grid grid-cols-5 gap-4" style="width: fit-content;">
+						<!-- Marker will be generated here -->
+					</div>
+				</div>
+
+				<!-- Circular Control Panel -->
+				<div class="flex justify-center mb-6">
+					<div class="circular-controls">
+						<!-- Top Button - Stay -->
+						<button 
+							id="btn-stay" 
+							class="control-btn control-top"
+						>
+							<div class="arrow-up"></div>
+						</button>
+						
+						<!-- Left Button - Left Arrow -->
+						<button 
+							id="btn-left" 
+							class="control-btn control-left"
+						>
+							<div class="arrow-left"></div>
+						</button>
+						
+						<!-- Center - OASIS -->
+						<div class="control-btn control-center">OASIS</div>
+						
+						<!-- Right Button - Right Arrow -->
+						<button 
+							id="btn-right" 
+							class="control-btn control-right"
+						>
+							<div class="arrow-right"></div>
+						</button>
+						
+						<!-- Bottom Button - Play Again -->
+						<button 
+							id="btn-restart" 
+							class="control-btn control-bottom"
+							disabled
+						>
+							PLAY AGAIN
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Win/Loss Dialog -->
+		<dialog id="result-dialog" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-emerald-900 border-4 border-yellow-400 rounded-lg p-8 max-w-md mx-4 shadow-2xl backdrop:bg-black/0.01">
+			<div id="result-dialog-content" class="text-center">
+				<!-- Content will be inserted here -->
+			</div>
+			<div class="mt-6 flex justify-center">
+				<button 
+					id="result-dialog-play-again"
+					class="px-6 py-2 bg-yellow-400 text-emerald-950 font-bold rounded hover:bg-yellow-300 transition-colors"
+				>
+					Play Again
+				</button>
+			</div>
+		</dialog>
+	</section>
+
+	<script>
+		// Import game logic
+		let gameModule: any = null;
+		let pokerModule: any = null;
+		
+		// Load modules and initialize game once loaded
+		async function loadModules() {
+			gameModule = await import('../lib/nomad-poker');
+			pokerModule = await import('../lib/poker');
+			return true;
+		}
+
+		// Game state (will be initialized from game module)
+		let gameState: any = null;
+
+		// Suit symbols
+		const suitSymbols: Record<string, string> = {
+			hearts: '♥',
+			diamonds: '♦',
+			clubs: '♣',
+			spades: '♠'
+		};
+
+		// Get rank value for comparison (A=14, K=13, Q=12, J=11, 10-2)
+		function getRankValueLocal(rank: string): number {
+			if (!pokerModule) return 0;
+			return pokerModule.getRankValue(rank);
+		}
+
+		// Find the highest card in each column (for first round hint)
+		function findHighestCardInEachColumn(): number[] {
+			const highestCardRows: number[] = [];
+			
+			for (let col = 0; col < 5; col++) {
+				let highestRow = -1;
+				let highestValue = -1;
+				
+				for (let row = 0; row < 5; row++) {
+					const card = gameState.grid[col]?.[row];
+					if (card) {
+						const cardValue = getRankValueLocal(card.rank);
+						if (cardValue > highestValue) {
+							highestValue = cardValue;
+							highestRow = row;
+						}
+					}
+				}
+				
+				// Only set if we found a valid card
+				if (highestRow >= 0) {
+					highestCardRows[col] = highestRow;
+				}
+			}
+			
+			return highestCardRows;
+		}
+
+		// Render a single card
+		function renderCard(card: any | null, isRevealed: boolean): string {
+			if (!card) return '';
+			
+			const cardClasses = ['playing-card'];
+			if (!isRevealed) {
+				cardClasses.push('face-down');
+			}
+			
+			if (isRevealed) {
+				const suitSymbol = suitSymbols[card.suit];
+				const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
+				const colorClass = isRed ? 'card-red' : 'card-black';
+				
+				return `
+					<div class="${cardClasses.join(' ')} ${colorClass}">
+						<div class="card-rank">${card.rank}</div>
+						<div class="card-suit center">${suitSymbol}</div>
+						<div class="card-rank" style="transform: rotate(180deg);">${card.rank}</div>
+					</div>
+				`;
+			} else {
+				return `
+					<div class="${cardClasses.join(' ')}"></div>
+				`;
+			}
+		}
+
+		// Find the best current hand based on revealed cards
+		function findBestCurrentHand(): number {
+			if (gameState.revealedRows === 0) {
+				return -1; // No cards revealed yet
+			}
+			
+			let bestColumn = -1;
+			let bestValue = -1;
+			
+			for (let col = 0; col < 5; col++) {
+				// Get revealed cards for this column
+				const revealedCards = gameState.grid[col].slice(0, gameState.revealedRows);
+				
+				if (revealedCards.length > 0 && pokerModule) {
+					// Evaluate the partial hand
+					const evaluation = pokerModule.evaluateHand(revealedCards);
+					if (evaluation.value > bestValue) {
+						bestValue = evaluation.value;
+						bestColumn = col;
+					}
+				}
+			}
+			
+			return bestColumn;
+		}
+
+		// Render the star row above the grid
+		function renderStarRow() {
+			const starRowElement = document.getElementById('star-row');
+			if (!starRowElement) return;
+			
+			starRowElement.innerHTML = '';
+			
+			let starColumn = -1;
+			
+			if (gameState.gameOver && gameState.winningColumn >= 0) {
+				// Show green star for winning column
+				starColumn = gameState.winningColumn;
+			} else if (gameState.revealedRows > 0) {
+				// Show blue star for best current hand
+				starColumn = findBestCurrentHand();
+			}
+			
+			for (let col = 0; col < 5; col++) {
+				const starElement = document.createElement('div');
+				starElement.style.width = '80px';
+				starElement.style.height = '40px';
+				starElement.style.display = 'flex';
+				starElement.style.alignItems = 'center';
+				starElement.style.justifyContent = 'center';
+				
+				if (col === starColumn) {
+					if (gameState.gameOver) {
+						// Green star for winning column
+						starElement.innerHTML = '<div style="color: #10b981; font-size: 32px; text-shadow: 0 0 8px rgba(16, 185, 129, 0.8);">★</div>';
+					} else {
+						// Blue star for best current hand
+						starElement.innerHTML = '<div style="color: #60a5fa; font-size: 32px; text-shadow: 0 0 8px rgba(96, 165, 250, 0.8);">★</div>';
+					}
+				} else {
+					// Empty space
+					starElement.innerHTML = '<div style="color: transparent; font-size: 32px;">★</div>';
+				}
+				
+				starRowElement.appendChild(starElement);
+			}
+		}
+
+		// Render the entire grid
+		function renderGrid() {
+			const gridElement = document.getElementById('card-grid');
+			if (!gridElement) return;
+			
+			gridElement.innerHTML = '';
+			
+			// Find highest cards in each column for highlighting (only show hint before first row is revealed)
+			const highestCardRows = gameState.revealedRows === 0 ? findHighestCardInEachColumn() : [];
+			
+			// Render row by row (5 rows)
+			for (let row = 0; row < 5; row++) {
+				for (let col = 0; col < 5; col++) {
+					const card = gameState.grid[col]?.[row] || null;
+					const isRevealed = row < gameState.revealedRows;
+					const isWinningColumn = gameState.gameOver && col === gameState.winningColumn;
+					// Show blue highlight only on highest card in each column when all cards are face down
+					// Check that highestCardRows has a value for this column and it matches the current row
+					const isHighestCard = gameState.revealedRows === 0 && 
+						Array.isArray(highestCardRows) &&
+						highestCardRows.length === 5 && 
+						typeof highestCardRows[col] === 'number' && 
+						highestCardRows[col] === row;
+					
+					const cardElement = document.createElement('div');
+					if (isWinningColumn) {
+						cardElement.className = 'winning-column';
+					} else if (isHighestCard) {
+						cardElement.className = 'highest-card-hint';
+					}
+					cardElement.innerHTML = renderCard(card, isRevealed);
+					gridElement.appendChild(cardElement.firstElementChild || cardElement);
+				}
+			}
+			
+			// Render star row and marker row
+			renderStarRow();
+			renderMarkerRow();
+		}
+
+		// Render the player marker row below the grid
+		function renderMarkerRow() {
+			const markerRowElement = document.getElementById('marker-row');
+			if (!markerRowElement) return;
+			
+			markerRowElement.innerHTML = '';
+			
+			for (let col = 0; col < 5; col++) {
+				const markerElement = document.createElement('div');
+				markerElement.style.width = '80px';
+				markerElement.style.height = '40px';
+				markerElement.style.display = 'flex';
+				markerElement.style.alignItems = 'center';
+				markerElement.style.justifyContent = 'center';
+				
+				if (col === gameState.currentColumn) {
+					// Show player marker (yellow)
+					markerElement.innerHTML = '<div style="color: #fbbf24; font-size: 32px; text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);">▲</div>';
+				} else {
+					markerElement.innerHTML = '<div style="color: transparent; font-size: 32px;">▲</div>';
+				}
+				
+				markerRowElement.appendChild(markerElement);
+			}
+		}
+
+		// Update button states
+		function updateButtons() {
+			if (!gameModule || !gameState) return;
+			
+			const btnLeft = document.getElementById('btn-left') as HTMLButtonElement;
+			const btnRight = document.getElementById('btn-right') as HTMLButtonElement;
+			const btnStay = document.getElementById('btn-stay') as HTMLButtonElement;
+			
+			if (gameState.gameOver) {
+				btnLeft.disabled = true;
+				btnRight.disabled = true;
+				btnStay.disabled = true;
+				return;
+			}
+			
+			btnLeft.disabled = !gameModule.canExecuteAction(gameState, 'left');
+			btnRight.disabled = !gameModule.canExecuteAction(gameState, 'right');
+			btnStay.disabled = !gameModule.canExecuteAction(gameState, 'stay');
+		}
+
+		// Show result dialog
+		function showResultDialog(title: string, message: string, isWin: boolean) {
+			const dialog = document.getElementById('result-dialog') as HTMLDialogElement;
+			const content = document.getElementById('result-dialog-content');
+			
+			if (dialog && content) {
+				const titleColor = isWin ? 'text-yellow-400' : 'text-red-400';
+				content.innerHTML = `
+					<h2 class="${titleColor} font-bold text-3xl mb-4">${title}</h2>
+					<p class="text-amber-50 text-lg">${message}</p>
+				`;
+				dialog.showModal();
+			}
+		}
+
+		// Hide result dialog
+		function hideResultDialog() {
+			const dialog = document.getElementById('result-dialog') as HTMLDialogElement;
+			if (dialog) {
+				dialog.close();
+			}
+		}
+
+		// Update credit and pot display
+		function updateCreditDisplay() {
+			const creditsDisplay = document.getElementById('credits-display');
+			const potDisplay = document.getElementById('pot-display');
+			if (creditsDisplay) {
+				creditsDisplay.textContent = gameState.credits.toString();
+			}
+			if (potDisplay) {
+				potDisplay.textContent = gameState.pot.toString();
+			}
+		}
+
+		// Handle player action
+		function handleAction(direction: 'left' | 'right' | 'stay') {
+			if (!gameModule || !gameState) return;
+			
+			// Store pot before action (for display if game ends)
+			const potBeforeAction = gameState.pot;
+			
+			gameState = gameModule.executeAction(gameState, direction);
+			
+			// Store pot in state for display (before it gets added to credits on win)
+			if (gameState.gameOver) {
+				(gameState as any).potBeforeWin = potBeforeAction;
+			}
+			
+			// Update credit display
+			updateCreditDisplay();
+			
+			// Check if game is over
+			if (gameState.gameOver) {
+				endGame();
+			} else {
+				renderGrid();
+				updateButtons();
+			}
+		}
+
+		// End game and evaluate hands
+		function endGame() {
+			if (!gameModule || !gameState || !pokerModule) return;
+			
+			// Game state is already updated by executeAction when round >= 5
+			// Get hand evaluations for display
+			const handEvaluations = gameState.grid.map((hand: any[], col: number) => {
+				const evaluation = pokerModule.evaluateHand(hand);
+				return { column: col, ...evaluation };
+			});
+			
+			// Find the highest hand
+			const highestHand = handEvaluations.reduce((best: any, current: any) => {
+				return current.value > best.value ? current : best;
+			});
+			
+			// Check if player won
+			const playerWon = gameState.winningColumn === gameState.currentColumn;
+			
+			// Get pot amount from before the win (stored in handleAction)
+			const potBeforeWin = (gameState as any).potBeforeWin || 0;
+			
+			// Update credit display
+			updateCreditDisplay();
+			
+			// Show all cards
+			renderGrid();
+			updateButtons();
+			
+			// Show result dialog
+			if (playerWon) {
+				showResultDialog(
+					'🎉 You Win!',
+					`Your hand: ${highestHand.description}<br>Won ${potBeforeWin} credits!`,
+					true
+				);
+			} else {
+				const playerHand = handEvaluations[gameState.currentColumn];
+				showResultDialog(
+					'You Lost',
+					`Your hand: ${playerHand.description}<br>Winner: Column ${highestHand.column + 1} with ${highestHand.description}`,
+					false
+				);
+			}
+			
+			// Check if player can afford another buy-in
+			const restartBtn = document.getElementById('btn-restart') as HTMLButtonElement;
+			if (restartBtn) {
+				if (gameState.credits >= gameModule.gameConfig.buyInCost) {
+					restartBtn.disabled = false;
+				} else {
+					restartBtn.disabled = true;
+					// Show game over message in dialog
+					const dialogContent = document.getElementById('result-dialog-content');
+					if (dialogContent) {
+						const currentContent = dialogContent.innerHTML;
+						dialogContent.innerHTML = currentContent + '<br><br><p class="text-red-400 font-bold">Game Over - Insufficient Credits</p>';
+					}
+				}
+			}
+		}
+
+		// Initialize game
+		function initGame() {
+			if (!gameModule) return;
+			
+			// Start a new match
+			const newState = gameModule.startMatch(gameState);
+			
+			if (!newState) {
+				// Game over - insufficient credits
+				gameState.gameOver = true;
+				
+				// Disable all buttons
+				const btnLeft = document.getElementById('btn-left') as HTMLButtonElement;
+				const btnRight = document.getElementById('btn-right') as HTMLButtonElement;
+				const btnStay = document.getElementById('btn-stay') as HTMLButtonElement;
+				const restartBtn = document.getElementById('btn-restart') as HTMLButtonElement;
+				
+				if (btnLeft) btnLeft.disabled = true;
+				if (btnRight) btnRight.disabled = true;
+				if (btnStay) btnStay.disabled = true;
+				if (restartBtn) restartBtn.disabled = true;
+				
+				// Show game over message in dialog
+				showResultDialog(
+					'Game Over',
+					'Insufficient Credits<br>You need at least ' + gameModule.gameConfig.buyInCost + ' credits to play.',
+					false
+				);
+				
+				updateCreditDisplay();
+				return;
+			}
+			
+			gameState = newState;
+			
+			// Disable restart button
+			const restartBtn = document.getElementById('btn-restart') as HTMLButtonElement;
+			if (restartBtn) {
+				restartBtn.disabled = true;
+			}
+			
+			// Hide result dialog if visible
+			hideResultDialog();
+			
+			renderGrid();
+			updateButtons();
+			updateCreditDisplay();
+		}
+
+		// Event listeners
+		document.addEventListener('DOMContentLoaded', async () => {
+			// Wait for modules to load before initializing
+			await loadModules();
+			// Initialize game state
+			gameState = gameModule.initGame();
+			// Start first match
+			initGame();
+			
+			document.getElementById('btn-left')?.addEventListener('click', () => handleAction('left'));
+			document.getElementById('btn-right')?.addEventListener('click', () => handleAction('right'));
+			document.getElementById('btn-stay')?.addEventListener('click', () => handleAction('stay'));
+			document.getElementById('btn-restart')?.addEventListener('click', () => initGame());
+			document.getElementById('result-dialog-play-again')?.addEventListener('click', () => {
+				hideResultDialog();
+				initGame();
+			});
+			
+			// Close dialog when clicking outside of it (on the backdrop)
+			const dialog = document.getElementById('result-dialog') as HTMLDialogElement;
+			if (dialog) {
+				dialog.addEventListener('click', (e) => {
+					// Close if clicking on the backdrop (the dialog element itself, not its children)
+					if (e.target === dialog) {
+						dialog.close();
+					}
+				});
+			}
+		});
+	</script>
+</BaseLayout>
+

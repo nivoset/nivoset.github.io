@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@tensorflow/tfjs-node'
+  - '@tensorflow/tfjs-node-gpu'
+  - core-js
+  - esbuild
+  - sharp

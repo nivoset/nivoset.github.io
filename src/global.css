@@ -1,0 +1,360 @@
+@import "tailwindcss";
+
+/* Playing Card Styles */
+.playing-card {
+	width: 80px;
+	height: 112px;
+	border-radius: 8px;
+	border: 2px solid #1f2937;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 8px;
+	background: white;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	transition: transform 0.2s, box-shadow 0.2s;
+	cursor: pointer;
+	position: relative;
+}
+
+.playing-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.playing-card.face-down {
+	background: linear-gradient(135deg, #d4a574 0%, #c9a068 25%, #d4a574 50%, #e6c89a 75%, #d4a574 100%);
+	border-color: #b8905a;
+	background-image: 
+		radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+		radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+		radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 60%),
+		repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 2px,
+			rgba(184, 144, 90, 0.1) 2px,
+			rgba(184, 144, 90, 0.1) 4px
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 3px,
+			rgba(212, 165, 116, 0.15) 3px,
+			rgba(212, 165, 116, 0.15) 6px
+		);
+	box-shadow: 
+		inset 0 2px 4px rgba(255, 255, 255, 0.2),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+		0 4px 8px rgba(0, 0, 0, 0.25);
+	position: relative;
+	overflow: hidden;
+}
+
+.playing-card.face-down::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+		radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+		linear-gradient(
+			135deg,
+			transparent 0%,
+			rgba(184, 144, 90, 0.1) 25%,
+			transparent 50%,
+			rgba(230, 200, 154, 0.1) 75%,
+			transparent 100%
+		);
+	pointer-events: none;
+}
+
+.playing-card.face-down::after {
+	content: '';
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	background: repeating-linear-gradient(
+		45deg,
+		transparent,
+		transparent 8px,
+		rgba(184, 144, 90, 0.05) 8px,
+		rgba(184, 144, 90, 0.05) 16px
+	);
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.card-rank {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 1;
+}
+
+.card-suit {
+	font-size: 24px;
+	line-height: 1;
+}
+
+.card-suit.center {
+	font-size: 36px;
+	align-self: center;
+}
+
+.card-red {
+	color: #dc2626;
+}
+
+.card-black {
+	color: #1f2937;
+}
+
+.player-marker {
+	position: relative;
+}
+
+.player-marker::before {
+	content: '▲';
+	position: absolute;
+	top: -24px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: #fbbf24;
+	font-size: 24px;
+	text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+	z-index: 10;
+}
+
+.player-marker .playing-card {
+	border-color: #fbbf24;
+	box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+}
+
+.winning-column .playing-card {
+	border-color: #10b981;
+	border-width: 3px;
+	box-shadow: 0 0 16px rgba(16, 185, 129, 0.8);
+	background: linear-gradient(135deg, #ffffff 0%, #d1fae5 100%);
+}
+
+.winning-column .playing-card.face-down {
+	background: linear-gradient(135deg, #d4a574 0%, #c9a068 25%, #d4a574 50%, #e6c89a 75%, #d4a574 100%);
+	border-color: #10b981;
+	box-shadow: 
+		inset 0 2px 4px rgba(255, 255, 255, 0.2),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+		0 0 16px rgba(16, 185, 129, 0.8),
+		0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.highest-card-hint .playing-card {
+	border-color: #60a5fa;
+	border-width: 3px;
+	box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+}
+
+.highest-card-hint .playing-card.face-down {
+	box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+	/* Override the default shadow for highest cards - they get blue glow instead */
+}
+
+/* Circular Control Panel - Pebble/Stone Style */
+.circular-controls {
+	display: grid;
+	grid-template-columns: 100px 100px 100px;
+	grid-template-rows: 100px 100px 100px;
+	grid-template-areas:
+		". top ."
+		"left center right"
+		"bottom bottom bottom";
+	gap: 12px;
+	width: fit-content;
+	height: fit-content;
+	background: transparent;
+	padding: 0;
+}
+
+.control-btn {
+	/* Grey-green pebble color */
+	background: linear-gradient(135deg, #7a8a7a 0%, #6b7d6b 50%, #5a6b5a 100%);
+	border: none;
+	color: #d1d5db;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: 1px;
+	transition: all 0.2s;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+	/* Soft, diffused shadow with top-left light source */
+	box-shadow: 
+		0 8px 16px rgba(0, 0, 0, 0.3),
+		0 4px 8px rgba(0, 0, 0, 0.2);
+	position: relative;
+	overflow: hidden;
+	/* Embossed text effect */
+	text-shadow: 
+		0 1px 2px rgba(255, 255, 255, 0.3),
+		0 -1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Matte/granular texture overlay */
+.control-btn::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		/* Subtle texture pattern */
+		radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+		radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.1) 0%, transparent 40%),
+		/* Granular noise texture */
+		repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.02) 2px,
+			rgba(0, 0, 0, 0.02) 4px
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 2px,
+			rgba(255, 255, 255, 0.02) 2px,
+			rgba(255, 255, 255, 0.02) 4px
+		);
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+.control-btn:hover:not(:disabled) {
+	background: linear-gradient(135deg, #8a9a8a 0%, #7b8d7b 50%, #6a7b6a 100%);
+	box-shadow: 
+		0 10px 20px rgba(0, 0, 0, 0.35),
+		0 5px 10px rgba(0, 0, 0, 0.25);
+	transform: translateY(-1px);
+}
+
+.control-btn:active:not(:disabled) {
+	background: linear-gradient(135deg, #6a7a6a 0%, #5b6d5b 50%, #4a5b4a 100%);
+	box-shadow: 
+		0 4px 8px rgba(0, 0, 0, 0.3),
+		0 2px 4px rgba(0, 0, 0, 0.2);
+	transform: translateY(1px);
+}
+
+.control-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	background: linear-gradient(135deg, #5a6a5a 0%, #4b5d4b 50%, #3a4b3a 100%);
+}
+
+/* Grid Area Assignments with Organic Pebble Shapes */
+.control-top {
+	grid-area: top;
+	/* Organic oval/pebble shape - wider at top, tapering */
+	border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+	width: 100px;
+	height: 60px;
+	justify-self: center;
+	align-self: center;
+}
+
+.control-left {
+	grid-area: left;
+	/* Irregular pebble shape - wider at top */
+	border-radius: 50% 40% 50% 30% / 60% 30% 50% 40%;
+	width: 60px;
+	height: 100px;
+	justify-self: center;
+	align-self: center;
+}
+
+.control-right {
+	grid-area: right;
+	/* Irregular pebble shape - mirror of left */
+	border-radius: 40% 50% 30% 50% / 30% 60% 40% 50%;
+	width: 60px;
+	height: 100px;
+	justify-self: center;
+	align-self: center;
+}
+
+.control-bottom {
+	grid-area: bottom;
+	/* Wide horizontal pebble */
+	border-radius: 40% 40% 50% 50% / 30% 30% 60% 60%;
+	font-size: 10px;
+	line-height: 1.2;
+	padding: 8px;
+	text-align: center;
+	width: 100%;
+	max-width: 280px;
+	height: 60px;
+	justify-self: center;
+	align-self: center;
+}
+
+.control-center {
+	grid-area: center;
+	/* Perfect circle for center button */
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	pointer-events: none;
+	z-index: 1;
+	justify-self: center;
+	align-self: center;
+	/* Center button styling */
+	color: #d1d5db;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-shadow: 
+		0 1px 2px rgba(255, 255, 255, 0.3),
+		0 -1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Triangular Arrows - Light grey embossed style */
+.arrow-up,
+.arrow-down,
+.arrow-left,
+.arrow-right {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	position: relative;
+	z-index: 1;
+	/* Embossed shadow effect */
+	filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.3)) 
+	        drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.arrow-up {
+	border-width: 0 10px 16px 10px;
+	border-color: transparent transparent #d1d5db transparent;
+}
+
+.arrow-down {
+	border-width: 16px 10px 0 10px;
+	border-color: #d1d5db transparent transparent transparent;
+}
+
+.arrow-left {
+	border-width: 10px 16px 10px 0;
+	border-color: transparent #d1d5db transparent transparent;
+}
+
+.arrow-right {
+	border-width: 10px 0 10px 16px;
+	border-color: transparent transparent transparent #d1d5db;
+}
