@@ -1,0 +1,704 @@
+---
+import DSDLayout from "@layouts/DSDLayout.astro";
+---
+
+<DSDLayout
+  title="Putting It All Together"
+  description="Apply all 8 rules in real-world scenarios, recognize violations, and use the feature checklist effectively."
+  currentPath="/dsd/practice"
+>
+  ## Learning Objectives
+
+  By the end of this module, you will be able to:
+
+  - Apply all 8 rules in real-world scenarios
+  - Recognize and fix common violations
+  - Use the feature checklist effectively
+
+  ## Real-World Scenarios
+
+  ### Scenario 1: Building a New Feature from Scratch
+
+  **Feature:** User profile management system
+
+  **Step 1: Start Undead**
+  ```tsx
+  // Start with pure zombies
+  function UserProfileCard({ user }) {
+    return (
+      <div>
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        <img src={user.avatar} alt={user.name} />
+      </div>
+    );
+  }
+
+  function UserProfileForm({ user, onSubmit }) {
+    return (
+      <form onSubmit={onSubmit}>
+        <input name="name" defaultValue={user.name} />
+        <input name="email" defaultValue={user.email} />
+        <button type="submit">Save</button>
+      </form>
+    );
+  }
+  ```
+
+  **Step 2: Add Brain Boundary**
+  ```tsx
+  function UserProfileView({ userId }) {
+    const { user, loading, error, updateUser } = useUser(userId);
+    
+    const handleSubmit = (formData) => {
+      updateUser(formData);
+    };
+    
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    
+    return (
+      <div>
+        <UserProfileCard user={user} />
+        <UserProfileForm user={user} onSubmit={handleSubmit} />
+      </div>
+    );
+  }
+  ```
+
+  **Step 3: Check Horde Ratio**
+  - Zombies: 2 (UserProfileCard, UserProfileForm)
+  - Brains: 1 (useUser hook)
+  - Ratio: 2:1 ❌ (Need more zombies or consolidate)
+
+  **Step 4: Verify 3-Click Rule**
+  - UserProfileView → useUser (1 click) ✅
+
+  **Step 5: Design for Three Strains**
+  ```tsx
+  function useUser(userId) {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    useEffect(() => {
+      fetchUser(userId)
+        .then(setUser)
+        .catch(setError)
+        .finally(() => setLoading(false));
+    }, [userId]);
+    
+    const updateUser = async (data) => {
+      try {
+        const updated = await updateUserAPI(userId, data);
+        setUser(updated);
+      } catch (err) {
+        setError(err);
+      }
+    };
+    
+    return { user, loading, error, updateUser };
+  }
+  ```
+
+  **Step 6: Avoid Prop Drilling**
+  - UserProfileView passes props directly ✅
+  - No tunneling through layers ✅
+
+  **Step 7: Co-locate Related Code**
+  ```
+  features/
+    users/
+      UserProfileView.tsx
+      UserProfileCard.tsx
+      UserProfileForm.tsx
+      useUser.ts
+      userService.ts
+  ```
+
+  **Step 8: Name Files Specifically**
+  - ✅ `useUser.ts` (not `hooks.ts`)
+  - ✅ `userService.ts` (not `utils.ts`)
+
+  **Step 9: Silence the Living**
+  - No console.log statements ✅
+  - No warnings ✅
+
+  ### Scenario 2: Refactoring Legacy Code
+
+  **Before (Violates Multiple Rules):**
+  ```tsx
+  // ❌ Started with brains
+  function ProductList() {
+    const [products, setProducts] = useState([]);
+    const [filter, setFilter] = useState('all');
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+      console.log('Fetching products...');
+      fetch('/api/products')
+        .then(res => res.json())
+        .then(data => {
+          console.log('Products loaded:', data);
+          setProducts(data);
+          setLoading(false);
+        });
+    }, []);
+    
+    const filtered = products.filter(p => {
+      if (filter === 'all') return true;
+      return p.category === filter;
+    });
+    
+    return (
+      <div>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="electronics">Electronics</option>
+        </select>
+        {loading ? <div>Loading...</div> : (
+          <ul>
+            {filtered.map(product => (
+              <li key={product.id}>
+                <h3>{product.name}</h3>
+                <p>{product.price}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+  ```
+
+  **Violations:**
+  1. ❌ Started with brains (Rule 1)
+  2. ❌ Console statements (Rule 8)
+  3. ❌ Mixed concerns (zombie + brain)
+
+  **After (Follows All Rules):**
+  ```tsx
+  // ✅ Zombie: Pure presentation
+  function ProductList({ products, loading, filter, onFilterChange }) {
+    if (loading) return <div>Loading...</div>;
+    
+    const filtered = products.filter(p => {
+      if (filter === 'all') return true;
+      return p.category === filter;
+    });
+    
+    return (
+      <div>
+        <select value={filter} onChange={(e) => onFilterChange(e.target.value)}>
+          <option value="all">All</option>
+          <option value="electronics">Electronics</option>
+        </select>
+        <ul>
+          {filtered.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // ✅ Zombie: Product card
+  function ProductCard({ product }) {
+    return (
+      <li>
+        <h3>{product.name}</h3>
+        <p>{product.price}</p>
+      </li>
+    );
+  }
+
+  // ✅ Brain: Hook
+  function useProducts() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+      fetch('/api/products')
+        .then(res => res.json())
+        .then(data => {
+          setProducts(data);
+          setLoading(false);
+        });
+    }, []);
+    
+    return { products, loading };
+  }
+
+  // ✅ Brain Boundary: Orchestration
+  function ProductsView() {
+    const { products, loading } = useProducts();
+    const [filter, setFilter] = useState('all');
+    
+    return (
+      <ProductList
+        products={products}
+        loading={loading}
+        filter={filter}
+        onFilterChange={setFilter}
+      />
+    );
+  }
+  ```
+
+  **Improvements:**
+  1. ✅ Separated zombies from brains
+  2. ✅ Removed console statements
+  3. ✅ Better component structure
+  4. ✅ Easier to test
+
+  ### Scenario 3: Code Review Checklist
+
+  Use this checklist when reviewing code:
+
+  - [ ] **Start Undead**: Components start as zombies?
+  - [ ] **Horde Ratio**: ≥7:1 zombies to brains?
+  - [ ] **3-Click Rule**: Can reach brain in ≤3 clicks?
+  - [ ] **Three Strains**: Interface handles happy/failure/async?
+  - [ ] **No Tunnels**: No prop drilling through 3+ layers?
+  - [ ] **Co-location**: Related code kept together?
+  - [ ] **Specific Names**: Files have clear, specific names?
+  - [ ] **Silence**: No console statements or warnings?
+
+  ## Common Violations Deep Dive
+
+  ### Violation 1: Starting with Brains
+
+  **Problem:**
+  ```tsx
+  function MyComponent() {
+    const [data, setData] = useState();
+    const { data: apiData } = useQuery(...);
+    // ...
+  }
+  ```
+
+  **Solution:**
+  ```tsx
+  // Start with zombie
+  function MyComponent({ data, loading }) {
+    if (loading) return <div>Loading...</div>;
+    return <div>{data}</div>;
+  }
+
+  // Add brain boundary
+  function MyComponentView() {
+    const { data, loading } = useQuery(...);
+    return <MyComponent data={data} loading={loading} />;
+  }
+  ```
+
+  ### Violation 2: Prop Drilling
+
+  **Problem:**
+  ```tsx
+  <Parent value={value}>
+    <Child value={value}>
+      <GrandChild value={value}>
+        <GreatGrandChild value={value} />
+      </GrandChild>
+    </Child>
+  </Parent>
+  ```
+
+  **Solution:**
+  ```tsx
+  // Move brain to boundary
+  function ParentView() {
+    const value = useValue(); // Brain at boundary
+    return (
+      <Parent>
+        <Child>
+          <GrandChild>
+            <GreatGrandChild value={value} /> {/* Direct from boundary */}
+          </GrandChild>
+        </Child>
+      </Parent>
+    );
+  }
+  ```
+
+  ### Violation 3: Generic File Names
+
+  **Problem:**
+  ```tsx
+  // utils.ts
+  export function formatPrice() { ... }
+  export function calculateTotal() { ... }
+  export function validateEmail() { ... }
+  ```
+
+  **Solution:**
+  ```tsx
+  // formatPrice.ts
+  export function formatPrice() { ... }
+
+  // calculateTotal.ts
+  export function calculateTotal() { ... }
+
+  // validateEmail.ts
+  export function validateEmail() { ... }
+  ```
+
+  ### Violation 4: Brains in Zombies
+
+  **Problem:**
+  ```tsx
+  function CustomerCard() {
+    const flags = useFeatureFlags(); // ❌ Brain in zombie
+    return <div>{flags.enableNewFeature ? 'New' : 'Old'}</div>;
+  }
+  ```
+
+  **Solution:**
+  ```tsx
+  // Brain at boundary
+  function CustomerCardView() {
+    const flags = useFeatureFlags();
+    return <CustomerCard flags={flags} />;
+  }
+
+  // Pure zombie
+  function CustomerCard({ flags }) {
+    return <div>{flags.enableNewFeature ? 'New' : 'Old'}</div>;
+  }
+  ```
+
+  ## Feature Checklist Walkthrough
+
+  Use this checklist when building new features:
+
+  ### Planning Phase
+
+  - [ ] Identify zombies needed (UI components)
+  - [ ] Identify brains needed (logic/hooks)
+  - [ ] Plan horde ratio (target ≥7:1)
+  - [ ] Design directory structure
+  - [ ] Plan navigation paths (target ≤3 clicks)
+
+  ### Implementation Phase
+
+  - [ ] Start with zombies (pure components)
+  - [ ] Add brain boundary (orchestration)
+  - [ ] Extract hooks/services (logic)
+  - [ ] Design interfaces (three strains)
+  - [ ] Avoid prop drilling
+  - [ ] Co-locate related code
+  - [ ] Use specific file names
+  - [ ] Remove console statements
+  - [ ] Fix all warnings
+
+  ### Review Phase
+
+  - [ ] Verify horde ratio
+  - [ ] Test navigation paths
+  - [ ] Review for violations
+  - [ ] Run checklist
+
+  ## Case Study: Complete Feature Implementation
+
+  **Feature:** Shopping cart with checkout
+
+  **Step 1: Plan Structure**
+  ```
+  features/
+    cart/
+      CartView.tsx          # Brain boundary
+      CartItem.tsx          # Zombie
+      CartSummary.tsx       # Zombie
+      useCart.ts            # Brain hook
+      cartService.ts        # Brain logic
+  ```
+
+  **Step 2: Start with Zombies**
+  ```tsx
+  function CartItem({ item, onRemove, onUpdateQuantity }) {
+    return (
+      <div>
+        <h3>{item.name}</h3>
+        <p>${item.price}</p>
+        <input
+          type="number"
+          value={item.quantity}
+          onChange={(e) => onUpdateQuantity(item.id, parseInt(e.target.value))}
+        />
+        <button onClick={() => onRemove(item.id)}>Remove</button>
+      </div>
+    );
+  }
+
+  function CartSummary({ total, itemCount, onCheckout }) {
+    return (
+      <div>
+        <p>Items: {itemCount}</p>
+        <p>Total: ${total}</p>
+        <button onClick={onCheckout}>Checkout</button>
+      </div>
+    );
+  }
+  ```
+
+  **Step 3: Add Brain**
+  ```tsx
+  function useCart() {
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(false);
+    
+    const addItem = (product) => {
+      setItems([...items, { ...product, quantity: 1 }]);
+    };
+    
+    const removeItem = (id) => {
+      setItems(items.filter(item => item.id !== id));
+    };
+    
+    const updateQuantity = (id, quantity) => {
+      setItems(items.map(item =>
+        item.id === id ? { ...item, quantity } : item
+      ));
+    };
+    
+    const checkout = async () => {
+      setLoading(true);
+      await cartService.checkout(items);
+      setItems([]);
+      setLoading(false);
+    };
+    
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    
+    return {
+      items,
+      total,
+      itemCount,
+      loading,
+      addItem,
+      removeItem,
+      updateQuantity,
+      checkout,
+    };
+  }
+  ```
+
+  **Step 4: Brain Boundary**
+  ```tsx
+  function CartView() {
+    const {
+      items,
+      total,
+      itemCount,
+      loading,
+      removeItem,
+      updateQuantity,
+      checkout,
+    } = useCart();
+    
+    if (loading) return <div>Processing...</div>;
+    
+    return (
+      <div>
+        <h1>Shopping Cart</h1>
+        {items.map(item => (
+          <CartItem
+            key={item.id}
+            item={item}
+            onRemove={removeItem}
+            onUpdateQuantity={updateQuantity}
+          />
+        ))}
+        <CartSummary
+          total={total}
+          itemCount={itemCount}
+          onCheckout={checkout}
+        />
+      </div>
+    );
+  }
+  ```
+
+  **Step 5: Verify Rules**
+  - ✅ Start Undead: Started with zombies
+  - ✅ Horde Ratio: 2 zombies : 1 brain = 2:1 (could add more zombies)
+  - ✅ 3-Click Rule: CartView → useCart (1 click) ✅
+  - ✅ Three Strains: Handles loading state ✅
+  - ✅ No Tunnels: Props passed directly ✅
+  - ✅ Co-location: All cart code together ✅
+  - ✅ Specific Names: Clear file names ✅
+  - ✅ Silence: No console statements ✅
+
+  ## Final Quiz: Identify Violations
+
+  Review this code and identify all violations:
+
+  ```tsx
+  // utils.ts
+  export function formatPrice(price) {
+    console.log('Formatting price:', price);
+    return `$${price.toFixed(2)}`;
+  }
+
+  export function calculateTotal(items) {
+    return items.reduce((sum, item) => sum + item.price, 0);
+  }
+
+  // ProductList.tsx
+  function ProductList() {
+    const [products, setProducts] = useState([]);
+    const [filter, setFilter] = useState('all');
+    
+    useEffect(() => {
+      fetch('/api/products')
+        .then(res => res.json())
+        .then(setProducts);
+    }, []);
+    
+    const filtered = products.filter(p => {
+      if (filter === 'all') return true;
+      return p.category === filter;
+    });
+    
+    return (
+      <div>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+        </select>
+        {filtered.map(p => (
+          <ProductCard product={p} />
+        ))}
+      </div>
+    );
+  }
+
+  function ProductCard({ product }) {
+    return (
+      <div>
+        <h3>{product.name}</h3>
+        <p>{formatPrice(product.price)}</p>
+      </div>
+    );
+  }
+  ```
+
+  **Violations Found:**
+  1. ❌ Generic file name (`utils.ts`)
+  2. ❌ Console statement in `formatPrice`
+  3. ❌ Started with brains (`ProductList`)
+  4. ❌ Mixed concerns (logic + UI in same component)
+
+  **Fixed Version:**
+  ```tsx
+  // formatPrice.ts
+  export function formatPrice(price) {
+    return `$${price.toFixed(2)}`;
+  }
+
+  // calculateTotal.ts
+  export function calculateTotal(items) {
+    return items.reduce((sum, item) => sum + item.price, 0);
+  }
+
+  // ProductCard.tsx
+  function ProductCard({ product }) {
+    return (
+      <div>
+        <h3>{product.name}</h3>
+        <p>{formatPrice(product.price)}</p>
+      </div>
+    );
+  }
+
+  // ProductList.tsx
+  function ProductList({ products, filter, onFilterChange }) {
+    const filtered = products.filter(p => {
+      if (filter === 'all') return true;
+      return p.category === filter;
+    });
+    
+    return (
+      <div>
+        <select value={filter} onChange={(e) => onFilterChange(e.target.value)}>
+          <option value="all">All</option>
+        </select>
+        {filtered.map(p => (
+          <ProductCard key={p.id} product={p} />
+        ))}
+      </div>
+    );
+  }
+
+  // useProducts.ts
+  function useProducts() {
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+      fetch('/api/products')
+        .then(res => res.json())
+        .then(setProducts);
+    }, []);
+    
+    return products;
+  }
+
+  // ProductsView.tsx
+  function ProductsView() {
+    const products = useProducts();
+    const [filter, setFilter] = useState('all');
+    
+    return (
+      <ProductList
+        products={products}
+        filter={filter}
+        onFilterChange={setFilter}
+      />
+    );
+  }
+  ```
+
+  ## Creative Application Task
+
+  Build a complete feature following all rules:
+
+  **Feature:** Task management system
+
+  **Requirements:**
+  - Display list of tasks
+  - Add new tasks
+  - Mark tasks as complete
+  - Filter tasks (all/active/completed)
+  - Delete tasks
+
+  **Your task:**
+  1. Plan the structure
+  2. Start with zombies
+  3. Add brain boundary
+  4. Verify all 8 rules
+  5. Use the checklist
+
+  **Success Criteria:**
+  - All 8 rules followed
+  - Horde ratio ≥7:1
+  - Navigation ≤3 clicks
+  - No violations
+
+  ## Key Takeaways
+
+  - **Apply all rules** when building features
+  - **Start undead**, add brains when needed
+  - **Maintain horde ratio** for better organization
+  - **Keep navigation short** (≤3 clicks)
+  - **Design for three strains** (happy/failure/async)
+  - **Avoid prop drilling**
+  - **Co-locate related code**
+  - **Use specific names**
+  - **Keep code silent** (no console/warnings)
+
+  ## Next Steps
+
+  Review the [Quick Reference](/dsd/quick-reference) for a condensed cheat sheet of all rules.
+</DSDLayout>
+

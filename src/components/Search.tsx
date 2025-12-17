@@ -78,10 +78,10 @@ export default function SearchBar({ searchList }: Props) {
           </svg>
         </span>
         <input
-          className="block w-full rounded border border-skin-fill 
-        border-opacity-40 bg-skin-fill py-3 pl-10
+          className="block w-full rounded border border-white/40 
+        dark:border-slate-900/40 bg-white dark:bg-slate-900 py-3 pl-10
         pr-3 placeholder:italic placeholder:text-opacity-75 
-        focus:border-skin-accent focus:outline-none"
+        focus:border-blue-600 dark:focus:border-orange-500 focus:outline-none"
           placeholder="Search for anything..."
           type="text"
           name="search"

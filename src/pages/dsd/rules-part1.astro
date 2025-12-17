@@ -1,0 +1,336 @@
+---
+import DSDLayout from "@layouts/DSDLayout.astro";
+---
+
+<DSDLayout
+  title="The Core Rules - Part 1"
+  description="Learn the first three rules: Start Undead, Horde Ratio, and the 3-Click Brain Rule."
+  currentPath="/dsd/rules-part1"
+>
+  ## Learning Objectives
+
+  By the end of this module, you will be able to:
+
+  - Apply "Start Undead" principle when creating new components
+  - Calculate and maintain the Horde Ratio (≥7:1)
+  - Navigate codebases using the 3-Click Brain Rule
+
+  ## Rule 1: Start Undead
+
+  ### The Rule
+
+  ✅ **Components begin as pure zombies (no brains)**  
+  ✅ **Add brains only when justified**  
+  ❌ **Don't start with hooks/state on day one**
+
+  ### Analogy: Building a House
+
+  When building a house, you start with the foundation and structure before adding electrical wiring and plumbing. Similarly, start with the UI structure (zombie) before adding logic (brains).
+
+  - **Foundation first**: Build the visual structure
+  - **Wiring later**: Add logic only when you know what you need
+  - **Avoid premature optimization**: Don't add complexity until necessary
+
+  ### Why Start Undead?
+
+  Starting with a pure component helps you:
+  - Focus on the UI first
+  - See what props you actually need
+  - Avoid over-engineering
+  - Make components easier to test
+
+  ### Exercise: Refactor a Component
+
+  Here's a component that started with brains. Refactor it to start undead:
+
+  ```tsx
+  // ❌ Started with brains
+  function UserDashboard() {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      fetch('/api/users')
+        .then(res => res.json())
+        .then(data => {
+          setUsers(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+    return (
+      <div>
+        <h1>Users</h1>
+        <ul>
+          {users.map(user => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+  ```
+
+  **Solution:**
+
+  ```tsx
+  // ✅ Start undead - pure zombie
+  function UserDashboard({ users, loading, error }) {
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+    return (
+      <div>
+        <h1>Users</h1>
+        <ul>
+          {users.map(user => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // Brain boundary - handles logic
+  function UserDashboardView() {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      fetch('/api/users')
+        .then(res => res.json())
+        .then(data => {
+          setUsers(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }, []);
+
+    return (
+      <UserDashboard
+        users={users}
+        loading={loading}
+        error={error}
+      />
+    );
+  }
+  ```
+
+  ### Quiz: Identify Which Should Start as Zombies
+
+  Which of these components should start as zombies?
+
+  1. `ProductCard` - Displays product information
+  2. `ShoppingCart` - Manages cart state and calculations
+  3. `NavigationBar` - Shows navigation links
+  4. `PaymentForm` - Handles payment processing
+  5. `Button` - Renders a button with text
+
+  **Answer:** 1, 3, and 5 should start as zombies. 2 and 4 need brains from the start (but you can still start with a zombie structure and add brains).
+
+  ---
+
+  ## Rule 2: Horde Ratio
+
+  ### The Rule
+
+  - **Target**: ≥ 7:1 UI components : Brain components
+  - **Signal**: If ratio drops, ask why
+  - **Structure**: One brain boundary per feature
+
+  ### Analogy: Army Composition
+
+  An army needs more soldiers (zombies) than generals (brains). Too many generals and you have chaos. Too many soldiers without direction and nothing gets done. The ideal ratio ensures efficient organization.
+
+  - **Soldiers (Zombies)**: Do the work, follow orders
+  - **Generals (Brains)**: Make decisions, coordinate
+  - **Balance**: Most of your codebase should be zombies
+
+  ### Why 7:1?
+
+  This ratio ensures:
+  - Most components are simple and testable
+  - Logic is concentrated in fewer places
+  - Easier to find and modify business rules
+  - Better separation of concerns
+
+  ### Exercise: Calculate Ratio
+
+  Given this codebase structure, calculate the horde ratio:
+
+  ```
+  components/
+    Button.tsx          (zombie)
+    Card.tsx            (zombie)
+    Input.tsx           (zombie)
+    Modal.tsx           (zombie)
+    ProductCard.tsx     (zombie)
+    UserCard.tsx        (zombie)
+    OrderCard.tsx       (zombie)
+    CartItem.tsx        (zombie)
+    ProductList.tsx     (zombie)
+    UserList.tsx        (zombie)
+  
+  hooks/
+    useProducts.ts      (brain)
+    useUsers.ts         (brain)
+    useCart.ts          (brain)
+  
+  views/
+    ProductsView.tsx    (brain boundary)
+    UsersView.tsx       (brain boundary)
+    CartView.tsx        (brain boundary)
+  ```
+
+  **Calculation:**
+  - Zombies: 10 components
+  - Brains: 3 hooks + 3 views = 6 brains
+  - Ratio: 10:6 = 1.67:1 ❌ (Too low!)
+
+  **How to improve:**
+  - The views might be doing too much
+  - Some logic could be extracted to hooks
+  - Some components might have hidden brains
+
+  ### Thought Experiment: What Happens When Ratio Drops?
+
+  Imagine your horde ratio drops to 2:1. What problems might you encounter?
+
+  - **Too much logic**: Hard to find where business rules live
+  - **Tight coupling**: Components depend on each other's logic
+  - **Testing difficulty**: Hard to test components in isolation
+  - **Refactoring risk**: Changes affect multiple areas
+
+  **Solution**: Extract more zombies, consolidate brains.
+
+  ---
+
+  ## Rule 3: 3-Click Brain Rule
+
+  ### The Rule
+
+  - **Rule**: Must reach brain from view (or vice versa) in ≤ 3 jumps
+  - **Jumps**: Go to definition, find references, follow imports
+  - **Target**: 0-3 jumps = excellent, >3 = breach
+
+  ### Analogy: GPS Navigation
+
+  Like GPS navigation, you should be able to find your destination (the brain) quickly. If it takes more than 3 turns, you're lost.
+
+  - **Direct route**: View → Brain (1 click)
+  - **One stop**: View → Component → Brain (2 clicks)
+  - **Two stops**: View → Component → Hook → Brain (3 clicks)
+  - **Lost**: More than 3 clicks = too complex
+
+  ### Why 3 Clicks?
+
+  This rule ensures:
+  - Easy navigation through codebase
+  - Quick understanding of data flow
+  - Faster debugging
+  - Better developer experience
+
+  ### Exercise: Trace Navigation Paths
+
+  Trace the path from UI to brain in this structure:
+
+  ```
+  ProductsView.tsx
+    → imports ProductList
+    → ProductList.tsx
+      → imports ProductCard
+      → ProductCard.tsx
+        → receives props from ProductList
+    → ProductsView.tsx
+      → imports useProducts
+      → useProducts.ts (BRAIN)
+  ```
+
+  **Path:** ProductsView → ProductList → ProductCard → (back to ProductsView) → useProducts
+
+  **Clicks:** 4 clicks ❌ (Breach!)
+
+  **Better structure:**
+
+  ```
+  ProductsView.tsx
+    → imports useProducts (BRAIN - 1 click)
+    → imports ProductList
+    → ProductList.tsx
+      → imports ProductCard
+      → ProductCard.tsx (zombie)
+  ```
+
+  **Path:** ProductsView → useProducts (1 click) ✅
+
+  ### Simulation: Count Clicks to Find Logic
+
+  Given this component tree, count clicks to find the brain:
+
+  ```tsx
+  // App.tsx
+  <Dashboard>
+    <UserSection>
+      <UserProfile>
+        <UserAvatar />
+        <UserDetails />
+      </UserProfile>
+    </UserSection>
+  </Dashboard>
+  ```
+
+  **Question:** Where is the user data fetched?
+
+  **Path 1 (Good):**
+  - Click Dashboard → finds `useUserData()` (1 click) ✅
+
+  **Path 2 (Bad):**
+  - Click Dashboard → no logic
+  - Click UserSection → no logic
+  - Click UserProfile → no logic
+  - Click UserDetails → finds `useUserData()` (4 clicks) ❌
+
+  **Solution:** Move the brain to the boundary (Dashboard).
+
+  ## Creative Application Task
+
+  Design a new feature following all three rules:
+
+  **Feature:** A product review system
+
+  **Requirements:**
+  - Display product reviews
+  - Allow users to submit reviews
+  - Show review statistics
+  - Filter reviews by rating
+
+  **Your task:**
+  1. Start with zombies — what UI components do you need?
+  2. Plan the horde ratio — how many zombies vs brains?
+  3. Design navigation — ensure ≤3 clicks to reach brains
+
+  **Hint:** Start with pure presentation components, then add one brain boundary that orchestrates everything.
+
+  ## Key Takeaways
+
+  - **Start Undead**: Begin with pure UI components, add logic only when needed
+  - **Horde Ratio**: Maintain ≥7:1 zombies to brains for better organization
+  - **3-Click Rule**: Keep navigation paths short (≤3 clicks) for better developer experience
+
+  ## Next Steps
+
+  Continue to [Rules Part 2](/dsd/rules-part2) to learn about the Trial of Three Strains, avoiding prop drilling, and co-location principles.
+</DSDLayout>
+

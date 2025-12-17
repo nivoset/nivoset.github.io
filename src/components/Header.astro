@@ -3,8 +3,8 @@ import { LOGO_IMAGE, SITE } from "@config";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
-import logoPNG from "/assets/logo.png";
-import logoSVG from "/assets/logo.svg";
+const logoPNG = "/assets/logo.png";
+const logoSVG = "/assets/logo.svg";
 
 export interface Props {
   activeNav?: "posts" | "tags" | "about" | "search";
@@ -106,8 +106,9 @@ const { activeNav } = Astro.props;
 </header>
 
 <style>
+  @reference "tailwindcss";
   #skip-to-content {
-    @apply absolute -top-full left-16 z-50 bg-skin-accent py-2 px-3 text-skin-inverted transition-all focus:top-4;
+    @apply absolute -top-full left-16 z-50 bg-blue-600 dark:bg-orange-500 py-2 px-3 text-white dark:text-slate-900 transition-all focus:top-4;
   }
   .nav-container {
     @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
@@ -122,11 +123,11 @@ const { activeNav } = Astro.props;
     @apply self-end p-2 sm:hidden;
   }
   .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-skin-base;
+    @apply h-6 w-6 scale-125 fill-gray-900 dark:fill-gray-100;
   }
 
   nav {
-    @apply flex w-full flex-col items-center bg-skin-fill sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
+    @apply flex w-full flex-col items-center bg-white dark:bg-slate-900 sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul {
     @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-y-2 gap-x-2 sm:mt-0 sm:ml-0 sm:w-auto sm:gap-y-0 sm:gap-x-5;
@@ -135,7 +136,7 @@ const { activeNav } = Astro.props;
     @apply col-span-2 flex items-center justify-center;
   }
   nav ul li a {
-    @apply w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1;
+    @apply w-full px-4 py-3 text-center font-medium hover:text-blue-600 dark:hover:text-orange-500 sm:my-0 sm:px-2 sm:py-1;
   }
   nav ul li:nth-child(4) a {
     @apply w-auto;
@@ -148,14 +149,14 @@ const { activeNav } = Astro.props;
     @apply underline decoration-wavy decoration-2 underline-offset-4;
   }
   nav a.active svg {
-    @apply fill-skin-accent;
+    @apply fill-blue-600 dark:fill-orange-500;
   }
 
   nav button {
     @apply p-1;
   }
   nav button svg {
-    @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
+    @apply h-6 w-6 fill-gray-900 dark:fill-gray-100 hover:fill-blue-600 dark:hover:fill-orange-500;
   }
   #theme-btn {
     @apply p-3 sm:p-1;
@@ -168,7 +169,7 @@ const { activeNav } = Astro.props;
     @apply h-5 w-6 flex-col items-end justify-between;
   }
   .icon-container div {
-    @apply h-0.5 bg-skin-inverted transition-all;
+    @apply h-0.5 bg-white dark:bg-slate-900 transition-all;
   }
   #first-line {
     @apply w-full;

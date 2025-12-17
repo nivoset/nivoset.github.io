@@ -1,0 +1,97 @@
+---
+import Layout from "./Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import DSDNavigation from "@components/DSDNavigation.astro";
+import { SITE } from "@config";
+
+export interface Props {
+  title: string;
+  description?: string;
+  currentPath: string;
+}
+
+const { title, description, currentPath } = Astro.props;
+---
+
+<Layout title={`${title} | Dead Simple Discipline | ${SITE.title}`}>
+  <Header />
+  <div class="dsd-container">
+    <DSDNavigation currentPath={currentPath} />
+    <main class="dsd-main">
+      <article class="dsd-content prose prose-skin">
+        <h1>{title}</h1>
+        {description && <p class="dsd-description">{description}</p>}
+        <slot />
+      </article>
+    </main>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  @reference "tailwindcss";
+  .dsd-container {
+    @apply flex min-h-[calc(100vh-200px)] flex-col md:flex-row;
+  }
+
+  .dsd-main {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .dsd-content {
+    @apply mx-auto max-w-4xl px-6 py-8;
+  }
+
+  .dsd-content h1 {
+    @apply text-3xl font-bold mb-4 sm:text-4xl;
+  }
+
+  .dsd-description {
+    @apply text-lg italic text-gray-900/80 dark:text-gray-100/80 mb-8;
+  }
+
+  .dsd-content :global(.prose) {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+
+  .dsd-content :global(.prose h2) {
+    @apply text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-gray-100;
+  }
+
+  .dsd-content :global(.prose h3) {
+    @apply text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-gray-100;
+  }
+
+  .dsd-content :global(.prose code) {
+    @apply bg-gray-300 dark:bg-orange-900 px-1.5 py-0.5 rounded text-sm;
+  }
+
+  .dsd-content :global(.prose pre) {
+    @apply bg-gray-300 dark:bg-orange-900 border border-gray-200 dark:border-orange-700 rounded-lg p-4 overflow-x-auto;
+  }
+
+  .dsd-content :global(.prose blockquote) {
+    @apply border-l-4 border-blue-600 dark:border-orange-500 pl-4 italic my-4;
+  }
+
+  .dsd-content :global(.prose table) {
+    @apply border-collapse border border-gray-200 dark:border-orange-700;
+  }
+
+  .dsd-content :global(.prose th),
+  .dsd-content :global(.prose td) {
+    @apply border border-gray-200 dark:border-orange-700 px-4 py-2;
+  }
+
+  .dsd-content :global(.prose th) {
+    @apply bg-gray-300 dark:bg-orange-900 font-semibold;
+  }
+
+  @media (max-width: 768px) {
+    .dsd-container {
+      @apply flex-col;
+    }
+  }
+</style>
+

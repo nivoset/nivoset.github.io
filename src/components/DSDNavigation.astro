@@ -1,0 +1,84 @@
+---
+export interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navItems = [
+  { path: "/dsd", label: "Overview", order: 0 },
+  { path: "/dsd/foundation", label: "Foundation", order: 1 },
+  { path: "/dsd/rules-part1", label: "Rules Part 1", order: 2 },
+  { path: "/dsd/rules-part2", label: "Rules Part 2", order: 3 },
+  { path: "/dsd/rules-part3", label: "Rules Part 3", order: 4 },
+  { path: "/dsd/navigation", label: "Navigation", order: 5 },
+  { path: "/dsd/practice", label: "Practice", order: 6 },
+  { path: "/dsd/quick-reference", label: "Quick Reference", order: 7 },
+];
+---
+
+<nav class="dsd-nav" aria-label="Dead Simple Discipline navigation">
+  <div class="dsd-nav-header">
+    <a href="/dsd/foundation" class="dsd-nav-title">
+      Dead Simple Discipline
+    </a>
+  </div>
+  <ul class="dsd-nav-list">
+    {navItems.map((item) => {
+      const normalizedCurrent = currentPath.replace(/\/$/, '') || '/dsd';
+      const normalizedItem = item.path.replace(/\/$/, '') || '/dsd';
+      const isActive = normalizedCurrent === normalizedItem;
+      return (
+        <li>
+          <a
+            href={item.path}
+            class={`dsd-nav-link ${isActive ? "active" : ""}`}
+          >
+            {item.label}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</nav>
+
+<style>
+  @reference "tailwindcss";
+  .dsd-nav {
+    @apply flex flex-col border-r border-gray-200 dark:border-orange-700 bg-gray-200 dark:bg-slate-700;
+    min-width: 240px;
+  }
+
+  .dsd-nav-header {
+    @apply border-b border-gray-200 dark:border-orange-700 p-4;
+  }
+
+  .dsd-nav-title {
+    @apply text-lg font-bold text-blue-600 dark:text-orange-500 hover:text-blue-600/80 dark:hover:text-orange-500/80;
+  }
+
+  .dsd-nav-list {
+    @apply flex flex-col overflow-y-auto p-2;
+  }
+
+  .dsd-nav-list li {
+    @apply mb-1;
+  }
+
+  .dsd-nav-link {
+    @apply block rounded-md px-4 py-2 text-sm transition-colors;
+    @apply hover:bg-gray-300 dark:hover:bg-orange-900 hover:text-blue-600 dark:hover:text-orange-500;
+  }
+
+  .dsd-nav-link.active {
+    @apply bg-blue-600 dark:bg-orange-500 text-white dark:text-slate-900 font-semibold;
+  }
+
+  @media (max-width: 768px) {
+    .dsd-nav {
+      @apply border-r-0 border-b;
+      min-width: auto;
+    }
+  }
+</style>
+

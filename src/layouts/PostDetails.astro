@@ -49,11 +49,12 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.png`, Astro.url.origin)
 </Layout>
 
 <style>
+  @reference "tailwindcss";
   main {
     @apply mx-auto w-full max-w-3xl px-4 pb-12;
   }
   .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
+    @apply text-2xl font-semibold text-blue-600 dark:text-orange-500;
   }
   .tags-container {
     @apply my-8;

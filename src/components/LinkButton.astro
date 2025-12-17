@@ -23,7 +23,8 @@ const { href, className, ariaLabel, title, disabled = false } = Astro.props;
 </a>
 
 <style>
+  @reference "tailwindcss";
   a {
-    @apply hover:text-skin-accent;
+    @apply hover:text-blue-600 dark:hover:text-orange-500;
   }
 </style>

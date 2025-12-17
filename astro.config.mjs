@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
@@ -11,11 +11,6 @@ export default defineConfig({
   site: "https://nivoset.github.io",
   // base: '/my-repo',
   integrations: [
-    tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
-    }),
     react(),
     sitemap(),
     partytown({
@@ -24,6 +19,12 @@ export default defineConfig({
       },
     }),
   ],
+  vite: {
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"],
+    },
+  },
   markdown: {
     remarkPlugins: [
       remarkToc,
@@ -39,10 +40,5 @@ export default defineConfig({
       wrap: true,
     },
     extendDefaultPlugins: true,
-  },
-  vite: {
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
   },
 });

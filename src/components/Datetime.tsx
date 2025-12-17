@@ -11,7 +11,7 @@ export default function Datetime({ datetime, size = "sm", className }: Props) {
         xmlns="http://www.w3.org/2000/svg"
         className={`${
           size === "sm" ? "scale-90" : "scale-100"
-        } inline-block h-6 w-6 fill-skin-base`}
+        } inline-block h-6 w-6 fill-gray-900 dark:fill-gray-100`}
         aria-hidden="true"
       >
         <path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path>
