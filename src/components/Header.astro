@@ -7,13 +7,13 @@ const logoPNG = "/assets/logo.png";
 const logoSVG = "/assets/logo.svg";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search";
+  activeNav?: "posts" | "tags" | "about" | "search" | "projects" | "dsd";
 }
 
 const { activeNav } = Astro.props;
 ---
 
-<header>
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-white/40 dark:bg-slate-900/40 border-b border-gray-200/30 dark:border-slate-800/30 shadow-sm/30">
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
@@ -27,7 +27,7 @@ const { activeNav } = Astro.props;
               height={LOGO_IMAGE.height}
             />
           ) : (
-            SITE.title
+            <span class="logo-text">{SITE.title}</span>
           )
         }
       </a>
@@ -47,7 +47,12 @@ const { activeNav } = Astro.props;
         <ul id="menu-items" class="display-none sm:flex">
           <li>
             <a href="/posts" class={activeNav === "posts" ? "active" : ""}>
-              Posts
+              Blog
+            </a>
+          </li>
+          <li>
+            <a href="/dsd" class={activeNav === "dsd" ? "active" : ""}>
+              Projects
             </a>
           </li>
           <li>
@@ -102,83 +107,121 @@ const { activeNav } = Astro.props;
       </nav>
     </div>
   </div>
-  <Hr />
 </header>
 
 <style>
   @reference "tailwindcss";
   #skip-to-content {
-    @apply absolute -top-full left-16 z-50 bg-blue-600 dark:bg-orange-500 py-2 px-3 text-white dark:text-slate-900 transition-all focus:top-4;
+    @apply absolute -top-full left-4 z-50 bg-blue-500 dark:bg-blue-400 py-2 px-4 text-white dark:text-slate-900 
+    rounded-md font-medium transition-all focus:top-4 shadow-lg;
   }
+  
   .nav-container {
-    @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
+    @apply mx-auto flex max-w-5xl flex-col items-center justify-between sm:flex-row px-4 sm:px-6 lg:px-8;
   }
+  
   .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
+    @apply relative flex w-full items-center justify-between py-4 sm:py-5;
   }
+  
   .logo {
-    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
+    @apply flex items-center;
   }
+  
+  .logo-text {
+    @apply text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-300 
+    bg-clip-text text-transparent sm:text-2xl transition-all hover:scale-105;
+  }
+  
   .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
+    @apply p-2 sm:hidden rounded-md hover:bg-gray-100 dark:hover:bg-slate-800;
   }
+  
   .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-gray-900 dark:fill-gray-100;
+    @apply h-6 w-6 fill-gray-900 dark:fill-gray-100;
   }
 
   nav {
-    @apply flex w-full flex-col items-center bg-white dark:bg-slate-900 sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
+    @apply flex w-full flex-col items-center sm:ml-4 sm:flex-row sm:justify-end sm:space-x-1 sm:py-0;
   }
+  
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-y-2 gap-x-2 sm:mt-0 sm:ml-0 sm:w-auto sm:gap-y-0 sm:gap-x-5;
+    @apply mt-4 grid w-full grid-cols-2 gap-2 sm:mt-0 sm:flex sm:w-auto sm:items-center sm:gap-0;
   }
+  
   nav ul li {
-    @apply col-span-2 flex items-center justify-center;
+    @apply flex items-center justify-center;
   }
+  
   nav ul li a {
-    @apply w-full px-4 py-3 text-center font-medium hover:text-blue-600 dark:hover:text-orange-500 sm:my-0 sm:px-2 sm:py-1;
+    @apply w-full px-4 py-3 text-center font-medium text-gray-700 dark:text-gray-300 
+    rounded-md hover:bg-gray-100/50 dark:hover:bg-slate-800/30 hover:text-blue-600 dark:hover:text-blue-400 
+    sm:w-auto sm:px-3 sm:py-2 transition-all;
   }
-  nav ul li:nth-child(4) a {
+  
+  nav ul li:nth-child(5) a,
+  nav ul li:nth-child(6) a {
     @apply w-auto;
   }
-  nav ul li:nth-child(4),
-  nav ul li:nth-child(5) {
+  
+  nav ul li:nth-child(5),
+  nav ul li:nth-child(6) {
     @apply col-span-1;
   }
+  
   nav a.active {
-    @apply underline decoration-wavy decoration-2 underline-offset-4;
+    @apply bg-blue-50/50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 font-semibold;
   }
+  
   nav a.active svg {
-    @apply fill-blue-600 dark:fill-orange-500;
+    @apply fill-blue-600 dark:fill-blue-400;
   }
 
   nav button {
-    @apply p-1;
+    @apply p-2 rounded-md hover:bg-gray-100/50 dark:hover:bg-slate-800/30 transition-all;
   }
+  
   nav button svg {
-    @apply h-6 w-6 fill-gray-900 dark:fill-gray-100 hover:fill-blue-600 dark:hover:fill-orange-500;
+    @apply h-6 w-6 fill-gray-700 dark:fill-gray-300 hover:fill-blue-600 dark:hover:fill-blue-400;
   }
+  
   #theme-btn {
-    @apply p-3 sm:p-1;
+    @apply p-3 sm:p-2;
   }
+  
   #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
+    @apply scale-110 hover:rotate-12 sm:scale-100 transition-transform;
   }
 
   .icon-container {
     @apply h-5 w-6 flex-col items-end justify-between;
   }
+  
   .icon-container div {
-    @apply h-0.5 bg-white dark:bg-slate-900 transition-all;
+    @apply h-0.5 bg-gray-900 dark:bg-gray-100 transition-all rounded-full;
   }
+  
   #first-line {
     @apply w-full;
   }
+  
   #second-line {
     @apply w-3/4;
   }
+  
   #third-line {
     @apply w-1/2;
+  }
+  
+  /* Mobile menu open state */
+  nav ul.display-none {
+    @apply hidden;
+  }
+  
+  @media (max-width: 640px) {
+    nav ul:not(.display-none) {
+      @apply bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-4;
+    }
   }
 </style>
 

@@ -23,8 +23,8 @@ const next = pageNum < totalPages ? "" : "disabled";
 
 <Layout title={`Posts | ${SITE.title}`}>
   <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul>
+  <Main pageTitle="Blog Posts" pageDesc="All the articles I've posted.">
+    <ul class="card-grid">
       {
         posts.map(({ data }) => (
           <Card href={`/posts/${slugify(data)}`} frontmatter={data} />
@@ -66,12 +66,24 @@ const next = pageNum < totalPages ? "" : "disabled";
 
 <style>
   @reference "tailwindcss";
+  
+  .card-grid {
+    @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .card-grid li {
+    @apply m-0;
+  }
+  
   .pagination-wrapper {
-    @apply mt-auto mb-8 flex justify-center;
+    @apply mt-12 mb-8 flex justify-center gap-4;
   }
+  
   .disabled {
-    @apply pointer-events-none select-none opacity-50 hover:text-gray-900 dark:hover:text-gray-100 group-hover:fill-gray-900 dark:group-hover:fill-gray-100;
+    @apply pointer-events-none select-none opacity-50 hover:text-gray-900 dark:hover:text-gray-100 
+    group-hover:fill-gray-900 dark:group-hover:fill-gray-100;
   }
+  
   .disabled-svg {
     @apply group-hover:!fill-gray-900 dark:group-hover:!fill-gray-100;
   }

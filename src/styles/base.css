@@ -5,6 +5,13 @@
   --breakpoint-sm: 640px;
   
   --font-family-mono: "IBM Plex Mono", monospace;
+  --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Modern color palette */
+  --color-primary: 59 130 246; /* blue-500 */
+  --color-primary-dark: 37 99 235; /* blue-600 */
+  --color-accent: 59 130 246; /* blue-500 */
+  --color-accent-dark: 37 99 235; /* blue-600 */
 }
 
 @layer base {
@@ -16,62 +23,93 @@
   html[data-theme="dark"] #sun-svg {
     display: block;
   }
-  body {
-    @apply flex min-h-screen flex-col bg-white dark:bg-slate-900 font-mono text-gray-900 dark:text-gray-100 
-    selection:bg-blue-600/70 dark:selection:bg-orange-500/70 selection:text-white dark:selection:text-slate-900;
+  
+  * {
+    @apply transition-colors duration-200;
   }
+  
+  body {
+    @apply flex min-h-screen flex-col bg-gradient-to-br from-gray-50/80 via-white/60 to-gray-50/80 
+    dark:from-slate-950/90 dark:via-slate-900/80 dark:to-slate-950/90 
+    font-sans text-gray-900 dark:text-gray-100 
+    selection:bg-blue-500/20 dark:selection:bg-blue-500/20 selection:text-gray-900 dark:selection:text-gray-100
+    antialiased;
+  }
+  
   section,
   footer {
-    @apply mx-auto max-w-3xl px-4;
+    @apply mx-auto max-w-5xl px-4 sm:px-6 lg:px-8;
   }
+  
   a {
-    @apply outline-2 outline-offset-1 outline-blue-600 dark:outline-orange-500 
-    focus-visible:no-underline focus-visible:outline-dashed;
+    @apply focus-visible:no-underline rounded-sm;
+    transition: all 0.2s ease;
   }
+  
   svg {
-    @apply inline-block h-6 w-6 fill-gray-900 dark:fill-gray-100 group-hover:fill-blue-600 dark:group-hover:fill-orange-500;
+    @apply inline-block h-6 w-6 fill-gray-900 dark:fill-gray-100 
+    group-hover:fill-blue-500 dark:group-hover:fill-blue-400;
+    transition: fill 0.2s ease;
   }
+  
   svg.icon-tabler {
     @apply inline-block h-6 w-6 scale-125 fill-transparent 
     stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
     sm:scale-110;
   }
+  
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-gray-900 dark:prose-headings:!text-gray-100
-    prose-h3:italic prose-p:!text-gray-900 dark:prose-p:!text-gray-100
-    prose-a:!text-gray-900 dark:prose-a:!text-gray-100 prose-a:!decoration-dashed prose-a:underline-offset-8
-    hover:prose-a:text-blue-600 dark:hover:prose-a:text-orange-500 prose-blockquote:!border-l-blue-600/50 dark:prose-blockquote:!border-l-orange-500/50 prose-blockquote:opacity-80
-    prose-figcaption:!text-gray-900 dark:prose-figcaption:!text-gray-100 prose-figcaption:opacity-70
-    prose-strong:!text-gray-900 dark:prose-strong:!text-gray-100
-
-    
-    prose-code:rounded prose-code:bg-gray-200/75 dark:prose-code:bg-slate-700/75 prose-code:p-1 prose-code:!text-gray-900 dark:prose-code:!text-gray-100
+    @apply prose-headings:!mb-4 prose-headings:!mt-6 prose-headings:!text-gray-900 dark:prose-headings:!text-gray-100
+    prose-headings:font-semibold prose-headings:tracking-tight
+    prose-h1:!text-4xl prose-h1:!mb-6 prose-h1:!mt-0
+    prose-h2:!text-3xl prose-h2:!mb-4 prose-h2:!mt-8
+    prose-h3:!text-2xl prose-h3:italic prose-h3:!mb-3 prose-h3:!mt-6
+    prose-p:!text-gray-800 dark:prose-p:!text-gray-200 prose-p:!leading-relaxed prose-p:!mb-4
+    prose-a:!text-blue-600 dark:prose-a:!text-blue-400 prose-a:!decoration-2 prose-a:!decoration-dashed 
+    prose-a:underline-offset-4 prose-a:font-medium
+    hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 
+    prose-blockquote:!border-l-4 prose-blockquote:!border-blue-500/50 dark:prose-blockquote:!border-blue-500/50 
+    prose-blockquote:!pl-4 prose-blockquote:!italic prose-blockquote:opacity-90 prose-blockquote:!bg-gray-50 dark:prose-blockquote:!bg-slate-800/50 prose-blockquote:!py-2 prose-blockquote:!rounded-r
+    prose-figcaption:!text-gray-600 dark:prose-figcaption:!text-gray-400 prose-figcaption:opacity-80 prose-figcaption:text-sm
+    prose-strong:!text-gray-900 dark:prose-strong:!text-gray-100 prose-strong:font-semibold
+    prose-code:rounded-md prose-code:bg-gray-100 dark:prose-code:bg-slate-800 prose-code:p-1.5 prose-code:!text-sm 
+    prose-code:!text-gray-900 dark:prose-code:!text-gray-100 prose-code:font-mono prose-code:border prose-code:border-gray-200 dark:prose-code:border-slate-700
     prose-code:before:!content-[''] prose-code:after:!content-['']
-    prose-pre:!text-gray-900 dark:prose-pre:!text-gray-100 prose-ol:!text-gray-900 dark:prose-ol:!text-gray-100
-    prose-ul:overflow-x-clip prose-ul:!text-gray-900 dark:prose-ul:!text-gray-100 prose-li:marker:!text-blue-600 dark:prose-li:marker:!text-orange-500
-    prose-table:text-gray-900 dark:prose-table:text-gray-100 prose-th:border
-    prose-th:border-gray-200 dark:prose-th:border-orange-700 prose-td:border 
-    prose-td:border-gray-200 dark:prose-td:border-orange-700 prose-img:mx-auto 
-    prose-img:!mt-2 prose-img:border-2 
-    prose-img:border-gray-200 dark:prose-img:border-orange-700 prose-hr:!border-gray-200 dark:prose-hr:!border-orange-700;
+    prose-pre:!text-gray-100 dark:prose-pre:!text-gray-100 prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 
+    prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-slate-700 prose-pre:rounded-lg prose-pre:p-4
+    prose-ol:!text-gray-800 dark:prose-ol:!text-gray-200 prose-ol:space-y-2
+    prose-ul:overflow-x-clip prose-ul:!text-gray-800 dark:prose-ul:!text-gray-200 prose-ul:space-y-2
+    prose-li:marker:!text-blue-500 dark:prose-li:marker:!text-blue-400 prose-li:!leading-relaxed
+    prose-table:text-gray-800 dark:prose-table:text-gray-200 prose-th:border prose-th:border-gray-300 dark:prose-th:border-slate-700
+    prose-th:bg-gray-50 dark:prose-th:bg-slate-800 prose-th:font-semibold prose-th:p-3
+    prose-td:border prose-td:border-gray-200 dark:prose-td:border-slate-700 prose-td:p-3
+    prose-img:mx-auto prose-img:!mt-4 prose-img:!mb-4 prose-img:border-2 
+    prose-img:border-gray-200 dark:prose-img:border-slate-700 prose-img:rounded-lg prose-img:shadow-lg
+    prose-hr:!border-gray-300 dark:prose-hr:!border-slate-700 prose-hr:!my-8;
   }
+  
   .prose a {
-    @apply hover:!text-blue-600 dark:hover:!text-orange-500;
+    @apply hover:!text-blue-700 dark:hover:!text-blue-300;
   }
+  
   .prose thead th:first-child,
   tbody td:first-child,
   tfoot td:first-child {
-    padding-left: 0.5714286em;
+    padding-left: 0.75rem;
   }
+  
   .prose h2#table-of-contents {
-    @apply mb-2;
+    @apply mb-4;
   }
+  
   .prose details {
     @apply inline-block cursor-pointer select-none text-gray-900 dark:text-gray-100;
   }
+  
   .prose summary {
-    @apply outline-2 outline-offset-1 outline-blue-600 dark:outline-orange-500 focus-visible:no-underline focus-visible:outline-dashed;
+    @apply focus-visible:no-underline rounded-sm;
   }
+  
   .prose h2#table-of-contents + p {
     @apply hidden;
   }
@@ -79,26 +117,23 @@
   /* ===== scrollbar ===== */
   html {
     overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 
-  /* width */
   ::-webkit-scrollbar {
-    @apply w-3;
+    @apply w-2.5;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
-    @apply bg-white dark:bg-slate-900;
+    @apply bg-transparent;
   }
 
-  /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-200 dark:bg-slate-700;
+    @apply bg-gray-300 dark:bg-slate-700 rounded-full;
   }
 
-  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-300 dark:bg-orange-900;
+    @apply bg-gray-400 dark:bg-slate-600;
   }
 }
 
@@ -106,7 +141,28 @@
   .display-none {
     @apply hidden;
   }
+  
   .focus-outline {
-    @apply outline-2 outline-offset-1 outline-blue-600 dark:outline-orange-500 focus-visible:no-underline focus-visible:outline-dashed;
+    @apply focus-visible:no-underline rounded-sm;
+  }
+  
+  /* Card styles */
+  .content-card {
+    @apply bg-white/60 dark:bg-slate-800/30 rounded-xl border border-gray-200/50 dark:border-slate-700/30 
+    p-6 shadow-sm/50 hover:shadow-md/50 transition-all duration-300 
+    hover:border-gray-300/50 dark:hover:border-slate-600/40 backdrop-blur-sm;
+  }
+  
+  .content-card:hover {
+    @apply -translate-y-1;
+  }
+  
+  /* Section headers */
+  .section-header {
+    @apply text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-2;
+  }
+  
+  .section-subheader {
+    @apply text-lg text-gray-600 dark:text-gray-400 mb-8;
   }
 }

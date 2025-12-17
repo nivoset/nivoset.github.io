@@ -22,73 +22,89 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <Layout>
   <Header />
   <main id="main-content">
-    <section id="hero">
-      <h1>Marginal Notes</h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="rss-link"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon"
-          ><path
-            d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
-          ></path><path
-            d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
-          ></path><circle cx="6" cy="18" r="2"></circle>
-        </svg>
-      </a>
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">Marginal Notes</h1>
+        <div class="hero-subtitle-wrapper">
+          <a
+            target="_blank"
+            href="/rss.xml"
+            class="rss-link"
+            aria-label="rss feed"
+            title="RSS Feed"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon">
+              <path
+                d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
+              ></path>
+              <path
+                d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
+              ></path>
+              <circle cx="6" cy="18" r="2"></circle>
+            </svg>
+          </a>
+        </div>
 
-      <p>
-        So the name sounds odd I think, however some history. Back in elementry
-        school I used to draw comics in the margin of my homework. Then later I
-        made some funny short videos and it was Marginal Productions. Now I use
-        the name as a catchall for personal projects.
-      </p><p>
-        Though a fun sidenote is I got mail one for a video I made, where it cut
-        off the name as `Marginal Pro` which I was honestly loved.
-      </p>
-      {
-        // only display if at least one social link is enabled
-        socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
+        <div class="hero-description">
+          <p>
+            So the name sounds odd I think, however some history. Back in elementary
+            school I used to draw comics in the margin of my homework. Then later I
+            made some funny short videos and it was Marginal Productions. Now I use
+            the name as a catchall for personal projects.
+          </p>
+          <p>
+            Though a fun sidenote is I got mail one for a video I made, where it cut
+            off the name as `Marginal Pro` which I honestly loved.
+          </p>
+        </div>
+        
+        {
+          // only display if at least one social link is enabled
+          socialCount > 0 && (
+            <div class="social-wrapper">
+              <div class="social-links">Connect:</div>
+              <Socials />
+            </div>
+          )
+        }
+      </div>
     </section>
-
-    <Hr />
 
     {
       featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
-            <h2>Featured</h2>
-            <ul>
-              {featuredPosts.map(({ data }) => (
-                <Card
-                  href={`/posts/${slugify(data)}`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              ))}
-            </ul>
-          </section>
-          <Hr />
-        </>
+        <section id="featured" class="content-section">
+          <h2 class="section-header">Featured Posts</h2>
+          <p class="section-subheader">Handpicked articles worth checking out</p>
+          <ul class="card-grid">
+            {featuredPosts.map(({ data }) => (
+              <Card
+                href={`/posts/${slugify(data)}`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            ))}
+          </ul>
+        </section>
       )
     }
 
-    <section id="recent-posts">
-      <h2>Recent Posts</h2>
-      <ul>
+    <section id="recent-posts" class="content-section">
+      <div class="section-header-wrapper">
+        <h2 class="section-header">Recent Posts</h2>
+        <LinkButton href="/posts" class="view-all-link">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+            <path
+              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+            ></path>
+          </svg>
+        </LinkButton>
+      </div>
+      <ul class="card-grid">
         {
           sortedPosts.map(
             ({ data }, index) =>
-              index < 4 && (
+              index < 6 && (
                 <Card
                   href={`/posts/${slugify(data)}`}
                   frontmatter={data}
@@ -98,16 +114,6 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           )
         }
       </ul>
-      <div class="all-posts-btn-wrapper">
-        <LinkButton href="/posts">
-          All Posts
-          <svg xmlns="http://www.w3.org/2000/svg"
-            ><path
-              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-            ></path>
-          </svg>
-        </LinkButton>
-      </div>
     </section>
   </main>
 
@@ -116,39 +122,80 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
 <style>
   /* ===== Hero Section ===== */
-  #hero {
-    @reference "tailwindcss";
-    @apply pt-8 pb-6;
+  .hero-section {
+    @apply pt-12 pb-16 sm:pt-16 sm:pb-20;
   }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+  
+  .hero-content {
+    @apply max-w-3xl;
   }
-  #hero .rss-link {
+  
+  .hero-title {
+    @apply text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 
+    mb-6 sm:text-5xl md:text-6xl bg-gradient-to-r from-blue-600 to-blue-500 
+    dark:from-orange-500 dark:to-orange-400 bg-clip-text text-transparent;
+  }
+  
+  .hero-subtitle-wrapper {
     @apply mb-6;
   }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-blue-600 dark:fill-orange-500 sm:mb-3 sm:scale-125;
+  
+  .rss-link {
+    @apply inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 
+    hover:text-blue-600 dark:hover:text-orange-500 transition-colors;
   }
-  #hero p {
-    @apply my-2;
+  
+  .rss-icon {
+    @apply h-5 w-5 fill-current;
   }
+  
+  .hero-description {
+    @apply space-y-4 mb-8;
+  }
+  
+  .hero-description p {
+    @apply text-lg text-gray-700 dark:text-gray-300 leading-relaxed;
+  }
+  
   .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center pt-4 border-t border-gray-200 dark:border-slate-800;
   }
+  
   .social-links {
-    @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
+    @apply text-sm font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap;
   }
 
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply pt-12 pb-6;
+  /* ===== Content Sections ===== */
+  .content-section {
+    @apply pt-16 pb-12 sm:pt-20;
   }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
+  
+  .section-header-wrapper {
+    @apply flex items-center justify-between mb-6;
   }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
+  
+  .section-header {
+    @apply text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-2;
+  }
+  
+  .section-subheader {
+    @apply text-lg text-gray-600 dark:text-gray-400 mb-8;
+  }
+  
+  .view-all-link {
+    @apply text-sm font-medium text-blue-600 dark:text-orange-500 
+    hover:underline flex items-center gap-1;
+  }
+  
+  .arrow-icon {
+    @apply h-4 w-4 fill-current;
+  }
+  
+  .card-grid {
+    @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .card-grid li {
+    @apply m-0;
   }
 </style>

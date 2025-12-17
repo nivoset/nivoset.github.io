@@ -11,19 +11,29 @@ const { pageTitle, pageDesc } = Astro.props;
 
 <Breadcrumbs />
 <main id="main-content">
-  <h1>{pageTitle}</h1>
-  <p>{pageDesc}</p>
+  <div class="page-header">
+    <h1 class="page-title">{pageTitle}</h1>
+    {pageDesc && <p class="page-description">{pageDesc}</p>}
+  </div>
   <slot />
 </main>
 
 <style>
+  @reference "tailwindcss";
+  
   #main-content {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply mx-auto w-full max-w-5xl px-4 pb-16 pt-8 sm:px-6 sm:pt-12 lg:px-8;
   }
-  #main-content h1 {
-    @apply text-2xl font-semibold sm:text-3xl;
+  
+  .page-header {
+    @apply mb-12 pb-8 border-b border-gray-200/30 dark:border-slate-800/30;
   }
-  #main-content p {
-    @apply mt-2 mb-6 italic;
+  
+  .page-title {
+    @apply text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:text-5xl;
+  }
+  
+  .page-description {
+    @apply text-lg text-gray-600 dark:text-gray-400 leading-relaxed;
   }
 </style>
