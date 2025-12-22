@@ -1,0 +1,74 @@
+---
+interface Props {
+	story?: string;
+	icon?: string;
+	moodColor?: string;
+}
+
+const { story = '', icon = '🌩️', moodColor = '#D7423C' } = Astro.props;
+---
+
+<div 
+	class="card"
+	style={`border-color: ${moodColor};`}
+	role="region"
+	aria-live="polite"
+	aria-atomic="true"
+>
+	<div class="flex items-center gap-4 mb-4">
+		<span class="text-4xl" role="img" aria-label="Story icon">
+			{icon}
+		</span>
+		<h2 class="text-2xl font-heading font-bold" style={`color: ${moodColor};`}>
+			Corporate Weather Report
+		</h2>
+	</div>
+	<p 
+		id="story-text"
+		class="text-lg text-warmlight-sand/90 font-mono"
+	>
+		{story || 'Click "Regenerate" to generate a new corporate weather story.'}
+	</p>
+</div>
+
+<script>
+	const regenerateButton = document.getElementById('regenerate-button');
+	const storyText = document.getElementById('story-text');
+	const storyPanel = document.currentScript?.previousElementSibling as HTMLElement;
+	
+	if (regenerateButton && storyText && storyPanel) {
+		regenerateButton.addEventListener('click', async () => {
+			try {
+				const response = await fetch('/api/storm.json');
+				const data = await response.json();
+				
+				storyText.textContent = data.story;
+				
+				// Update icon
+				const iconEl = storyPanel.querySelector('[role="img"]');
+				if (iconEl) {
+					iconEl.textContent = data.icon;
+				}
+				
+				// Update border color
+				storyPanel.style.borderColor = data.moodColor;
+				
+				// Update heading color
+				const heading = storyPanel.querySelector('h2');
+				if (heading) {
+					heading.style.color = data.moodColor;
+				}
+				
+				// Announce to screen readers
+				const ariaLive = document.getElementById('aria-live');
+				if (ariaLive) {
+					ariaLive.textContent = `New story generated: ${data.story}`;
+				}
+			} catch (error) {
+				console.error('Failed to generate story:', error);
+				storyText.textContent = 'Failed to generate story. Please try again.';
+			}
+		});
+	}
+</script>
+

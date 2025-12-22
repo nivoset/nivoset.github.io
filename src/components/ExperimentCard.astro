@@ -1,0 +1,58 @@
+---
+interface Experiment {
+	title: string;
+	description: string;
+	tech: string[];
+	links?: {
+		github?: string;
+		demo?: string;
+	};
+}
+
+interface Props {
+	experiment: Experiment;
+}
+
+const { experiment } = Astro.props;
+---
+
+<div class="card border-2 border-technocrat-purple/30 hover:border-technocrat-purple transition-all">
+	<h3 class="text-xl font-heading font-semibold text-technocrat-purple mb-2">
+		{experiment.title}
+	</h3>
+	<p class="text-warmlight-sand/80 mb-4">
+		{experiment.description}
+	</p>
+	<div class="flex flex-wrap gap-2 mb-4">
+		{experiment.tech.map((tech) => (
+			<span class="px-2 py-1 bg-storm-slate text-technocrat-purple text-xs font-mono rounded">
+				{tech}
+			</span>
+		))}
+	</div>
+	{experiment.links && (
+		<div class="flex gap-4">
+			{experiment.links.github && (
+				<a 
+					href={experiment.links.github} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="text-fog-blue hover:text-technocrat-purple transition-colors text-sm"
+				>
+					GitHub →
+				</a>
+			)}
+			{experiment.links.demo && (
+				<a 
+					href={experiment.links.demo} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="text-fog-blue hover:text-technocrat-purple transition-colors text-sm"
+				>
+					Demo →
+				</a>
+			)}
+		</div>
+	)}
+</div>
+

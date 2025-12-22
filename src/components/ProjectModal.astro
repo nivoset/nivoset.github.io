@@ -1,0 +1,176 @@
+---
+import type { Project } from '../lib/projects';
+
+interface Props {
+	project: Project | null;
+}
+
+const { project } = Astro.props;
+---
+
+{project && (
+	<div 
+		id="project-modal"
+		class="fixed inset-0 bg-graphite-black/80 flex items-center justify-center z-50 p-4 opacity-0 pointer-events-none transition-opacity"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="modal-title"
+		aria-hidden="true"
+	>
+		<div class="bg-federal-gray rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-union-red shadow-xl">
+			<div class="sticky top-0 bg-federal-gray border-b border-ominous-teal/30 p-4 flex justify-between items-center">
+				<h2 id="modal-title" class="text-2xl font-heading font-bold text-worker-gold">
+					{project.title}
+				</h2>
+				<button
+					id="close-modal"
+					class="text-warmlight-sand hover:text-union-red transition-colors focus:outline-none focus:ring-2 focus:ring-worker-gold rounded p-2"
+					aria-label="Close modal"
+				>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+			</div>
+			
+			<div class="p-6 space-y-6">
+				<p class="text-lg text-warmlight-sand/90">
+					{project.description}
+				</p>
+				
+				{project.details && (
+					<div>
+						<h3 class="text-lg font-heading font-semibold text-worker-gold mb-2">
+							Details
+						</h3>
+						<p class="text-warmlight-sand/80">
+							{project.details}
+						</p>
+					</div>
+				)}
+				
+				{project.architecture && (
+					<div>
+						<h3 class="text-lg font-heading font-semibold text-worker-gold mb-2">
+							Architecture
+						</h3>
+						<p class="text-warmlight-sand/80">
+							{project.architecture}
+						</p>
+					</div>
+				)}
+				
+				<div>
+					<h3 class="text-lg font-heading font-semibold text-worker-gold mb-2">
+						Stack
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						{project.stack.map((tech) => (
+							<span class="px-3 py-1 bg-storm-slate text-technocrat-purple text-sm font-mono rounded">
+								{tech}
+							</span>
+						))}
+					</div>
+				</div>
+				
+				{project.links && (
+					<div>
+						<h3 class="text-lg font-heading font-semibold text-worker-gold mb-2">
+							Links
+						</h3>
+						<div class="flex flex-wrap gap-4">
+							{project.links.github && (
+								<a 
+									href={project.links.github} 
+									target="_blank" 
+									rel="noopener noreferrer"
+									class="text-fog-blue hover:text-worker-gold transition-colors"
+								>
+									GitHub →
+								</a>
+							)}
+							{project.links.demo && (
+								<a 
+									href={project.links.demo} 
+									target="_blank" 
+									rel="noopener noreferrer"
+									class="text-fog-blue hover:text-worker-gold transition-colors"
+								>
+									Demo →
+								</a>
+							)}
+							{project.links.docs && (
+								<a 
+									href={project.links.docs} 
+									target="_blank" 
+									rel="noopener noreferrer"
+									class="text-fog-blue hover:text-worker-gold transition-colors"
+								>
+									Docs →
+								</a>
+							)}
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	</div>
+)}
+
+<script>
+	const modal = document.getElementById('project-modal');
+	const closeButton = document.getElementById('close-modal');
+	
+	if (modal && closeButton) {
+		const openModal = () => {
+			modal.classList.remove('opacity-0', 'pointer-events-none');
+			modal.setAttribute('aria-hidden', 'false');
+			closeButton.focus();
+			
+			// Focus trap
+			const focusableElements = modal.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			const firstElement = focusableElements[0] as HTMLElement;
+			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+			
+			const trapFocus = (e: KeyboardEvent) => {
+				if (e.key === 'Tab') {
+					if (e.shiftKey) {
+						if (document.activeElement === firstElement) {
+							e.preventDefault();
+							lastElement.focus();
+						}
+					} else {
+						if (document.activeElement === lastElement) {
+							e.preventDefault();
+							firstElement.focus();
+						}
+					}
+				}
+				if (e.key === 'Escape') {
+					closeModal();
+				}
+			};
+			
+			modal.addEventListener('keydown', trapFocus);
+		};
+		
+		const closeModal = () => {
+			modal.classList.add('opacity-0', 'pointer-events-none');
+			modal.setAttribute('aria-hidden', 'true');
+		};
+		
+		closeButton.addEventListener('click', closeModal);
+		modal.addEventListener('click', (e) => {
+			if (e.target === modal) {
+				closeModal();
+			}
+		});
+		
+		window.addEventListener('open-project-modal', ((e: CustomEvent) => {
+			openModal();
+		}) as EventListener);
+	}
+</script>
+

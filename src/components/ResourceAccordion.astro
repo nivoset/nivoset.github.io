@@ -1,0 +1,85 @@
+---
+interface AccordionSection {
+	id: string;
+	title: string;
+	content: string;
+}
+
+const sections: AccordionSection[] = [
+	{
+		id: 'rights',
+		title: 'Know Your Rights',
+		content: 'Understanding your rights as a worker is the foundation of organizing. This includes rights to organize, discuss working conditions, and engage in protected concerted activity.',
+	},
+	{
+		id: 'solidarity',
+		title: 'Building Solidarity',
+		content: 'Solidarity means supporting each other, standing together, and recognizing that we are stronger when we act collectively. This includes mutual aid, information sharing, and collective action.',
+	},
+	{
+		id: 'support',
+		title: 'Emotional Support',
+		content: 'Organizing can be challenging and emotionally draining. It\'s important to take care of yourself and support your coworkers. Remember: you are not alone in this work.',
+	},
+];
+---
+
+<div class="space-y-4">
+	{sections.map((section) => (
+		<div class="card">
+			<button
+				class="w-full flex items-center justify-between text-left"
+				aria-expanded="false"
+				aria-controls={`accordion-content-${section.id}`}
+				id={`accordion-button-${section.id}`}
+			>
+				<h3 class="text-lg font-heading font-semibold text-union-red">
+					{section.title}
+				</h3>
+				<svg 
+					class="w-5 h-5 text-warmlight-sand transition-transform"
+					fill="none" 
+					stroke="currentColor" 
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+				</svg>
+			</button>
+			<div
+				id={`accordion-content-${section.id}`}
+				class="hidden mt-4 text-warmlight-sand/80"
+				role="region"
+				aria-labelledby={`accordion-button-${section.id}`}
+			>
+				<p>{section.content}</p>
+			</div>
+		</div>
+	))}
+</div>
+
+<script>
+	const accordionButtons = document.querySelectorAll('[aria-expanded]');
+	
+	accordionButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const isExpanded = button.getAttribute('aria-expanded') === 'true';
+			const contentId = button.getAttribute('aria-controls');
+			const content = document.getElementById(contentId || '');
+			const icon = button.querySelector('svg');
+			
+			if (content) {
+				if (isExpanded) {
+					button.setAttribute('aria-expanded', 'false');
+					content.classList.add('hidden');
+					if (icon) icon.classList.remove('rotate-180');
+				} else {
+					button.setAttribute('aria-expanded', 'true');
+					content.classList.remove('hidden');
+					if (icon) icon.classList.add('rotate-180');
+				}
+			}
+		});
+	});
+</script>
+

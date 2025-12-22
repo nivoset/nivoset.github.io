@@ -1,0 +1,53 @@
+---
+import type { Project } from '../lib/projects';
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<div 
+	class="card cursor-pointer hover:border-union-red border-2 border-transparent transition-all"
+	data-project-id={project.id}
+	role="button"
+	tabindex="0"
+	aria-label={`View details for ${project.title}`}
+>
+	<h3 class="text-xl font-heading font-semibold text-worker-gold mb-2">
+		{project.title}
+	</h3>
+	<p class="text-warmlight-sand/80 mb-4">
+		{project.description}
+	</p>
+	<div class="flex flex-wrap gap-2">
+		{project.tags.map((tag) => (
+			<span class="px-2 py-1 bg-federal-gray text-fog-blue text-xs font-mono rounded">
+				{tag}
+			</span>
+		))}
+	</div>
+</div>
+
+<script>
+	const card = document.currentScript?.previousElementSibling as HTMLElement;
+	if (card) {
+		const projectId = card.getAttribute('data-project-id');
+		
+		const handleClick = () => {
+			window.dispatchEvent(new CustomEvent('open-project-modal', { 
+				detail: { projectId } 
+			}));
+		};
+		
+		card.addEventListener('click', handleClick);
+		card.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				handleClick();
+			}
+		});
+	}
+</script>
+

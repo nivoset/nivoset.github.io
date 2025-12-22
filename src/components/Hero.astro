@@ -1,34 +1,45 @@
 ---
-interface Props {
-	title: string;
-	subtitle?: string;
-	ctaText?: string;
-	ctaLink?: string;
-}
-
-const { title, subtitle, ctaText, ctaLink } = Astro.props;
+import MindMap from './MindMap.astro';
 ---
 
-<section class="bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-900 py-20 md:py-32 relative overflow-hidden">
-	<div class="absolute inset-0 opacity-10">
-		<div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);"></div>
-	</div>
-	<div class="container mx-auto px-4 text-center relative z-10">
-		<h1 class="text-4xl md:text-6xl font-bold text-yellow-400 mb-6 drop-shadow-lg">
-			{title}
-		</h1>
-		{subtitle && (
-			<p class="text-xl md:text-2xl text-amber-50 mb-8 max-w-3xl mx-auto drop-shadow-md">
-				{subtitle}
-			</p>
-		)}
-		{ctaText && ctaLink && (
-			<a 
-				href={ctaLink}
-				class="inline-block bg-yellow-500 hover:bg-yellow-400 text-emerald-900 font-bold px-8 py-3 rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-			>
-				{ctaText}
-			</a>
-		)}
+<section class="container mx-auto px-4 py-16 md:py-24">
+	<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+		<!-- Left side: Name, roles, bio, CTAs -->
+		<div class="space-y-6">
+			<h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-warmlight-sand">
+				nivoset
+			</h1>
+			
+			<div class="space-y-2">
+				<p class="text-xl md:text-2xl text-fog-blue font-medium">
+					Developer • Tool Builder • Union Organizer
+				</p>
+				<p class="text-lg text-warmlight-sand/80">
+					Building tools, experimenting with AI, organizing for worker power, and creating training materials.
+				</p>
+			</div>
+			
+			<div class="flex flex-wrap gap-4 pt-4">
+				<a 
+					href="/systems" 
+					class="btn btn-primary"
+					aria-label="View my work"
+				>
+					View My Work
+				</a>
+				<a 
+					href="/organizing" 
+					class="btn btn-secondary"
+					aria-label="What I'm organizing"
+				>
+					What I'm Organizing
+				</a>
+			</div>
+		</div>
+		
+		<!-- Right side: Mind Map -->
+		<div class="flex justify-center items-center">
+			<MindMap />
+		</div>
 	</div>
 </section>

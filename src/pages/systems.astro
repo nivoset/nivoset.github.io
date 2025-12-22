@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+import ProjectFilter from '../components/ProjectFilter.astro';
+import PipelineMap from '../components/PipelineMap.astro';
+import { projects } from '../lib/projects';
+---
+
+<BaseLayout 
+	title="Systems & Tools" 
+	description="Showcase of developer tooling projects including Testique, Tendryl, TinyTask, and MCP server experiments."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Systems & Tools
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-8 max-w-3xl">
+			Developer tooling projects focused on improving workflows, testing, and development experience.
+		</p>
+		
+		<PipelineMap />
+		<ProjectFilter />
+		
+		<div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="region" aria-label="Projects">
+			{projects.map((project) => (
+				<div data-project-tags={project.tags.join(' ')}>
+					<ProjectCard project={project} />
+				</div>
+			))}
+		</div>
+		
+		<ProjectModal project={null} />
+	</div>
+</BaseLayout>
+
+<script>
+	import { getProjectById } from '../lib/projects';
+	
+	// Handle project modal opening
+	window.addEventListener('open-project-modal', ((e: CustomEvent) => {
+		const projectId = e.detail.projectId;
+		const project = getProjectById(projectId);
+		
+		if (project) {
+			// Update modal with project data
+			const modal = document.getElementById('project-modal');
+			if (modal) {
+				// Show modal
+				modal.classList.remove('opacity-0', 'pointer-events-none');
+				modal.setAttribute('aria-hidden', 'false');
+				
+				// Update content (this would ideally be done with a framework, but for static we'll use DOM manipulation)
+				const titleEl = modal.querySelector('#modal-title');
+				if (titleEl) titleEl.textContent = project.title;
+				
+				// Focus close button
+				const closeBtn = modal.querySelector('#close-modal') as HTMLElement;
+				if (closeBtn) closeBtn.focus();
+			}
+		}
+	}) as EventListener);
+</script>
+

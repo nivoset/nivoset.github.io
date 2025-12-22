@@ -1,0 +1,65 @@
+---
+---
+
+<div 
+	id="konami-overlay"
+	class="fixed inset-0 bg-graphite-black/95 flex items-center justify-center z-[100] p-4 hidden"
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="konami-title"
+	aria-hidden="true"
+>
+	<div class="bg-federal-gray rounded-lg max-w-2xl w-full p-8 border-4 border-union-red shadow-2xl text-center">
+		<h2 id="konami-title" class="text-4xl font-heading font-bold text-union-red mb-6">
+			Solidarity Forever
+		</h2>
+		<p class="text-xl text-warmlight-sand/90 mb-8">
+			In union there is strength. Together, we are powerful. Collective action is the path to justice and dignity in the workplace.
+		</p>
+		<p class="text-lg text-worker-gold mb-8 font-mono">
+			"An injury to one is an injury to all."
+		</p>
+		<button
+			id="close-konami"
+			class="btn btn-primary"
+			aria-label="Close solidarity message"
+		>
+			Close
+		</button>
+	</div>
+</div>
+
+<script>
+	const overlay = document.getElementById('konami-overlay');
+	const closeButton = document.getElementById('close-konami');
+	
+	if (overlay && closeButton) {
+		const showOverlay = () => {
+			overlay.classList.remove('hidden');
+			overlay.setAttribute('aria-hidden', 'false');
+			closeButton.focus();
+		};
+		
+		const hideOverlay = () => {
+			overlay.classList.add('hidden');
+			overlay.setAttribute('aria-hidden', 'true');
+		};
+		
+		window.addEventListener('konami-code-activated', showOverlay);
+		
+		closeButton.addEventListener('click', hideOverlay);
+		
+		overlay.addEventListener('click', (e) => {
+			if (e.target === overlay) {
+				hideOverlay();
+			}
+		});
+		
+		overlay.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				hideOverlay();
+			}
+		});
+	}
+</script>
+

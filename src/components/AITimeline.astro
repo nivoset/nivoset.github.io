@@ -1,0 +1,71 @@
+---
+interface TimelineItem {
+	date: string;
+	title: string;
+	description: string;
+	tech: string[];
+}
+
+const timelineItems: TimelineItem[] = [
+	{
+		date: '2024',
+		title: 'Ollama Integration',
+		description: 'Local LLM integration using Ollama for private AI workflows.',
+		tech: ['Ollama', 'TypeScript', 'Node.js'],
+	},
+	{
+		date: '2024',
+		title: 'Embeddings Experiments',
+		description: 'Vector embeddings for semantic search and retrieval-augmented generation.',
+		tech: ['OpenAI', 'Pinecone', 'Python'],
+	},
+	{
+		date: '2024',
+		title: 'LangGraph Workflows',
+		description: 'Complex AI workflows using LangGraph for stateful agent systems.',
+		tech: ['LangGraph', 'Python', 'LangChain'],
+	},
+	{
+		date: '2024',
+		title: 'Cost Model Research',
+		description: 'Analysis and optimization of LLM API costs across different providers.',
+		tech: ['TypeScript', 'Analytics'],
+	},
+];
+---
+
+<div class="relative">
+	<!-- Timeline line -->
+	<div class="absolute left-8 top-0 bottom-0 w-0.5 bg-ominous-teal/30"></div>
+	
+	<div class="space-y-8">
+		{timelineItems.map((item, index) => (
+			<div class="relative pl-20">
+				<!-- Timeline dot -->
+				<div class="absolute left-6 w-4 h-4 bg-technocrat-purple rounded-full border-2 border-storm-slate"></div>
+				
+				<div class="card">
+					<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+						<h3 class="text-xl font-heading font-semibold text-technocrat-purple">
+							{item.title}
+						</h3>
+						<span class="text-sm text-fog-blue font-mono">
+							{item.date}
+						</span>
+					</div>
+					<p class="text-warmlight-sand/80 mb-3">
+						{item.description}
+					</p>
+					<div class="flex flex-wrap gap-2">
+						{item.tech.map((tech) => (
+							<span class="px-2 py-1 bg-storm-slate text-technocrat-purple text-xs font-mono rounded">
+								{tech}
+							</span>
+						))}
+					</div>
+				</div>
+			</div>
+		))}
+	</div>
+</div>
+

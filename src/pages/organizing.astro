@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResourceAccordion from '../components/ResourceAccordion.astro';
+import ProjectHighlights from '../components/ProjectHighlights.astro';
+---
+
+<BaseLayout 
+	title="Organizing & Worker Power" 
+	description="Information about union organizing, worker rights, solidarity, and collective action. Supporting coworkers and building worker power."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Organizing & Worker Power
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-12 max-w-3xl">
+			Supporting coworkers, building solidarity, and organizing for better working conditions and worker rights.
+		</p>
+		
+		<div class="space-y-16">
+			<!-- What I Do -->
+			<section>
+				<h2 class="text-2xl font-heading font-semibold text-union-red mb-6">
+					What I Do
+				</h2>
+				<div class="prose prose-invert max-w-3xl space-y-4 text-lg text-warmlight-sand/90">
+					<p>
+						I support coworkers in understanding their <span class="tooltip" data-tooltip="Workers have the right to organize, discuss working conditions, and engage in protected concerted activity under the NLRA.">rights</span> as workers, 
+						organizing for better working conditions, and building collective power through solidarity and mutual <span class="tooltip" data-tooltip="Supporting each other, sharing information, and standing together.">support</span>.
+					</p>
+					<p>
+						This work includes helping coworkers understand their legal protections, facilitating conversations about workplace issues, 
+						and supporting organizing efforts. I focus on education, empowerment, and building the relationships that make collective action possible.
+					</p>
+					<p class="text-sm text-warmlight-sand/60 italic">
+						Note: This is not legal advice. For legal questions, please consult with a qualified labor attorney or your union representative.
+					</p>
+				</div>
+			</section>
+			
+			<!-- Resource Hub -->
+			<section>
+				<h2 class="text-2xl font-heading font-semibold text-union-red mb-6">
+					Resource Hub
+				</h2>
+				<ResourceAccordion />
+			</section>
+			
+			<!-- Project Highlights -->
+			<section>
+				<h2 class="text-2xl font-heading font-semibold text-union-red mb-6">
+					Project Highlights
+				</h2>
+				<ProjectHighlights />
+			</section>
+		</div>
+	</div>
+</BaseLayout>
+

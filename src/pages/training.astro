@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TrainingCard from '../components/TrainingCard.astro';
+import TrainingFilter from '../components/TrainingFilter.astro';
+
+const trainings = [
+	{
+		id: 'angular-react',
+		title: 'Angular → React Migration',
+		description: 'Workshop on migrating from Angular to React, covering component patterns, state management, and common pitfalls.',
+		type: 'Live' as const,
+		links: {
+			slides: '#',
+			video: '#',
+		},
+	},
+	{
+		id: 'css-mastery',
+		title: 'CSS Mastery',
+		description: 'Deep dive into modern CSS features, layout techniques, and best practices for maintainable stylesheets.',
+		type: 'Async' as const,
+		links: {
+			slides: '#',
+			repo: '#',
+		},
+	},
+	{
+		id: 'rust-tdd',
+		title: 'Rust TDD Workshop',
+		description: 'Test-driven development in Rust, covering testing frameworks, mocking, and integration testing strategies.',
+		type: 'Open' as const,
+		links: {
+			repo: '#',
+		},
+	},
+	{
+		id: 'diataxis-docs',
+		title: 'Diataxis Documentation Framework',
+		description: 'Applying the Diataxis framework to create comprehensive, user-focused documentation.',
+		type: 'Internal-Only' as const,
+	},
+];
+---
+
+<BaseLayout 
+	title="Training & Writing" 
+	description="Workshops, training materials, and writing on topics including Angular to React migration, CSS mastery, Rust TDD, and documentation frameworks."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Training & Writing
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-8 max-w-3xl">
+			Workshops, training materials, and longform writing on development, tooling, and best practices.
+		</p>
+		
+		<TrainingFilter />
+		
+		<div id="training-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="region" aria-label="Training materials">
+			{trainings.map((training) => (
+				<TrainingCard training={training} />
+			))}
+		</div>
+		
+		<!-- CSS Specificity Easter Egg -->
+		<section class="mt-16 card">
+			<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+				CSS Specificity Example
+			</h2>
+			<pre class="bg-storm-slate p-4 rounded overflow-x-auto"><code class="text-fog-blue font-mono text-sm">{`.ready {
+  color: blue;
+}
+
+.ready.ready {
+  color: red; /* Higher specificity */
+}`}</code></pre>
+			<p 
+				class="mt-4 text-warmlight-sand/80 tooltip" 
+				data-tooltip="The .ready.ready selector has higher specificity because it has two class selectors, making it more specific than a single class selector."
+			>
+				Hover over this code to learn about CSS specificity.
+			</p>
+		</section>
+	</div>
+</BaseLayout>
+

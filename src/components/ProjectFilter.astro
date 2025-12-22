@@ -1,0 +1,70 @@
+---
+const tags = ['all', '#React', '#LLM', '#DevTools', '#Workflow'];
+---
+
+<div class="flex flex-wrap gap-3 mb-8" role="tablist" aria-label="Filter projects by tag">
+	{tags.map((tag) => (
+		<button
+			class="px-4 py-2 rounded-md font-mono text-sm transition-colors filter-tag"
+			data-tag={tag}
+			data-active={tag === 'all' ? 'true' : 'false'}
+			role="tab"
+			aria-selected={tag === 'all' ? 'true' : 'false'}
+			aria-controls="projects-grid"
+		>
+			{tag}
+		</button>
+	))}
+</div>
+
+<script>
+	const filterButtons = document.querySelectorAll('.filter-tag');
+	const projectsGrid = document.getElementById('projects-grid');
+	
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const tag = button.getAttribute('data-tag');
+			
+			// Update active state
+			filterButtons.forEach((btn) => {
+				btn.setAttribute('data-active', 'false');
+				btn.setAttribute('aria-selected', 'false');
+				btn.classList.remove('bg-union-red', 'text-warmlight-sand');
+				btn.classList.add('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+			});
+			
+			button.setAttribute('data-active', 'true');
+			button.setAttribute('aria-selected', 'true');
+			button.classList.remove('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+			button.classList.add('bg-union-red', 'text-warmlight-sand');
+			
+			// Filter projects
+			if (projectsGrid) {
+				const projectCards = projectsGrid.querySelectorAll('[data-project-tags]');
+				projectCards.forEach((card) => {
+					const cardTags = card.getAttribute('data-project-tags')?.toLowerCase() || '';
+					if (tag === 'all' || cardTags.includes(tag.toLowerCase().replace('#', ''))) {
+						(card as HTMLElement).style.display = '';
+					} else {
+						(card as HTMLElement).style.display = 'none';
+					}
+				});
+			}
+			
+			// Dispatch event for other components
+			window.dispatchEvent(new CustomEvent('project-filter-changed', { 
+				detail: { tag } 
+			}));
+		});
+	});
+	
+	// Set initial active state
+	filterButtons.forEach((button) => {
+		if (button.getAttribute('data-active') === 'true') {
+			button.classList.add('bg-union-red', 'text-warmlight-sand');
+		} else {
+			button.classList.add('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+		}
+	});
+</script>
+

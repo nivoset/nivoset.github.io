@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AITimeline from '../components/AITimeline.astro';
+import PromptLibrary from '../components/PromptLibrary.astro';
+import ExperimentCard from '../components/ExperimentCard.astro';
+
+const experiments = [
+	{
+		title: 'Ollama Local LLM',
+		description: 'Running large language models locally for private, cost-effective AI workflows.',
+		tech: ['Ollama', 'TypeScript'],
+		links: {
+			github: 'https://github.com/nivoset/ollama-experiments',
+		},
+	},
+	{
+		title: 'Embedding Search',
+		description: 'Semantic search using vector embeddings for code and documentation.',
+		tech: ['OpenAI', 'Pinecone'],
+		links: {
+			github: 'https://github.com/nivoset/embedding-search',
+		},
+	},
+	{
+		title: 'LangGraph Agents',
+		description: 'Stateful AI agents using LangGraph for complex multi-step workflows.',
+		tech: ['LangGraph', 'Python'],
+		links: {
+			github: 'https://github.com/nivoset/langgraph-agents',
+		},
+	},
+];
+---
+
+<BaseLayout 
+	title="AI & Automation" 
+	description="AI workflows, experiments, and automation tools including Ollama, embeddings, LangGraph, and cost models."
+>
+	<div class="container mx-auto px-4 py-16">
+		<div class="flex items-center justify-between mb-8">
+			<div>
+				<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+					AI & Automation
+				</h1>
+				<p class="text-lg text-warmlight-sand/80 max-w-3xl">
+					Experiments with AI workflows, LLM integrations, embeddings, and automation tools.
+				</p>
+			</div>
+			<button
+				id="weird-mode-toggle"
+				class="btn btn-secondary"
+				aria-pressed="false"
+				aria-label="Toggle weird mode"
+			>
+				Weird Mode
+			</button>
+		</div>
+		
+		<section class="mb-16">
+			<h2 class="text-2xl font-heading font-semibold text-technocrat-purple mb-6">
+				Timeline
+			</h2>
+			<AITimeline />
+		</section>
+		
+		<section class="mb-16">
+			<h2 class="text-2xl font-heading font-semibold text-technocrat-purple mb-6">
+				Prompt Library
+			</h2>
+			<PromptLibrary />
+		</section>
+		
+		<section>
+			<h2 class="text-2xl font-heading font-semibold text-technocrat-purple mb-6">
+				Experiments
+			</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{experiments.map((experiment) => (
+					<ExperimentCard experiment={experiment} />
+				))}
+			</div>
+		</section>
+	</div>
+</BaseLayout>
+
+<script>
+	import { initWeirdMode } from '../lib/weirdMode';
+	
+	initWeirdMode();
+</script>
+
+<style>
+	.weird-mode {
+		--color-technocrat-purple: #FF6B9D;
+		--color-ominous-teal: #00FFD1;
+		filter: hue-rotate(90deg);
+	}
+</style>
+

@@ -1,0 +1,148 @@
+---
+interface Node {
+	id: string;
+	label: string;
+	description: string;
+	x: number;
+	y: number;
+}
+
+const nodes: Node[] = [
+	{ id: 'legacy', label: 'Legacy Systems', description: 'Working with and modernizing legacy codebases', x: 50, y: 20 },
+	{ id: 'ai', label: 'AI Tools', description: 'LLM integrations, embeddings, and automation', x: 80, y: 40 },
+	{ id: 'devtools', label: 'Dev Tools', description: 'Developer tooling and workflow improvements', x: 20, y: 40 },
+	{ id: 'organizing', label: 'Organizing', description: 'Union organizing and worker solidarity', x: 30, y: 70 },
+	{ id: 'training', label: 'Training', description: 'Workshops and educational materials', x: 70, y: 70 },
+	{ id: 'games', label: 'Game Experiments', description: 'Creative game prototypes and experiments', x: 50, y: 90 },
+];
+
+const centerX = 50;
+const centerY = 50;
+---
+
+<div class="mind-map-container relative w-full max-w-lg h-96" role="img" aria-label="Mind map of work areas">
+	<svg 
+		viewBox="0 0 100 100" 
+		class="w-full h-full"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<!-- Connections from center to nodes -->
+		{nodes.map((node) => (
+			<line
+				x1={centerX}
+				y1={centerY}
+				x2={node.x}
+				y2={node.y}
+				stroke="var(--color-ominous-teal)"
+				stroke-width="0.5"
+				opacity="0.3"
+			/>
+		))}
+		
+		<!-- Nodes -->
+		{nodes.map((node) => (
+			<g class="node-group" data-node-id={node.id}>
+				<circle
+					cx={node.x}
+					cy={node.y}
+					r="4"
+					fill="var(--color-technocrat-purple)"
+					class="node-circle cursor-pointer transition-all hover:r-5 animate-pulse-subtle"
+					stroke="var(--color-worker-gold)"
+					stroke-width="0.5"
+				/>
+				<text
+					x={node.x}
+					y={node.y - 6}
+					text-anchor="middle"
+					font-size="2.5"
+					fill="var(--color-warmlight-sand)"
+					class="font-mono pointer-events-none"
+				>
+					{node.label}
+				</text>
+			</g>
+		))}
+		
+		<!-- Center node -->
+		<circle
+			cx={centerX}
+			cy={centerY}
+			r="3"
+			fill="var(--color-union-red)"
+			class="animate-pulse-subtle"
+		/>
+	</svg>
+	
+	<!-- Tooltip -->
+	<div 
+		id="mind-map-tooltip"
+		class="absolute bg-graphite-black text-warmlight-sand p-3 rounded shadow-lg pointer-events-none opacity-0 transition-opacity z-10 max-w-xs"
+		role="tooltip"
+		aria-hidden="true"
+	>
+		<p class="font-mono text-sm font-semibold mb-1" id="tooltip-title"></p>
+		<p class="text-xs text-warmlight-sand/80" id="tooltip-description"></p>
+	</div>
+</div>
+
+<script>
+	const nodes = [
+		{ id: 'legacy', label: 'Legacy Systems', description: 'Working with and modernizing legacy codebases' },
+		{ id: 'ai', label: 'AI Tools', description: 'LLM integrations, embeddings, and automation' },
+		{ id: 'devtools', label: 'Dev Tools', description: 'Developer tooling and workflow improvements' },
+		{ id: 'organizing', label: 'Organizing', description: 'Union organizing and worker solidarity' },
+		{ id: 'training', label: 'Training', description: 'Workshops and educational materials' },
+		{ id: 'games', label: 'Game Experiments', description: 'Creative game prototypes and experiments' },
+	];
+	
+	const tooltip = document.getElementById('mind-map-tooltip');
+	const tooltipTitle = document.getElementById('tooltip-title');
+	const tooltipDescription = document.getElementById('tooltip-description');
+	const nodeGroups = document.querySelectorAll('.node-group');
+	
+	if (tooltip && tooltipTitle && tooltipDescription) {
+		nodeGroups.forEach((group) => {
+			const nodeId = group.getAttribute('data-node-id');
+			const node = nodes.find(n => n.id === nodeId);
+			const circle = group.querySelector('.node-circle');
+			
+			if (node && circle) {
+				group.addEventListener('mouseenter', (e) => {
+					tooltipTitle.textContent = node.label;
+					tooltipDescription.textContent = node.description;
+					tooltip.classList.remove('opacity-0');
+					tooltip.setAttribute('aria-hidden', 'false');
+					
+					// Position tooltip near the node
+					const rect = circle.getBoundingClientRect();
+					const containerRect = group.closest('.mind-map-container')?.getBoundingClientRect();
+					if (containerRect) {
+						tooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+						tooltip.style.top = `${rect.top - containerRect.top - 10}px`;
+						tooltip.style.transform = 'translate(-50%, -100%)';
+					}
+				});
+				
+				group.addEventListener('mouseleave', () => {
+					tooltip.classList.add('opacity-0');
+					tooltip.setAttribute('aria-hidden', 'true');
+				});
+			}
+		});
+	}
+</script>
+
+<style>
+	.mind-map-container svg {
+		width: 100%;
+		height: 100%;
+	}
+	
+	@media (prefers-reduced-motion: reduce) {
+		.node-circle {
+			animation: none !important;
+		}
+	}
+</style>
+

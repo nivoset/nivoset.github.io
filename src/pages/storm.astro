@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoryPanel from '../components/StoryPanel.astro';
+import { generateStormStory } from '../lib/stormGrammar';
+
+const initialStory = generateStormStory();
+---
+
+<BaseLayout 
+	title="Storm" 
+	description="Corporate weather report with randomly generated stories."
+>
+	<div class="container mx-auto px-4 py-16">
+		<StoryPanel 
+			story={initialStory.story}
+			icon={initialStory.icon}
+			moodColor={initialStory.moodColor}
+		/>
+		
+		<div class="mt-8 text-center">
+			<button
+				id="regenerate-button"
+				class="btn btn-primary"
+				aria-label="Regenerate corporate weather story"
+			>
+				Regenerate
+			</button>
+		</div>
+	</div>
+</BaseLayout>
+

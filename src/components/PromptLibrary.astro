@@ -1,0 +1,120 @@
+---
+interface Prompt {
+	id: string;
+	title: string;
+	prompt: string;
+	category: string;
+}
+
+const prompts: Prompt[] = [
+	{
+		id: 'code-review',
+		title: 'Code Review Assistant',
+		prompt: 'Review this code for bugs, performance issues, and best practices. Provide specific, actionable feedback.',
+		category: 'Development',
+	},
+	{
+		id: 'documentation',
+		title: 'Documentation Generator',
+		prompt: 'Generate comprehensive documentation for this code, including usage examples and API reference.',
+		category: 'Development',
+	},
+	{
+		id: 'refactor',
+		title: 'Code Refactoring',
+		prompt: 'Refactor this code to improve readability, maintainability, and performance while preserving functionality.',
+		category: 'Development',
+	},
+	{
+		id: 'test-generation',
+		title: 'Test Generation',
+		prompt: 'Generate comprehensive unit tests for this code, covering edge cases and error scenarios.',
+		category: 'Testing',
+	},
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+	{prompts.map((prompt) => (
+		<div class="card">
+			<div class="flex items-start justify-between mb-3">
+				<div>
+					<h3 class="text-lg font-heading font-semibold text-technocrat-purple mb-1">
+						{prompt.title}
+					</h3>
+					<span class="text-xs text-fog-blue font-mono">
+						{prompt.category}
+					</span>
+				</div>
+				<button
+					class="copy-prompt-btn px-3 py-1 bg-storm-slate text-fog-blue hover:text-worker-gold text-xs font-mono rounded transition-colors"
+					data-prompt={prompt.prompt}
+					aria-label={`Copy prompt: ${prompt.title}`}
+				>
+					Copy
+				</button>
+			</div>
+			<p class="text-warmlight-sand/80 text-sm font-mono whitespace-pre-wrap">
+				{prompt.prompt}
+			</p>
+		</div>
+	))}
+	
+	<!-- Surreal prompts (hidden by default, shown in weird mode) -->
+	<div class="surreal-prompt hidden card border-2 border-technocrat-purple">
+		<div class="flex items-start justify-between mb-3">
+			<div>
+				<h3 class="text-lg font-heading font-semibold text-technocrat-purple mb-1">
+					The Question That Should Not Be Asked
+				</h3>
+				<span class="text-xs text-fog-blue font-mono">
+					Surreal
+				</span>
+			</div>
+			<button
+				class="copy-prompt-btn px-3 py-1 bg-storm-slate text-fog-blue hover:text-worker-gold text-xs font-mono rounded transition-colors"
+				data-prompt="What if code could dream? What would it dream about?"
+				aria-label="Copy surreal prompt"
+			>
+				Copy
+			</button>
+		</div>
+		<p class="text-warmlight-sand/80 text-sm font-mono whitespace-pre-wrap">
+			What if code could dream? What would it dream about?
+		</p>
+	</div>
+</div>
+
+<script>
+	const copyButtons = document.querySelectorAll('.copy-prompt-btn');
+	
+	copyButtons.forEach((button) => {
+		button.addEventListener('click', async () => {
+			const prompt = button.getAttribute('data-prompt');
+			if (prompt) {
+				try {
+					await navigator.clipboard.writeText(prompt);
+					
+					// Show success feedback
+					const originalText = button.textContent;
+					button.textContent = 'Copied!';
+					button.classList.add('text-spreadsheet-green');
+					
+					setTimeout(() => {
+						button.textContent = originalText;
+						button.classList.remove('text-spreadsheet-green');
+					}, 2000);
+					
+					// Announce to screen readers
+					const ariaLive = document.getElementById('aria-live');
+					if (ariaLive) {
+						ariaLive.textContent = `Prompt copied to clipboard: ${button.getAttribute('aria-label')}`;
+					}
+				} catch (err) {
+					console.error('Failed to copy:', err);
+				}
+			}
+		});
+	});
+</script>
+

@@ -1,0 +1,75 @@
+---
+interface Training {
+	id: string;
+	title: string;
+	description: string;
+	type: 'Live' | 'Async' | 'Internal-Only' | 'Open';
+	links?: {
+		slides?: string;
+		video?: string;
+		repo?: string;
+	};
+}
+
+interface Props {
+	training: Training;
+}
+
+const { training } = Astro.props;
+
+const typeColors = {
+	'Live': 'bg-union-red',
+	'Async': 'bg-technocrat-purple',
+	'Internal-Only': 'bg-fog-blue',
+	'Open': 'bg-spreadsheet-green',
+};
+---
+
+<div class="card" data-training-type={training.type}>
+	<div class="flex items-start justify-between mb-3">
+		<h3 class="text-xl font-heading font-semibold text-worker-gold">
+			{training.title}
+		</h3>
+		<span class={`px-2 py-1 text-xs font-mono rounded text-warmlight-sand ${typeColors[training.type]}`}>
+			{training.type}
+		</span>
+	</div>
+	<p class="text-warmlight-sand/80 mb-4">
+		{training.description}
+	</p>
+	{training.links && (
+		<div class="flex flex-wrap gap-4">
+			{training.links.slides && (
+				<a 
+					href={training.links.slides} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="text-fog-blue hover:text-worker-gold transition-colors text-sm"
+				>
+					Slides →
+				</a>
+			)}
+			{training.links.video && (
+				<a 
+					href={training.links.video} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="text-fog-blue hover:text-worker-gold transition-colors text-sm"
+				>
+					Video →
+				</a>
+			)}
+			{training.links.repo && (
+				<a 
+					href={training.links.repo} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="text-fog-blue hover:text-worker-gold transition-colors text-sm"
+				>
+					Repo →
+				</a>
+			)}
+		</div>
+	)}
+</div>
+

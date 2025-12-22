@@ -1,0 +1,85 @@
+---
+interface Fact {
+	title: string;
+	description: string;
+	easterEgg?: string;
+}
+
+const facts: Fact[] = [
+	{
+		title: 'Developer',
+		description: 'Building tools and systems that make development workflows better.',
+		easterEgg: 'I once debugged a production issue at 3am. The fix was one character.',
+	},
+	{
+		title: 'Union Organizer',
+		description: 'Supporting coworkers and building worker power through collective action.',
+		easterEgg: 'Solidarity forever!',
+	},
+	{
+		title: 'Educator',
+		description: 'Creating training materials and workshops to help others level up.',
+	},
+	{
+		title: 'Experimenter',
+		description: 'Always tinkering with new technologies and creative projects.',
+	},
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+	{facts.map((fact) => (
+		<div 
+			class="card hover:border-worker-gold border-2 border-transparent transition-all"
+			data-fact-title={fact.title}
+			data-easter-egg={fact.easterEgg || ''}
+		>
+			<h3 class="text-xl font-heading font-semibold text-worker-gold mb-2">
+				{fact.title}
+			</h3>
+			<p class="text-warmlight-sand/80">
+				{fact.description}
+			</p>
+		</div>
+	))}
+</div>
+
+<script>
+	const factCards = document.querySelectorAll('[data-fact-title]');
+	
+	factCards.forEach((card) => {
+		const easterEgg = card.getAttribute('data-easter-egg');
+		
+		if (easterEgg) {
+			card.addEventListener('mouseenter', () => {
+				// Show easter egg tooltip
+				const tooltip = document.createElement('div');
+				tooltip.className = 'absolute bg-graphite-black text-worker-gold p-2 rounded text-sm shadow-lg z-10 pointer-events-none opacity-0 transition-opacity';
+				tooltip.textContent = easterEgg;
+				tooltip.setAttribute('role', 'tooltip');
+				
+				card.style.position = 'relative';
+				card.appendChild(tooltip);
+				
+				// Position tooltip
+				const rect = card.getBoundingClientRect();
+				tooltip.style.left = '50%';
+				tooltip.style.top = '-10px';
+				tooltip.style.transform = 'translate(-50%, -100%)';
+				
+				// Fade in
+				setTimeout(() => {
+					tooltip.classList.remove('opacity-0');
+				}, 10);
+			});
+			
+			card.addEventListener('mouseleave', () => {
+				const tooltip = card.querySelector('[role="tooltip"]');
+				if (tooltip) {
+					tooltip.remove();
+				}
+			});
+		}
+	});
+</script>
+

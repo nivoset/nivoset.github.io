@@ -1,0 +1,65 @@
+---
+const types = ['all', 'Live', 'Async', 'Internal-Only', 'Open'];
+---
+
+<div class="flex flex-wrap gap-3 mb-8" role="tablist" aria-label="Filter training by type">
+	{types.map((type) => (
+		<button
+			class="px-4 py-2 rounded-md font-mono text-sm transition-colors filter-tag"
+			data-type={type}
+			data-active={type === 'all' ? 'true' : 'false'}
+			role="tab"
+			aria-selected={type === 'all' ? 'true' : 'false'}
+			aria-controls="training-grid"
+		>
+			{type}
+		</button>
+	))}
+</div>
+
+<script>
+	const filterButtons = document.querySelectorAll('.filter-tag');
+	const trainingGrid = document.getElementById('training-grid');
+	
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const type = button.getAttribute('data-type');
+			
+			// Update active state
+			filterButtons.forEach((btn) => {
+				btn.setAttribute('data-active', 'false');
+				btn.setAttribute('aria-selected', 'false');
+				btn.classList.remove('bg-union-red', 'text-warmlight-sand');
+				btn.classList.add('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+			});
+			
+			button.setAttribute('data-active', 'true');
+			button.setAttribute('aria-selected', 'true');
+			button.classList.remove('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+			button.classList.add('bg-union-red', 'text-warmlight-sand');
+			
+			// Filter training cards
+			if (trainingGrid) {
+				const trainingCards = trainingGrid.querySelectorAll('[data-training-type]');
+				trainingCards.forEach((card) => {
+					const cardType = card.getAttribute('data-training-type');
+					if (type === 'all' || cardType === type) {
+						(card as HTMLElement).style.display = '';
+					} else {
+						(card as HTMLElement).style.display = 'none';
+					}
+				});
+			}
+		});
+	});
+	
+	// Set initial active state
+	filterButtons.forEach((button) => {
+		if (button.getAttribute('data-active') === 'true') {
+			button.classList.add('bg-union-red', 'text-warmlight-sand');
+		} else {
+			button.classList.add('bg-federal-gray', 'text-fog-blue', 'hover:bg-ominous-teal');
+		}
+	});
+</script>
+

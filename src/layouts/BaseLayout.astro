@@ -2,13 +2,15 @@
 import '../global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import KonamiOverlay from '../components/KonamiOverlay.astro';
+import Terminal from '../components/Terminal.astro';
 
 interface Props {
 	title: string;
 	description?: string;
 }
 
-const { title, description = 'Nomad Poker - The innovative two-dimensional card game by Randy Glover, creator of Jumpman. Perfect for bars and casinos.' } = Astro.props;
+const { title, description = 'Personal portfolio showcasing developer tools, AI experiments, union organizing, training materials, and creative projects.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -19,13 +21,42 @@ const { title, description = 'Nomad Poker - The innovative two-dimensional card 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Nomad Poker</title>
+		
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		
+		<title>{title}</title>
 	</head>
-	<body class="min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-900 text-amber-50 flex flex-col">
+	<body class="min-h-screen bg-storm-slate text-warmlight-sand flex flex-col">
+		<a href="#main-content" class="skip-to-content">Skip to main content</a>
+		
 		<Header />
-		<main class="flex-grow">
+		
+		<main id="main-content" class="flex-grow" role="main">
 			<slot />
 		</main>
+		
 		<Footer />
+		
+		<!-- ARIA Live Region for dynamic content -->
+		<div id="aria-live" class="aria-live" aria-live="polite" aria-atomic="true"></div>
+		
+		<!-- Low Motion Toggle Script -->
+		<script>
+			// Check for reduced motion preference
+			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.documentElement.classList.add('reduce-motion');
+			}
+		</script>
+		
+		<KonamiOverlay />
+		<Terminal />
+		
+		<!-- Konami Code - auto-initializes -->
+		<script>
+			// Konami code is auto-initialized in konami.ts
+		</script>
 	</body>
 </html>

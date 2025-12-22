@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlayLabCard from '../components/PlayLabCard.astro';
+import Randomizer from '../components/Randomizer.astro';
+import BearBear from '../components/BearBear.astro';
+
+const projects = [
+	{
+		title: 'Horror Game Concept',
+		description: 'A psychological horror game exploring themes of workplace anxiety and collective action.',
+		type: 'game' as const,
+	},
+	{
+		title: 'Pro-Union Co-op Board Game',
+		description: 'A cooperative board game where players work together to organize a workplace and win better conditions.',
+		type: 'game' as const,
+	},
+	{
+		title: 'Pixel Art Gallery',
+		description: 'Collection of pixel art experiments and sprites, including Bear-Bear and other characters.',
+		type: 'art' as const,
+	},
+	{
+		title: 'HTML/CSS D-pad Widget',
+		description: 'A pure CSS D-pad controller widget with randomizer functionality for game prototypes.',
+		type: 'widget' as const,
+		preview: '<div class="flex justify-center items-center h-20"><div class="grid grid-cols-3 gap-1"><div></div><button class="w-8 h-8 bg-federal-gray border border-ominous-teal">↑</button><div></div><button class="w-8 h-8 bg-federal-gray border border-ominous-teal">←</button><div></div><button class="w-8 h-8 bg-federal-gray border border-ominous-teal">→</button><div></div><button class="w-8 h-8 bg-federal-gray border border-ominous-teal">↓</button><div></div></div></div>',
+	},
+];
+---
+
+<BaseLayout 
+	title="Play Lab" 
+	description="Creative experiments and game prototypes including horror game concepts, pro-union board games, pixel art, and interactive widgets."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Play Lab
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-8 max-w-3xl">
+			Creative experiments, game prototypes, and playful projects exploring the intersection of technology, art, and organizing.
+		</p>
+		
+		<Randomizer />
+		
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="region" aria-label="Play lab projects">
+			{projects.map((project) => (
+				<PlayLabCard project={project} />
+			))}
+		</div>
+	</div>
+	
+	<BearBear />
+</BaseLayout>
+

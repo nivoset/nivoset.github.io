@@ -1,0 +1,29 @@
+---
+interface PlayLabProject {
+	title: string;
+	description: string;
+	type: 'game' | 'art' | 'widget' | 'experiment';
+	preview?: string;
+}
+
+interface Props {
+	project: PlayLabProject;
+}
+
+const { project } = Astro.props;
+---
+
+<div class="card hover:border-worker-gold border-2 border-transparent transition-all">
+	<h3 class="text-xl font-heading font-semibold text-worker-gold mb-2">
+		{project.title}
+	</h3>
+	<p class="text-warmlight-sand/80 mb-4">
+		{project.description}
+	</p>
+	{project.preview && (
+		<div class="mt-4 p-4 bg-storm-slate rounded">
+			{project.preview}
+		</div>
+	)}
+</div>
+

@@ -1,0 +1,93 @@
+---
+const showBear = Math.random() > 0.7;
+---
+
+{showBear && (
+	<div 
+		id="bear-bear"
+		class="fixed bottom-4 right-4 w-12 h-12 opacity-50 hover:opacity-100 transition-opacity cursor-pointer z-50"
+		role="button"
+		tabindex="0"
+		aria-label="Bear-Bear"
+		title="Click for Bear-Bear lore"
+	>
+		<svg 
+			class="w-full h-full text-bear-bear-brown hover:animate-wiggle" 
+			viewBox="0 0 24 24" 
+			fill="currentColor"
+		>
+			<circle cx="12" cy="12" r="10"/>
+			<circle cx="9" cy="9" r="1.5" fill="white"/>
+			<circle cx="15" cy="9" r="1.5" fill="white"/>
+			<path d="M9 14 Q12 16 15 14" stroke="white" stroke-width="1.5" fill="none"/>
+		</svg>
+	</div>
+)}
+
+<script>
+	const bearBear = document.getElementById('bear-bear');
+	
+	if (bearBear) {
+		bearBear.addEventListener('click', () => {
+			// Show Bear-Bear lore modal
+			const modal = document.createElement('div');
+			modal.className = 'fixed inset-0 bg-graphite-black/80 flex items-center justify-center z-50 p-4';
+			modal.setAttribute('role', 'dialog');
+			modal.setAttribute('aria-modal', 'true');
+			modal.setAttribute('aria-labelledby', 'bear-lore-title');
+			
+			modal.innerHTML = `
+				<div class="bg-federal-gray rounded-lg max-w-md w-full p-6 border-2 border-bear-bear-brown">
+					<h2 id="bear-lore-title" class="text-2xl font-heading font-bold text-bear-bear-brown mb-4">
+						Bear-Bear Lore
+					</h2>
+					<p class="text-warmlight-sand/80 mb-4">
+						Bear-Bear is a tiny pixel bear who appears randomly throughout the site. 
+						Legend says that clicking on Bear-Bear brings good luck to developers and organizers alike.
+					</p>
+					<button 
+						class="btn btn-secondary w-full"
+						aria-label="Close Bear-Bear lore"
+					>
+						Close
+					</button>
+				</div>
+			`;
+			
+			document.body.appendChild(modal);
+			
+			const closeBtn = modal.querySelector('button');
+			const closeModal = () => {
+				modal.remove();
+			};
+			
+			if (closeBtn) {
+				closeBtn.addEventListener('click', closeModal);
+			}
+			
+			modal.addEventListener('click', (e) => {
+				if (e.target === modal) {
+					closeModal();
+				}
+			});
+			
+			modal.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') {
+					closeModal();
+				}
+			});
+			
+			if (closeBtn) {
+				closeBtn.focus();
+			}
+		});
+		
+		bearBear.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				bearBear.click();
+			}
+		});
+	}
+</script>
+

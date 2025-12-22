@@ -1,0 +1,41 @@
+---
+interface Highlight {
+	title: string;
+	description: string;
+	link?: string;
+}
+
+const highlights: Highlight[] = [
+	{
+		title: 'JPMC Workers Alliance',
+		description: 'Supporting workers at JPMorgan Chase in organizing for better working conditions, fair compensation, and respect in the workplace.',
+		link: '#',
+	},
+	{
+		title: 'Campaign Highlights',
+		description: 'Recent campaigns focused on workplace safety, fair scheduling, and protecting worker rights in the tech industry.',
+	},
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+	{highlights.map((highlight) => (
+		<div class="card border-2 border-union-red/30 hover:border-union-red transition-all">
+			<h3 class="text-xl font-heading font-semibold text-union-red mb-2">
+				{highlight.title}
+			</h3>
+			<p class="text-warmlight-sand/80 mb-4">
+				{highlight.description}
+			</p>
+			{highlight.link && (
+				<a 
+					href={highlight.link} 
+					class="text-worker-gold hover:text-union-red transition-colors text-sm"
+				>
+					Learn more →
+				</a>
+			)}
+		</div>
+	))}
+</div>
+

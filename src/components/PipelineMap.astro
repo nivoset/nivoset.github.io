@@ -1,0 +1,69 @@
+---
+const isVisible = false;
+---
+
+<div id="pipeline-map-container" class="hidden mb-8">
+	<div class="card">
+		<h3 class="text-xl font-heading font-semibold text-worker-gold mb-4">
+			Project Pipeline Map
+		</h3>
+		<div class="relative w-full h-96 bg-storm-slate rounded overflow-hidden">
+			<svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+				<!-- Connections -->
+				<line x1="20" y1="30" x2="50" y2="50" stroke="var(--color-ominous-teal)" stroke-width="0.5" opacity="0.5" />
+				<line x1="50" y1="50" x2="80" y2="30" stroke="var(--color-ominous-teal)" stroke-width="0.5" opacity="0.5" />
+				<line x1="50" y1="50" x2="30" y2="70" stroke="var(--color-ominous-teal)" stroke-width="0.5" opacity="0.5" />
+				<line x1="50" y1="50" x2="70" y2="70" stroke="var(--color-ominous-teal)" stroke-width="0.5" opacity="0.5" />
+				
+				<!-- Project Nodes -->
+				<g>
+					<circle cx="20" cy="30" r="3" fill="var(--color-technocrat-purple)" />
+					<text x="20" y="25" text-anchor="middle" font-size="2" fill="var(--color-warmlight-sand)" class="font-mono">Testique</text>
+				</g>
+				<g>
+					<circle cx="80" cy="30" r="3" fill="var(--color-technocrat-purple)" />
+					<text x="80" y="25" text-anchor="middle" font-size="2" fill="var(--color-warmlight-sand)" class="font-mono">Tendryl</text>
+				</g>
+				<g>
+					<circle cx="30" cy="70" r="3" fill="var(--color-technocrat-purple)" />
+					<text x="30" y="75" text-anchor="middle" font-size="2" fill="var(--color-warmlight-sand)" class="font-mono">TinyTask</text>
+				</g>
+				<g>
+					<circle cx="70" cy="70" r="3" fill="var(--color-technocrat-purple)" />
+					<text x="70" y="75" text-anchor="middle" font-size="2" fill="var(--color-warmlight-sand)" class="font-mono">MCP</text>
+				</g>
+				
+				<!-- Center Node -->
+				<circle cx="50" cy="50" r="2" fill="var(--color-union-red)" />
+			</svg>
+		</div>
+		<p class="text-sm text-warmlight-sand/60 mt-4">
+			Visual representation of how projects connect and depend on each other.
+		</p>
+	</div>
+</div>
+
+<button
+	id="toggle-pipeline-map"
+	class="btn btn-secondary mb-8"
+	aria-expanded="false"
+	aria-controls="pipeline-map-container"
+>
+	Toggle Pipeline Map
+</button>
+
+<script>
+	const toggleButton = document.getElementById('toggle-pipeline-map');
+	const container = document.getElementById('pipeline-map-container');
+	
+	if (toggleButton && container) {
+		toggleButton.addEventListener('click', () => {
+			const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+			const newState = !isExpanded;
+			
+			toggleButton.setAttribute('aria-expanded', String(newState));
+			container.classList.toggle('hidden');
+		});
+	}
+</script>
+

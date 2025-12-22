@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+
+<BaseLayout 
+	title="Contact" 
+	description="Get in touch about projects, collaborations, organizing, or just to say hello."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Contact
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-8 max-w-3xl">
+			Want to collaborate, ask questions, or just say hello? Get in touch through the form below or via social media.
+		</p>
+		
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+			<div>
+				<ContactForm />
+			</div>
+			
+			<div class="space-y-6">
+				<div>
+					<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+						Other Ways to Reach Me
+					</h2>
+					<ul class="space-y-4 text-warmlight-sand/80">
+						<li>
+							<a 
+								href="https://github.com/nivoset" 
+								target="_blank" 
+								rel="noopener noreferrer"
+								class="text-fog-blue hover:text-worker-gold transition-colors"
+							>
+								GitHub
+							</a>
+						</li>
+						<li>
+							<a 
+								href="https://reddit.com/user/nivoset" 
+								target="_blank" 
+								rel="noopener noreferrer"
+								class="text-fog-blue hover:text-worker-gold transition-colors"
+							>
+								Reddit
+							</a>
+						</li>
+						<li class="text-warmlight-sand/60">
+							Discord available by request
+						</li>
+					</ul>
+				</div>
+				
+				<!-- Terminal Icon Easter Egg -->
+				<div class="mt-8">
+					<button
+						id="terminal-icon-easter-egg"
+						class="text-fog-blue hover:text-worker-gold transition-colors text-sm font-mono opacity-50 hover:opacity-100"
+						aria-label="Open terminal mode"
+					>
+						$ _
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<script>
+	const terminalIcon = document.getElementById('terminal-icon-easter-egg');
+	
+	if (terminalIcon) {
+		terminalIcon.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('open-terminal'));
+		});
+	}
+</script>
+

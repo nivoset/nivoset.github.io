@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuickFacts from '../components/QuickFacts.astro';
+---
+
+<BaseLayout 
+	title="About" 
+	description="Learn about my background, philosophy, and approach to building tools, teaching, and empowering others."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-8">
+			About
+		</h1>
+		
+		<div class="space-y-12">
+			<!-- Narrative Bio -->
+			<section class="prose prose-invert max-w-3xl">
+				<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+					Who I Am
+				</h2>
+				<p class="text-lg text-warmlight-sand/90 mb-4">
+					I'm a developer who builds tools, experiments with AI, organizes for worker power, and creates training materials. 
+					My work spans from legacy system modernization to cutting-edge AI integrations, always with a focus on making 
+					development workflows better and more accessible.
+				</p>
+				<p class="text-lg text-warmlight-sand/90">
+					Beyond code, I'm deeply committed to union organizing and worker solidarity. I believe that technology should 
+					empower people, not exploit them, and that collective action is the path to better working conditions for everyone.
+				</p>
+			</section>
+			
+			<!-- Quick Facts -->
+			<section>
+				<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-6">
+					Quick Facts
+				</h2>
+				<QuickFacts />
+			</section>
+			
+			<!-- Philosophy -->
+			<section class="prose prose-invert max-w-3xl">
+				<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+					Philosophy
+				</h2>
+				<div class="space-y-4 text-lg text-warmlight-sand/90">
+					<p>
+						<strong class="text-worker-gold">Building Tools:</strong> The best tools are the ones that solve real problems 
+						for real people. I focus on developer experience, workflow improvements, and making complex systems more 
+						approachable.
+					</p>
+					<p>
+						<strong class="text-worker-gold">Teaching:</strong> Knowledge should be shared, not hoarded. I create training 
+						materials and workshops that help others level up, whether they're transitioning between frameworks or learning 
+						entirely new paradigms.
+					</p>
+					<p>
+						<strong class="text-worker-gold">Empowering Others:</strong> Technology is a tool for liberation, not oppression. 
+						I work to ensure that the tools and systems I build give people more agency, not less. This extends to my union 
+						organizing work, where I help coworkers understand their rights and build collective power.
+					</p>
+				</div>
+			</section>
+		</div>
+	</div>
+</BaseLayout>
+

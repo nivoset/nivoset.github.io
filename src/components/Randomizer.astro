@@ -1,0 +1,48 @@
+---
+const items = [
+	{ type: 'toy', content: '🎲 Random dice roll generator' },
+	{ type: 'snippet', content: 'const random = Math.random();' },
+	{ type: 'asset', content: '🎨 Pixel art generator' },
+	{ type: 'toy', content: '🎮 Mini game prototype' },
+	{ type: 'snippet', content: 'function shuffle(array) { return array.sort(() => Math.random() - 0.5); }' },
+];
+---
+
+<div class="card mb-8">
+	<button
+		id="randomize-button"
+		class="btn btn-primary w-full"
+		aria-label="Randomize play lab content"
+	>
+		Play Again
+	</button>
+	<div 
+		id="randomized-content"
+		class="mt-4 p-4 bg-storm-slate rounded text-center text-warmlight-sand/80 font-mono"
+		role="region"
+		aria-live="polite"
+	>
+		Click "Play Again" to see randomized content
+	</div>
+</div>
+
+<script>
+	const items = [
+		{ type: 'toy', content: '🎲 Random dice roll generator' },
+		{ type: 'snippet', content: 'const random = Math.random();' },
+		{ type: 'asset', content: '🎨 Pixel art generator' },
+		{ type: 'toy', content: '🎮 Mini game prototype' },
+		{ type: 'snippet', content: 'function shuffle(array) { return array.sort(() => Math.random() - 0.5); }' },
+	];
+	
+	const button = document.getElementById('randomize-button');
+	const content = document.getElementById('randomized-content');
+	
+	if (button && content) {
+		button.addEventListener('click', () => {
+			const randomItem = items[Math.floor(Math.random() * items.length)];
+			content.textContent = randomItem.content;
+		});
+	}
+</script>
+
