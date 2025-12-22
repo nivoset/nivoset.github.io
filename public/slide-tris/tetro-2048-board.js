@@ -8,7 +8,8 @@ import {
   applySwipe,
   rotatePreview,
   serializeState,
-  deserializeState
+  deserializeState,
+  rebuildOccupancy
 } from './model.js';
 
 const template = document.createElement('template');
@@ -576,13 +577,13 @@ class Tetro2048Board extends HTMLElement {
     let hasActiveAnimations = false;
     
     // Update and draw
-    for (const [id, anim] of this._clearingAnimations.entries()) {
+    for (const [cellKey, anim] of this._clearingAnimations.entries()) {
       const elapsed = now - anim.startTime;
       if (elapsed < animationDuration) {
         hasActiveAnimations = true;
       } else {
         // Animation complete, remove it
-        this._clearingAnimations.delete(id);
+        this._clearingAnimations.delete(cellKey);
       }
     }
     
@@ -592,9 +593,29 @@ class Tetro2048Board extends HTMLElement {
       this._animationFrameId = requestAnimationFrame(() => this._animate());
     } else {
       this._animationFrameId = null;
-      // Animation complete, update score and continue
+      // Animation complete, ensure cleared cells stay empty and update score
+      this._ensureClearedCellsEmpty();
       this._updateScore();
+      // Redraw to show final state
+      this._draw();
     }
+  }
+  
+  _ensureClearedCellsEmpty() {
+    // Ensure all cells that were animated (cleared) are actually empty in the occupancy grid
+    for (const cellKey of this._clearingAnimations.keys()) {
+      const [xStr, yStr] = cellKey.split(',');
+      const x = parseInt(xStr, 10);
+      const y = parseInt(yStr, 10);
+      
+      if (x >= 0 && y >= 0 && x < this._state.w && y < this._state.h) {
+        // Set occupancy to empty
+        this._state.occ[y * this._state.w + x] = -1;
+      }
+    }
+    
+    // Rebuild occupancy from remaining pieces to ensure consistency
+    rebuildOccupancy(this._state);
   }
   
   _announce(message) {
@@ -664,8 +685,16 @@ class Tetro2048Board extends HTMLElement {
         const cellKey = `${worldX},${worldY}`;
         
         // Skip if this cell is being animated (will be drawn separately)
+        // Also skip if this cell should be empty (occupancy is -1)
         if (this._clearingAnimations.has(cellKey)) {
           continue;
+        }
+        
+        // Double-check occupancy - don't draw if cell is empty
+        if (worldX >= 0 && worldY >= 0 && worldX < this._state.w && worldY < this._state.h) {
+          if (this._state.occ[worldY * this._state.w + worldX] !== piece.id) {
+            continue;
+          }
         }
         
         const x = worldX * cellSize;

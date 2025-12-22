@@ -273,39 +273,60 @@ export function clearFullLines(state) {
     if (full) colsToClear.push(x);
   }
   
-  // Clear rows
+  // Create set of cleared cell positions for quick lookup
+  const clearedCells = new Set();
+  for (const y of rowsToClear) {
+    for (let x = 0; x < state.w; x++) {
+      clearedCells.add(`${x},${y}`);
+    }
+  }
+  for (const x of colsToClear) {
+    for (let y = 0; y < state.h; y++) {
+      clearedCells.add(`${x},${y}`);
+    }
+  }
+  
+  // Clear rows and columns in occupancy
   for (const y of rowsToClear) {
     for (let x = 0; x < state.w; x++) {
       state.occ[y * state.w + x] = -1;
     }
   }
   
-  // Clear columns
   for (const x of colsToClear) {
     for (let y = 0; y < state.h; y++) {
       state.occ[y * state.w + x] = -1;
     }
   }
   
-  // Remove pieces that are now empty
+  // Remove cleared cells from pieces and remove empty pieces
   const piecesToRemove = [];
   for (const [id, piece] of state.pieces.entries()) {
-    let hasCells = false;
-    for (const c of piece.cells) {
+    // Filter out cells that are in cleared positions
+    const remainingCells = piece.cells.filter(c => {
       const x = piece.anchor.x + c.x;
       const y = piece.anchor.y + c.y;
-      if (x >= 0 && y >= 0 && x < state.w && y < state.h) {
-        if (state.occ[y * state.w + x] === id) {
-          hasCells = true;
-          break;
+      return !clearedCells.has(`${x},${y}`);
+    });
+    
+    if (remainingCells.length === 0) {
+      // Piece has no cells left, mark for removal
+      piecesToRemove.push(id);
+    } else if (remainingCells.length < piece.cells.length) {
+      // Piece has some cells cleared, update it
+      piece.cells = remainingCells;
+      // Update occupancy for remaining cells
+      for (const c of remainingCells) {
+        const x = piece.anchor.x + c.x;
+        const y = piece.anchor.y + c.y;
+        if (x >= 0 && y >= 0 && x < state.w && y < state.h) {
+          state.occ[y * state.w + x] = id;
         }
       }
     }
-    if (!hasCells) {
-      piecesToRemove.push(id);
-    }
   }
   
+  // Remove empty pieces
   for (const id of piecesToRemove) {
     state.pieces.delete(id);
   }
