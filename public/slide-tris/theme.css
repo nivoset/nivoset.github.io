@@ -1,0 +1,80 @@
+/**
+ * Theme system for tetro-2048-board
+ * Uses CSS custom properties for easy theming
+ */
+
+:root {
+  /* Board colors */
+  --board-bg: #111418;
+  --grid-stroke: #2a2f36;
+  --grid-stroke-width: 1px;
+  
+  /* Piece colors - color-blind friendly palette */
+  --piece-I: #74B9FF;
+  --piece-O: #FDCB6E;
+  --piece-T: #A29BFE;
+  --piece-S: #55EFC4;
+  --piece-Z: #FF7675;
+  --piece-J: #74E3FF;
+  --piece-L: #FAB1A0;
+  
+  /* Preview area */
+  --preview-bg: #1a1d24;
+  --preview-border: #3a3f48;
+  
+  /* HUD colors */
+  --hud-text: #F1EDE5;
+  --hud-text-muted: #8EAAC9;
+  
+  /* Cell size (will be overridden by component) */
+  --cell-size: 32px;
+}
+
+/* Minimal theme (default) */
+tetro-2048-board[theme="minimal"],
+tetro-2048-board:not([theme]) {
+  --board-bg: #111418;
+  --grid-stroke: #2a2f36;
+  --piece-I: #74B9FF;
+  --piece-O: #FDCB6E;
+  --piece-T: #A29BFE;
+  --piece-S: #55EFC4;
+  --piece-Z: #FF7675;
+  --piece-J: #74E3FF;
+  --piece-L: #FAB1A0;
+}
+
+/* High contrast theme */
+tetro-2048-board[theme="high-contrast"] {
+  --board-bg: #000000;
+  --grid-stroke: #FFFFFF;
+  --grid-stroke-width: 2px;
+  --piece-I: #00FFFF;
+  --piece-O: #FFFF00;
+  --piece-T: #FF00FF;
+  --piece-S: #00FF00;
+  --piece-Z: #FF0000;
+  --piece-J: #0080FF;
+  --piece-L: #FF8000;
+  --preview-bg: #1a1a1a;
+  --preview-border: #FFFFFF;
+  --hud-text: #FFFFFF;
+  --hud-text-muted: #CCCCCC;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  tetro-2048-board {
+    --animation-duration: 0.01ms;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  tetro-2048-board:not([theme]) {
+    --board-bg: #000000;
+    --grid-stroke: #FFFFFF;
+    --grid-stroke-width: 2px;
+  }
+}
+

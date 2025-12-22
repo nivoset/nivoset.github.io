@@ -1,0 +1,329 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+	title="Slide-Tris" 
+	description="A Tetris×2048 hybrid puzzle game. Slide pieces in any direction to clear rows and columns. Play in classic or daily mode."
+>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+			Slide-Tris
+		</h1>
+		<p class="text-lg text-warmlight-sand/80 mb-8 max-w-3xl">
+			A hybrid puzzle game combining Tetris and 2048 mechanics. Slide all pieces in any direction to clear fully filled rows and columns. 
+			Pieces split when disconnected. Can you clear the board?
+		</p>
+		
+		<div class="max-w-4xl mx-auto">
+			<!-- Game Controls -->
+			<div class="mb-6 flex flex-wrap gap-4 items-center justify-center" role="toolbar" aria-label="Game controls">
+				<button
+					id="new-game-btn"
+					class="btn btn-primary px-6 py-2 rounded font-semibold"
+					aria-label="Start a new game"
+				>
+					New Game
+				</button>
+				<button
+					id="undo-btn"
+					class="btn px-6 py-2 rounded font-semibold bg-federal-gray border border-ominous-teal text-warmlight-sand hover:bg-ominous-teal/20"
+					aria-label="Undo last move"
+				>
+					Undo
+				</button>
+				<div class="flex items-center gap-2">
+					<label for="mode-select" class="text-warmlight-sand/80 text-sm">Mode:</label>
+					<select
+						id="mode-select"
+						class="bg-federal-gray border border-ominous-teal text-warmlight-sand px-3 py-1 rounded"
+						aria-label="Select game mode"
+					>
+						<option value="classic">Classic</option>
+						<option value="daily">Daily Challenge</option>
+					</select>
+				</div>
+				<div class="flex items-center gap-2">
+					<label for="theme-select" class="text-warmlight-sand/80 text-sm">Theme:</label>
+					<select
+						id="theme-select"
+						class="bg-federal-gray border border-ominous-teal text-warmlight-sand px-3 py-1 rounded"
+						aria-label="Select theme"
+					>
+						<option value="minimal">Minimal</option>
+						<option value="high-contrast">High Contrast</option>
+					</select>
+				</div>
+				<label class="flex items-center gap-2 cursor-pointer">
+					<input
+						type="checkbox"
+						id="haptics-toggle"
+						class="w-4 h-4"
+						aria-label="Enable haptic feedback"
+					/>
+					<span class="text-warmlight-sand/80 text-sm">Haptics</span>
+				</label>
+			</div>
+			
+			<!-- Game Board -->
+			<div class="mb-6" role="region" aria-label="Game board">
+				<tetro-2048-board
+					id="game-board"
+					width="11"
+					height="11"
+					mode="classic"
+					theme="minimal"
+					aria-label="Slide-Tris game board"
+				></tetro-2048-board>
+			</div>
+			
+			<!-- Instructions -->
+			<div class="bg-federal-gray border border-ominous-teal rounded-lg p-6 mb-6">
+				<h2 class="text-xl font-heading font-bold text-warmlight-sand mb-4">How to Play</h2>
+				<ul class="space-y-2 text-warmlight-sand/80">
+					<li><strong>Move pieces:</strong> Swipe on touch devices or use arrow keys / WASD</li>
+					<li><strong>Rotate preview:</strong> Click or tap the preview piece to rotate it 90°, or press Enter/Space when focused</li>
+					<li><strong>Clear lines:</strong> Fill entire rows or columns to clear them and score points</li>
+					<li><strong>Piece splitting:</strong> When pieces disconnect after clearing, they become separate pieces</li>
+					<li><strong>Game over:</strong> If the preview piece can't be placed, the game ends</li>
+					<li><strong>Daily mode:</strong> One attempt per day with a shared seed for all players</li>
+					<li><strong>Keyboard navigation:</strong> Tab to focus the game board, then use arrow keys or WASD to play</li>
+				</ul>
+			</div>
+			
+			<!-- Daily Mode Info -->
+			<div id="daily-info" class="bg-federal-gray border border-ominous-teal rounded-lg p-6 mb-6 hidden">
+				<h2 class="text-xl font-heading font-bold text-warmlight-sand mb-2">Daily Challenge</h2>
+				<p class="text-warmlight-sand/80 mb-2">
+					Today's best: <span id="daily-best" class="font-semibold">0</span>
+				</p>
+				<p class="text-warmlight-sand/60 text-sm" id="daily-status">
+					Ready to play!
+				</p>
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<link rel="stylesheet" href="/slide-tris/theme.css" />
+
+<script>
+	import '../global.css';
+	
+	// Wait for custom element to be defined
+	function initGame() {
+		const gameBoard = document.getElementById('game-board');
+		if (!gameBoard || !gameBoard.newGame) {
+			// Component not ready yet, try again
+			setTimeout(initGame, 100);
+			return;
+		}
+		
+		const newGameBtn = document.getElementById('new-game-btn');
+		const undoBtn = document.getElementById('undo-btn');
+		const modeSelect = document.getElementById('mode-select');
+		const themeSelect = document.getElementById('theme-select');
+		const hapticsToggle = document.getElementById('haptics-toggle');
+		const dailyInfo = document.getElementById('daily-info');
+		const dailyBest = document.getElementById('daily-best');
+		const dailyStatus = document.getElementById('daily-status');
+	
+	// Load settings
+	function loadSettings() {
+		try {
+			const settings = localStorage.getItem('tetro2048.settings');
+			if (settings) {
+				const parsed = JSON.parse(settings);
+				if (parsed.theme) {
+					themeSelect.value = parsed.theme;
+					gameBoard.setTheme(parsed.theme);
+				}
+				if (parsed.haptics !== undefined) {
+					hapticsToggle.checked = parsed.haptics;
+					if (gameBoard.setHaptics) {
+						gameBoard.setHaptics(parsed.haptics);
+					}
+				}
+			}
+		} catch (e) {
+			// Ignore
+		}
+	}
+	
+	// Save settings
+	function saveSettings() {
+		try {
+			const settings = {
+				theme: themeSelect.value,
+				haptics: hapticsToggle.checked
+			};
+			localStorage.setItem('tetro2048.settings', JSON.stringify(settings));
+			if (gameBoard.setHaptics) {
+				gameBoard.setHaptics(hapticsToggle.checked);
+			}
+		} catch (e) {
+			// Ignore
+		}
+	}
+	
+	// Load daily mode info
+	function loadDailyInfo() {
+		if (modeSelect.value !== 'daily') {
+			dailyInfo.classList.add('hidden');
+			return;
+		}
+		
+		dailyInfo.classList.remove('hidden');
+		
+		try {
+			const now = new Date();
+			const nyDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+			const year = nyDate.getFullYear();
+			const month = String(nyDate.getMonth() + 1).padStart(2, '0');
+			const day = String(nyDate.getDate()).padStart(2, '0');
+			const dateKey = `${year}-${month}-${day}`;
+			
+			const dailyData = localStorage.getItem(`tetro2048.daily.${dateKey}`);
+			if (dailyData) {
+				const parsed = JSON.parse(dailyData);
+				dailyBest.textContent = parsed.best || 0;
+				if (parsed.played) {
+					dailyStatus.textContent = 'You\'ve already played today. Try again tomorrow!';
+					dailyStatus.classList.remove('text-warmlight-sand/60');
+					dailyStatus.classList.add('text-union-red');
+				} else {
+					dailyStatus.textContent = 'Ready to play!';
+					dailyStatus.classList.remove('text-union-red');
+					dailyStatus.classList.add('text-warmlight-sand/60');
+				}
+			} else {
+				dailyBest.textContent = '0';
+				dailyStatus.textContent = 'Ready to play!';
+				dailyStatus.classList.remove('text-union-red');
+				dailyStatus.classList.add('text-warmlight-sand/60');
+			}
+		} catch (e) {
+			// Ignore
+		}
+	}
+	
+	// Save daily mode data
+	function saveDailyData(score) {
+		if (modeSelect.value !== 'daily') return;
+		
+		try {
+			const now = new Date();
+			const nyDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+			const year = nyDate.getFullYear();
+			const month = String(nyDate.getMonth() + 1).padStart(2, '0');
+			const day = String(nyDate.getDate()).padStart(2, '0');
+			const dateKey = `${year}-${month}-${day}`;
+			
+			const existing = localStorage.getItem(`tetro2048.daily.${dateKey}`);
+			let data = { best: 0, played: false };
+			
+			if (existing) {
+				data = JSON.parse(existing);
+			}
+			
+			if (score > data.best) {
+				data.best = score;
+			}
+			data.played = true;
+			
+			localStorage.setItem(`tetro2048.daily.${dateKey}`, JSON.stringify(data));
+			loadDailyInfo();
+		} catch (e) {
+			// Ignore
+		}
+	}
+	
+	// Check if daily mode is already played
+	function isDailyPlayed() {
+		if (modeSelect.value !== 'daily') return false;
+		
+		try {
+			const now = new Date();
+			const nyDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+			const year = nyDate.getFullYear();
+			const month = String(nyDate.getMonth() + 1).padStart(2, '0');
+			const day = String(nyDate.getDate()).padStart(2, '0');
+			const dateKey = `${year}-${month}-${day}`;
+			
+			const dailyData = localStorage.getItem(`tetro2048.daily.${dateKey}`);
+			if (dailyData) {
+				const parsed = JSON.parse(dailyData);
+				return parsed.played === true;
+			}
+		} catch (e) {
+			// Ignore
+		}
+		
+		return false;
+	}
+	
+	// Event listeners
+	newGameBtn.addEventListener('click', () => {
+		if (modeSelect.value === 'daily' && isDailyPlayed()) {
+			if (!confirm('You\'ve already played today\'s daily challenge. Start a new game anyway?')) {
+				return;
+			}
+		}
+		gameBoard.newGame();
+	});
+	
+	undoBtn.addEventListener('click', () => {
+		gameBoard.undo();
+	});
+	
+	modeSelect.addEventListener('change', () => {
+		gameBoard.setAttribute('mode', modeSelect.value);
+		loadDailyInfo();
+		if (modeSelect.value === 'daily' && !isDailyPlayed()) {
+			gameBoard.newGame();
+		}
+	});
+	
+	themeSelect.addEventListener('change', () => {
+		gameBoard.setTheme(themeSelect.value);
+		saveSettings();
+	});
+	
+	hapticsToggle.addEventListener('change', () => {
+		saveSettings();
+	});
+	
+	// Game events
+	gameBoard.addEventListener('gameover', (e) => {
+		const score = e.detail?.score || 0;
+		if (modeSelect.value === 'daily') {
+			saveDailyData(score);
+		}
+	});
+	
+	gameBoard.addEventListener('score', (e) => {
+		// Track first move for daily mode
+		if (modeSelect.value === 'daily' && !isDailyPlayed()) {
+			const snapshot = localStorage.getItem('tetro2048.snapshot');
+			if (!snapshot) {
+				// First move, mark as played
+				saveDailyData(0);
+			}
+		}
+	});
+	
+		// Initialize
+		loadSettings();
+		loadDailyInfo();
+	}
+	
+	// Start initialization
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initGame);
+	} else {
+		initGame();
+	}
+</script>
+
+<script type="module" src="/slide-tris/tetro-2048-board.js"></script>
+
