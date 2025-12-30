@@ -39,18 +39,6 @@ export const projects: Project[] = [
 		},
 	},
 	{
-		id: 'tinytask',
-		title: 'TinyTask-like ASync Interface',
-		description: 'Async task management interface inspired by TinyTask, built for modern web applications.',
-		tags: ['#DevTools', '#Workflow'],
-		stack: ['TypeScript', 'React'],
-		details: 'A lightweight task queue and execution system with a clean async interface for managing background tasks.',
-		architecture: 'Event-driven architecture with promise-based API.',
-		links: {
-			github: 'https://github.com/nivoset/tinytask',
-		},
-	},
-	{
 		id: 'mcp-server',
 		title: 'MCP Server Experiments',
 		description: 'Model Context Protocol server implementations and experiments.',
