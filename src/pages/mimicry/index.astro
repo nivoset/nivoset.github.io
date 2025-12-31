@@ -1,0 +1,291 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TodoList from '../../components/TodoList.astro';
+import FeatureItem from '../../components/FeatureItem.astro';
+import { getProjectById } from '../../lib/projects';
+
+// Get Mimicry project data
+const mimicryProject = getProjectById('mimicry');
+---
+
+<BaseLayout 
+	title="Mimicry - AI-Powered Browser Testing" 
+	description="Mimicry is an AI-powered browser testing framework that converts Gherkin or plain language tests into executable code, with self-repair capabilities when tests break due to code changes."
+>
+	<div class="container mx-auto px-4 py-16">
+		<!-- Header Section -->
+		<div class="mb-12">
+			<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
+				Mimicry
+			</h1>
+			<p class="text-xl text-fog-blue mb-6 max-w-3xl">
+				AI-powered browser testing framework that converts Gherkin or plain language tests into executable code, with self-repair capabilities when tests break due to code changes.
+			</p>
+			
+			{mimicryProject?.links && (
+				<div class="flex flex-wrap gap-4">
+					{mimicryProject.links.github && (
+						<a 
+							href={mimicryProject.links.github}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
+						>
+							View on GitHub →
+						</a>
+					)}
+					{mimicryProject.links.docs && (
+						<a 
+							href={mimicryProject.links.docs}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
+						>
+							Documentation →
+						</a>
+					)}
+				</div>
+			)}
+		</div>
+		
+		<!-- Main Content Grid -->
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<!-- Left Column: Main Content -->
+			<div class="lg:col-span-2 space-y-8">
+				<!-- Overview Section -->
+				<section class="card border-2 border-union-red/30">
+					<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+						Overview
+					</h2>
+					<div class="prose prose-invert max-w-none text-warmlight-sand/90 space-y-4">
+						<p class="text-lg font-semibold text-worker-gold italic">
+							Mimicry learns how your app works, remembers what succeeds, repeats it reliably — and only thinks again when something breaks.
+						</p>
+						<p>
+							Mimicry is an AI-powered browser testing framework that revolutionizes how we write and maintain browser tests. 
+							Instead of writing brittle, selector-dependent test code, you write tests in plain English or Gherkin syntax, 
+							and Mimicry converts them into executable Playwright code.
+						</p>
+					</div>
+				</section>
+				
+				<!-- Key Features Section -->
+				<section class="card border-2 border-union-red/30">
+					<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+						Key Features
+					</h2>
+					<ul class="space-y-3 text-warmlight-sand/90">
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">🤖</span>
+							<div>
+								<strong class="text-worker-gold">AI-Powered Conversion:</strong> Uses language models to understand and execute natural language test instructions
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">🎯</span>
+							<div>
+								<strong class="text-worker-gold">Smart Element Selection:</strong> Automatically finds and interacts with elements based on semantic understanding
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">📝</span>
+							<div>
+								<strong class="text-worker-gold">Gherkin-Style Syntax:</strong> Write tests in natural language, one instruction per line
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">🔄</span>
+							<div>
+								<strong class="text-worker-gold">Self-Repair Capability:</strong> Automatically repairs broken tests when application code changes
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">🎭</span>
+							<div>
+								<strong class="text-worker-gold">Playwright Integration:</strong> Built on top of Playwright for reliable browser automation
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<span class="text-union-red text-xl">📊</span>
+							<div>
+								<strong class="text-worker-gold">Token Tracking:</strong> Built-in token usage tracking for AI model calls
+							</div>
+						</li>
+					</ul>
+				</section>
+				
+				<!-- How It Works Section -->
+				<section class="card border-2 border-union-red/30">
+					<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+						How It Works
+					</h2>
+					<div class="space-y-6 text-warmlight-sand/90">
+						<p class="text-lg">
+							Mimicry follows a simple, human-readable lifecycle:
+						</p>
+						<div class="text-center py-4">
+							<p class="text-2xl font-heading font-bold text-worker-gold">
+								Learn → Remember → Repeat → Troubleshoot & Fix
+							</p>
+						</div>
+						<p>
+							AI is used to learn and adapt — not to waste tokens repeating work it has already done.
+						</p>
+						
+						<div class="space-y-6 pt-4">
+							<div>
+								<h3 class="text-xl font-heading font-semibold text-worker-gold mb-3">
+									1. Learn — Understand the Intent
+								</h3>
+								<p class="mb-3">
+									You write your test in plain English or Gherkin-style steps:
+								</p>
+								<pre class="mt-2 p-4 bg-graphite-black rounded border border-ominous-teal/30 overflow-x-auto"><code class="text-fog-blue">await mimicry`
+  navigate to https://playwright.dev/
+  click on "get started"
+  and click on "trace viewer"
+`;</code></pre>
+								<p class="mt-3">
+									During Learn, Mimicry uses an AI model to:
+								</p>
+								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
+									<li>Interpret your intent</li>
+									<li>Reason about the structure and semantics of the page</li>
+									<li>Identify the most likely elements to interact with</li>
+									<li>Generate executable Playwright steps</li>
+								</ul>
+								<p class="mt-3">
+									This is the most flexible phase — it's where Mimicry figures out what you meant, not just what to click.
+								</p>
+							</div>
+							
+							<div>
+								<h3 class="text-xl font-heading font-semibold text-worker-gold mb-3">
+									2. Remember — Capture a Verified Recording
+								</h3>
+								<p class="mb-3">
+									Once the test runs successfully, Mimicry remembers what worked.
+								</p>
+								<p class="mb-3">
+									It stores a verified recording of the execution, including:
+								</p>
+								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
+									<li>The resolved interaction steps</li>
+									<li>Element identification data used during the run</li>
+									<li>Context needed to reliably repeat the behavior</li>
+								</ul>
+								<p class="mt-3">
+									You can review the execution (for example, via Playwright's video output) to confirm it behaves exactly as expected. 
+									Once verified, this recording becomes the trusted reference for future runs.
+								</p>
+							</div>
+							
+							<div>
+								<h3 class="text-xl font-heading font-semibold text-worker-gold mb-3">
+									3. Repeat — Fast, Deterministic Execution
+								</h3>
+								<p class="mb-3">
+									On subsequent runs, Mimicry simply repeats the recorded behavior.
+								</p>
+								<p class="mb-3">
+									In this phase:
+								</p>
+								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
+									<li>No AI calls are made</li>
+									<li>Token usage drops to near zero</li>
+									<li>Tests run faster and more deterministically</li>
+									<li>Behavior is repeatable because it's based on a known-good run</li>
+								</ul>
+								<p class="mt-3">
+									As long as the application hasn't changed in a way that breaks the test, Mimicry stays in Repeat mode.
+								</p>
+							</div>
+							
+							<div>
+								<h3 class="text-xl font-heading font-semibold text-worker-gold mb-3">
+									4. Troubleshoot & Fix — Adapt When Things Change
+								</h3>
+								<p class="mb-3">
+									When a test can no longer repeat successfully — due to UI or structural changes — Mimicry detects the failure 
+									and switches back into reasoning mode.
+								</p>
+								<p class="mb-3">
+									During Troubleshoot & Fix, Mimicry:
+								</p>
+								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
+									<li>Analyzes what failed and why</li>
+									<li>Re-learns the updated application structure</li>
+									<li>Repairs or regenerates the broken steps</li>
+									<li>Saves a new verified recording</li>
+								</ul>
+								<p class="mt-3">
+									Once repaired and validated, the test returns to Repeat mode — stable, fast, and low-cost again.
+								</p>
+							</div>
+						</div>
+						
+						<div class="pt-6 border-t border-ominous-teal/30">
+							<h3 class="text-xl font-heading font-semibold text-worker-gold mb-3">
+								The Full Loop
+							</h3>
+							<div class="text-center py-4">
+								<p class="text-2xl font-heading font-bold text-worker-gold">
+									Learn → Remember → Repeat → Troubleshoot & Fix → Repeat
+								</p>
+							</div>
+							<p class="text-center mt-4">
+								AI is invoked only when something is new or broken.<br/>
+								Everything else runs on verified knowledge.
+							</p>
+						</div>
+					</div>
+				</section>
+				
+				<!-- Architecture Section -->
+				{mimicryProject?.architecture && (
+					<section class="card border-2 border-union-red/30">
+						<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+							Architecture
+						</h2>
+						<p class="text-warmlight-sand/90">
+							{mimicryProject.architecture}
+						</p>
+					</section>
+				)}
+				
+				<!-- Stack Section -->
+				{mimicryProject?.stack && (
+					<section class="card border-2 border-union-red/30">
+						<h2 class="text-2xl font-heading font-semibold text-worker-gold mb-4">
+							Technology Stack
+						</h2>
+						<div class="flex flex-wrap gap-2">
+							{mimicryProject.stack.map((tech) => (
+								<span class="px-3 py-1 bg-storm-slate text-technocrat-purple text-sm font-mono rounded border border-ominous-teal/30">
+									{tech}
+								</span>
+							))}
+						</div>
+					</section>
+				)}
+			</div>
+			
+			<!-- Right Column: Feature List -->
+			<div class="lg:col-span-1">
+				<div class="card border-2 border-union-red/30">
+					<h3 class="text-xl font-heading font-semibold text-worker-gold mb-4">
+						Features
+					</h3>
+					<ul class="space-y-3 text-warmlight-sand/90">
+						<FeatureItem label="AI integration to work out what is needed" completed={true} />
+						<FeatureItem label="AI detection of correct component(s) and actions from text" completed={true} />
+						<FeatureItem label="Enacting those actions in order" completed={true} />
+						<FeatureItem label="Logging token use" completed={true} />
+						<FeatureItem label="Snapshotting passing tests" completed={false} />
+						<FeatureItem label="Reporting token on tests" completed={false} />
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</BaseLayout>

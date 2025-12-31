@@ -1,0 +1,36 @@
+---
+/**
+ * FeatureItem Component
+ * 
+ * Displays a feature list item with a disabled checkbox and label.
+ * The checkbox shows a blue background when disabled and can be marked as completed.
+ * 
+ * @param {string} label - The text label for the feature
+ * @param {boolean} completed - Whether the feature is completed (defaults to false)
+ */
+
+interface Props {
+	label: string;
+	completed?: boolean;
+}
+
+const { label, completed = false } = Astro.props;
+---
+
+<li class="flex items-start gap-3">
+	<div 
+		class="mt-1 w-4 h-4 flex items-center justify-center"
+		aria-hidden="true"
+	>
+		{completed ? (
+			<svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+				<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+			</svg>
+		) : (
+			<div class="w-2 h-2 rounded-full bg-white"></div>
+		)}
+	</div>
+	<span class={`flex-1 todo-label ${completed ? 'line-through text-warmlight-sand/50' : ''}`}>
+		{label}
+	</span>
+</li>

@@ -1,0 +1,248 @@
+---
+/**
+ * TodoList Component
+ * 
+ * Displays a list of todo items with checkboxes for tracking project tasks.
+ * Supports adding, removing, and toggling todo items with localStorage persistence.
+ */
+
+interface TodoItem {
+	id: string;
+	text: string;
+	completed: boolean;
+}
+
+interface Props {
+	projectId?: string;
+	initialTodos?: TodoItem[];
+}
+
+const { projectId = 'default', initialTodos = [] } = Astro.props;
+---
+
+<div class="card border-2 border-union-red/30">
+	<div class="flex justify-between items-center mb-4">
+		<h3 class="text-xl font-heading font-semibold text-worker-gold">
+			Todo List
+		</h3>
+		<button
+			id="add-todo-btn"
+			class="px-3 py-1 bg-union-red/20 hover:bg-union-red/40 text-union-red rounded transition-colors text-sm font-medium"
+			aria-label="Add new todo item"
+		>
+			+ Add
+		</button>
+	</div>
+	
+	<!-- Todo Input Form (hidden by default) -->
+	<div id="todo-input-form" class="hidden mb-4">
+		<input
+			type="text"
+			id="todo-input"
+			placeholder="Enter a new task..."
+			class="w-full px-4 py-2 bg-federal-gray border border-ominous-teal/30 rounded text-warmlight-sand placeholder-warmlight-sand/50 focus:outline-none focus:border-worker-gold focus:ring-2 focus:ring-worker-gold/20"
+			aria-label="New todo item text"
+		/>
+		<div class="flex gap-2 mt-2">
+			<button
+				id="save-todo-btn"
+				class="px-4 py-2 bg-union-red hover:bg-union-red/80 text-warmlight-sand rounded transition-colors text-sm font-medium"
+			>
+				Save
+			</button>
+			<button
+				id="cancel-todo-btn"
+				class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 text-warmlight-sand rounded transition-colors text-sm font-medium"
+			>
+				Cancel
+			</button>
+		</div>
+	</div>
+	
+	<!-- Todo List Container -->
+	<ul id="todo-list" class="space-y-2" role="list" aria-label="Todo items">
+		<!-- Todo items will be dynamically inserted here -->
+	</ul>
+	
+	<!-- Empty State -->
+	<div id="todo-empty-state" class="text-center py-8 text-warmlight-sand/60">
+		<p>No tasks yet. Click "Add" to create your first task.</p>
+	</div>
+</div>
+
+<script define:vars={{ projectId, initialTodos }}>
+	/**
+	 * TodoList Management
+	 * 
+	 * Handles todo item creation, completion, deletion, and persistence.
+	 * Uses localStorage to persist todos across page reloads.
+	 */
+	
+	const STORAGE_KEY = `mimicry-todos-${projectId}`;
+	
+	// Initialize todos from localStorage or initial props
+	let todos: TodoItem[] = [];
+	
+	try {
+		const stored = localStorage.getItem(STORAGE_KEY);
+		if (stored) {
+			todos = JSON.parse(stored);
+		} else if (initialTodos && initialTodos.length > 0) {
+			todos = initialTodos;
+			saveTodos();
+		}
+	} catch (e) {
+		console.error('Failed to load todos:', e);
+		todos = initialTodos || [];
+	}
+	
+	// DOM Elements
+	const todoList = document.getElementById('todo-list') as HTMLUListElement;
+	const todoInputForm = document.getElementById('todo-input-form') as HTMLDivElement;
+	const todoInput = document.getElementById('todo-input') as HTMLInputElement;
+	const addTodoBtn = document.getElementById('add-todo-btn') as HTMLButtonElement;
+	const saveTodoBtn = document.getElementById('save-todo-btn') as HTMLButtonElement;
+	const cancelTodoBtn = document.getElementById('cancel-todo-btn') as HTMLButtonElement;
+	const emptyState = document.getElementById('todo-empty-state') as HTMLDivElement;
+	
+	/**
+	 * Save todos to localStorage
+	 */
+	function saveTodos() {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+		} catch (e) {
+			console.error('Failed to save todos:', e);
+		}
+	}
+	
+	/**
+	 * Generate a unique ID for a todo item
+	 */
+	function generateId(): string {
+		return `todo-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+	}
+	
+	/**
+	 * Render all todos to the DOM
+	 */
+	function renderTodos() {
+		if (!todoList) return;
+		
+		todoList.innerHTML = '';
+		
+		if (todos.length === 0) {
+			emptyState?.classList.remove('hidden');
+			return;
+		}
+		
+		emptyState?.classList.add('hidden');
+		
+		todos.forEach((todo) => {
+			const li = document.createElement('li');
+			li.className = 'flex items-start gap-3 p-3 bg-federal-gray/50 rounded border border-ominous-teal/20 hover:border-ominous-teal/40 transition-colors';
+			li.setAttribute('data-todo-id', todo.id);
+			
+			// Checkbox
+			const checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.id = `todo-${todo.id}`;
+			checkbox.checked = todo.completed;
+			checkbox.className = 'mt-1 w-4 h-4 text-union-red bg-federal-gray border-ominous-teal/30 rounded focus:ring-worker-gold focus:ring-2';
+			checkbox.setAttribute('aria-label', `Mark "${todo.text}" as ${todo.completed ? 'incomplete' : 'complete'}`);
+			
+			// Label
+			const label = document.createElement('label');
+			label.htmlFor = `todo-${todo.id}`;
+			label.className = `flex-1 cursor-pointer ${todo.completed ? 'line-through text-warmlight-sand/50' : 'text-warmlight-sand'}`;
+			label.textContent = todo.text;
+			
+			// Delete button
+			const deleteBtn = document.createElement('button');
+			deleteBtn.className = 'px-2 py-1 text-union-red hover:text-union-red/80 hover:bg-union-red/10 rounded transition-colors text-sm';
+			deleteBtn.setAttribute('aria-label', `Delete "${todo.text}"`);
+			deleteBtn.innerHTML = '×';
+			
+			// Event listeners
+			checkbox.addEventListener('change', () => {
+				todo.completed = checkbox.checked;
+				label.className = `flex-1 cursor-pointer ${todo.completed ? 'line-through text-warmlight-sand/50' : 'text-warmlight-sand'}`;
+				saveTodos();
+			});
+			
+			deleteBtn.addEventListener('click', () => {
+				todos = todos.filter(t => t.id !== todo.id);
+				saveTodos();
+				renderTodos();
+			});
+			
+			li.appendChild(checkbox);
+			li.appendChild(label);
+			li.appendChild(deleteBtn);
+			todoList.appendChild(li);
+		});
+	}
+	
+	/**
+	 * Show the todo input form
+	 */
+	function showInputForm() {
+		if (todoInputForm) {
+			todoInputForm.classList.remove('hidden');
+			todoInput?.focus();
+		}
+	}
+	
+	/**
+	 * Hide the todo input form and clear input
+	 */
+	function hideInputForm() {
+		if (todoInputForm) {
+			todoInputForm.classList.add('hidden');
+		}
+		if (todoInput) {
+			todoInput.value = '';
+		}
+	}
+	
+	/**
+	 * Add a new todo item
+	 */
+	function addTodo() {
+		const text = todoInput?.value.trim();
+		if (!text) return;
+		
+		const newTodo: TodoItem = {
+			id: generateId(),
+			text,
+			completed: false,
+		};
+		
+		todos.push(newTodo);
+		saveTodos();
+		renderTodos();
+		hideInputForm();
+	}
+	
+	// Event listeners
+	addTodoBtn?.addEventListener('click', showInputForm);
+	
+	saveTodoBtn?.addEventListener('click', () => {
+		addTodo();
+	});
+	
+	cancelTodoBtn?.addEventListener('click', hideInputForm);
+	
+	todoInput?.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			addTodo();
+		} else if (e.key === 'Escape') {
+			hideInputForm();
+		}
+	});
+	
+	// Initial render
+	renderTodos();
+</script>
+
