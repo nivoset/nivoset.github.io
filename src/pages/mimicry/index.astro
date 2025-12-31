@@ -4,48 +4,44 @@ import TodoList from '../../components/TodoList.astro';
 import FeatureItem from '../../components/FeatureItem.astro';
 import { getProjectById } from '../../lib/projects';
 
-// Get Mimicry project data
+// Get Mimic project data
 const mimicryProject = getProjectById('mimicry');
 ---
 
 <BaseLayout 
-	title="Mimicry - AI-Powered Browser Testing" 
-	description="Mimicry is an AI-powered browser testing framework that converts Gherkin or plain language tests into executable code, with self-repair capabilities when tests break due to code changes."
+	title="Mimic - AI-Powered Browser Testing" 
+	description="Mimic (playwright-mimic) is an AI-powered browser testing framework that converts Gherkin or plain language tests into executable code, with self-repair capabilities when tests break due to code changes."
 >
 	<div class="container mx-auto px-4 py-16">
 		<!-- Header Section -->
 		<div class="mb-12">
 			<h1 class="text-4xl md:text-5xl font-heading font-bold text-warmlight-sand mb-4">
-				Mimicry
+				Mimic
 			</h1>
 			<p class="text-xl text-fog-blue mb-6 max-w-3xl">
 				AI-powered browser testing framework that converts Gherkin or plain language tests into executable code, with self-repair capabilities when tests break due to code changes.
 			</p>
 			
-			{mimicryProject?.links && (
-				<div class="flex flex-wrap gap-4">
-					{mimicryProject.links.github && (
-						<a 
-							href={mimicryProject.links.github}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
-						>
-							View on GitHub →
-						</a>
-					)}
-					{mimicryProject.links.docs && (
-						<a 
-							href={mimicryProject.links.docs}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
-						>
-							Documentation →
-						</a>
-					)}
-				</div>
-			)}
+			<div class="flex flex-wrap gap-4">
+				<a 
+					href="https://www.npmjs.com/package/playwright-mimic"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
+				>
+					View on npm →
+				</a>
+				{mimicryProject?.links?.docs && (
+					<a 
+						href={mimicryProject.links.docs}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="px-4 py-2 bg-federal-gray hover:bg-federal-gray/80 border border-ominous-teal/30 hover:border-ominous-teal/50 rounded text-fog-blue hover:text-worker-gold transition-colors"
+					>
+						Documentation →
+					</a>
+				)}
+			</div>
 		</div>
 		
 		<!-- Main Content Grid -->
@@ -59,12 +55,12 @@ const mimicryProject = getProjectById('mimicry');
 					</h2>
 					<div class="prose prose-invert max-w-none text-warmlight-sand/90 space-y-4">
 						<p class="text-lg font-semibold text-worker-gold italic">
-							Mimicry learns how your app works, remembers what succeeds, repeats it reliably — and only thinks again when something breaks.
+							Mimic learns how your app works, remembers what succeeds, repeats it reliably — and only thinks again when something breaks.
 						</p>
 						<p>
-							Mimicry is an AI-powered browser testing framework that revolutionizes how we write and maintain browser tests. 
+							Mimic (playwright-mimic) is an AI-powered browser testing framework that revolutionizes how we write and maintain browser tests. 
 							Instead of writing brittle, selector-dependent test code, you write tests in plain English or Gherkin syntax, 
-							and Mimicry converts them into executable Playwright code.
+							and Mimic converts them into executable Playwright code.
 						</p>
 					</div>
 				</section>
@@ -121,7 +117,7 @@ const mimicryProject = getProjectById('mimicry');
 					</h2>
 					<div class="space-y-6 text-warmlight-sand/90">
 						<p class="text-lg">
-							Mimicry follows a simple, human-readable lifecycle:
+							Mimic follows a simple, human-readable lifecycle:
 						</p>
 						<div class="text-center py-4">
 							<p class="text-2xl font-heading font-bold text-worker-gold">
@@ -140,13 +136,13 @@ const mimicryProject = getProjectById('mimicry');
 								<p class="mb-3">
 									You write your test in plain English or Gherkin-style steps:
 								</p>
-								<pre class="mt-2 p-4 bg-graphite-black rounded border border-ominous-teal/30 overflow-x-auto"><code class="text-fog-blue">await mimicry`
+								<pre class="mt-2 p-4 bg-graphite-black rounded border border-ominous-teal/30 overflow-x-auto"><code class="text-fog-blue">await mimic`
   navigate to https://playwright.dev/
   click on "get started"
   and click on "trace viewer"
 `;</code></pre>
 								<p class="mt-3">
-									During Learn, Mimicry uses an AI model to:
+									During Learn, Mimic uses an AI model to:
 								</p>
 								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
 									<li>Interpret your intent</li>
@@ -155,7 +151,7 @@ const mimicryProject = getProjectById('mimicry');
 									<li>Generate executable Playwright steps</li>
 								</ul>
 								<p class="mt-3">
-									This is the most flexible phase — it's where Mimicry figures out what you meant, not just what to click.
+									This is the most flexible phase — it's where Mimic figures out what you meant, not just what to click.
 								</p>
 							</div>
 							
@@ -164,7 +160,7 @@ const mimicryProject = getProjectById('mimicry');
 									2. Remember — Capture a Verified Recording
 								</h3>
 								<p class="mb-3">
-									Once the test runs successfully, Mimicry remembers what worked.
+									Once the test runs successfully, Mimic remembers what worked.
 								</p>
 								<p class="mb-3">
 									It stores a verified recording of the execution, including:
@@ -185,7 +181,7 @@ const mimicryProject = getProjectById('mimicry');
 									3. Repeat — Fast, Deterministic Execution
 								</h3>
 								<p class="mb-3">
-									On subsequent runs, Mimicry simply repeats the recorded behavior.
+									On subsequent runs, Mimic simply repeats the recorded behavior.
 								</p>
 								<p class="mb-3">
 									In this phase:
@@ -197,7 +193,7 @@ const mimicryProject = getProjectById('mimicry');
 									<li>Behavior is repeatable because it's based on a known-good run</li>
 								</ul>
 								<p class="mt-3">
-									As long as the application hasn't changed in a way that breaks the test, Mimicry stays in Repeat mode.
+									As long as the application hasn't changed in a way that breaks the test, Mimic stays in Repeat mode.
 								</p>
 							</div>
 							
@@ -206,11 +202,11 @@ const mimicryProject = getProjectById('mimicry');
 									4. Troubleshoot & Fix — Adapt When Things Change
 								</h3>
 								<p class="mb-3">
-									When a test can no longer repeat successfully — due to UI or structural changes — Mimicry detects the failure 
+									When a test can no longer repeat successfully — due to UI or structural changes — Mimic detects the failure 
 									and switches back into reasoning mode.
 								</p>
 								<p class="mb-3">
-									During Troubleshoot & Fix, Mimicry:
+									During Troubleshoot & Fix, Mimic:
 								</p>
 								<ul class="list-disc list-inside ml-4 space-y-1 mt-2">
 									<li>Analyzes what failed and why</li>
