@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import TodoList from '../../components/TodoList.astro';
 import FeatureItem from '../../components/FeatureItem.astro';
 import { getProjectById } from '../../lib/projects';
 
@@ -279,6 +278,7 @@ const mimicryProject = getProjectById('mimicry');
 						<FeatureItem label="Logging token use" completed={true} />
 						<FeatureItem label="Snapshotting passing tests" completed={false} />
 						<FeatureItem label="Reporting token on tests" completed={false} />
+						<FeatureItem label="Dynamically watching page while page is loading (SPA)" completed={false} />
 					</ul>
 				</div>
 			</div>
