@@ -1,0 +1,145 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+---
+
+<Layout
+  title="Handoff | Nivoset"
+  description="A concise handoff for collaborators picking up context, projects, and working preferences."
+>
+  <Header activeNav="handoff" />
+  <Main
+    pageTitle="Handoff"
+    pageDesc="A short map for people picking up context, collaborating on projects, or deciding where to start."
+  >
+    <section class="handoff-grid" aria-label="Handoff overview">
+      <article>
+        <p class="section-kicker">Current shape</p>
+        <h2>What this site is for</h2>
+        <p>
+          Nivoset is my working notebook for projects, experiments, and technical
+          notes. It is intentionally small: enough structure to make the trail
+          useful, not so much structure that it gets in the way of making things.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">Working style</p>
+        <h2>How I tend to build</h2>
+        <p>
+          I like concrete working software, tight feedback loops, and notes that
+          preserve decisions instead of just recording activity. When a project
+          gets complicated, I prefer a clear next action over a large abstract
+          plan.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">Technical range</p>
+        <h2>Useful context</h2>
+        <p>
+          My background spans frontend engineering, embedded systems, internal
+          tooling, and practical automation. That mix shows up in the projects
+          here: interfaces, systems, writing, and small tools that help work move.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">For collaborators</p>
+        <h2>Good handoff notes include</h2>
+        <ul>
+          <li>The outcome we are aiming for.</li>
+          <li>The current working state and known gaps.</li>
+          <li>The smallest useful next step.</li>
+          <li>Any constraints that should not be rediscovered later.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="handoff-section" aria-labelledby="project-map-heading">
+      <p class="section-kicker">Project map</p>
+      <h2 id="project-map-heading">Where to look first</h2>
+      <div class="project-list">
+        <a href="/posts">
+          <span>Blog</span>
+          <p>Longer notes, experiments, and writeups.</p>
+        </a>
+        <a href="/dsd">
+          <span>Projects</span>
+          <p>Structured project material, including Dead Simple Discipline.</p>
+        </a>
+        <a href="/about">
+          <span>About</span>
+          <p>Background, technical range, and contact context.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="handoff-section" aria-labelledby="next-heading">
+      <p class="section-kicker">Next pass</p>
+      <h2 id="next-heading">What this page should become</h2>
+      <p>
+        The next useful update is to connect this handoff to a few active project
+        pages, add dates for what is current, and turn the recurring project
+        patterns into short reusable checklists.
+      </p>
+    </section>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  @reference "tailwindcss";
+
+  .handoff-grid {
+    @apply grid gap-6 md:grid-cols-2;
+  }
+
+  .handoff-grid article,
+  .handoff-section {
+    @apply rounded-md border border-gray-200/70 bg-white/70 p-6 shadow-sm dark:border-slate-800/70 dark:bg-slate-900/40;
+  }
+
+  .handoff-grid article {
+    @apply flex flex-col gap-3;
+  }
+
+  .handoff-section {
+    @apply mt-8;
+  }
+
+  .section-kicker {
+    @apply text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400;
+  }
+
+  h2 {
+    @apply text-2xl font-bold text-gray-900 dark:text-gray-100;
+  }
+
+  p,
+  li {
+    @apply leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+
+  ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+
+  .project-list {
+    @apply mt-5 grid gap-4 md:grid-cols-3;
+  }
+
+  .project-list a {
+    @apply rounded-md border border-gray-200/70 p-4 transition-colors hover:border-blue-300 hover:bg-blue-50/60 dark:border-slate-800/70 dark:hover:border-blue-700 dark:hover:bg-blue-950/20;
+  }
+
+  .project-list span {
+    @apply block font-semibold text-gray-900 dark:text-gray-100;
+  }
+
+  .project-list p {
+    @apply mt-2 text-sm;
+  }
+</style>

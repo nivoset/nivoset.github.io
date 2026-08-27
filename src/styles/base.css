@@ -24,6 +24,10 @@
     display: block;
   }
   
+  html {
+    @apply bg-gray-50 dark:bg-slate-950;
+  }
+  
   * {
     @apply transition-colors duration-200;
   }

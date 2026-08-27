@@ -1,0 +1,240 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+
+const emailHref = "mailto:nivoset@gmail.com?subject=Automation%20pain%20point";
+---
+
+<Layout
+  title="Automation Help | Nivoset"
+  description="Practical AI and automation help for local companies that need to make messy work visible without hiring someone full time."
+>
+  <Header activeNav="automation" />
+  <Main
+    pageTitle="Automation help for messy work"
+    pageDesc="I help local companies turn spreadsheets, order forms, tracking sheets, reporting pain points, and repeated admin work into practical systems without hiring someone full time."
+  >
+    <section class="intro-panel" aria-labelledby="intro-heading">
+      <div>
+        <p class="section-kicker">Practical automation</p>
+        <h2 id="intro-heading">
+          Recover wasted hours without turning it into a software project.
+        </h2>
+        <p>
+          Most useful automation starts with a familiar pain point: an Excel
+          sheet that has become the source of truth, an order form that starts a
+          messy chain of follow-ups, or a weekly report that takes too much
+          manual cleanup before anyone can trust it.
+        </p>
+      </div>
+      <a class="primary-cta" href={emailHref}>Send me your pain points</a>
+    </section>
+
+    <section class="problem-grid" aria-label="Automation capabilities">
+      <article>
+        <p class="section-kicker">Spreadsheets</p>
+        <h2>Excel and reporting cleanup</h2>
+        <p>
+          Turn recurring spreadsheet work into repeatable flows that clean,
+          check, summarize, and surface what changed.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">Intake</p>
+        <h2>Forms, email, and handoffs</h2>
+        <p>
+          Convert scattered order forms, inbox requests, and notes into a clearer
+          workflow with ownership and next steps.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">Tracking</p>
+        <h2>Work and order status</h2>
+        <p>
+          Make it easier to see where jobs, orders, or requests are stuck, who
+          owns them, and what needs attention.
+        </p>
+      </article>
+
+      <article>
+        <p class="section-kicker">Tools</p>
+        <h2>Small internal systems</h2>
+        <p>
+          Build simple tools around the way your business actually works, then
+          document them so your team can keep using them.
+        </p>
+      </article>
+    </section>
+
+    <section class="automation-section" aria-labelledby="proof-heading">
+      <p class="section-kicker">What this can look like</p>
+      <h2 id="proof-heading">A few practical examples</h2>
+      <div class="example-list">
+        <article>
+          <h3>Weekly reporting stops being detective work</h3>
+          <p>
+            A spreadsheet that used to require manual cleanup becomes a
+            repeatable check-and-report flow, so exceptions stand out before
+            people waste time reading every row.
+          </p>
+        </article>
+
+        <article>
+          <h3>Follow-up work gets easier to review</h3>
+          <p>
+            Repeated customer or internal follow-ups can become draftable,
+            trackable, and easier to approve, with AI used only where it saves
+            time without removing judgment.
+          </p>
+        </article>
+
+        <article>
+          <h3>Order status becomes visible</h3>
+          <p>
+            Instead of one fragile tracking sheet, a small internal tool can show
+            what came in, what is waiting, who owns it, and what needs a decision.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section
+      class="automation-section split-section"
+      aria-labelledby="fit-heading"
+    >
+      <div>
+        <p class="section-kicker">Good fit</p>
+        <h2 id="fit-heading">Work worth improving</h2>
+        <ul>
+          <li>Recurring reports that take too long to prepare.</li>
+          <li>Spreadsheets that track important work but are hard to trust.</li>
+          <li>Order, job, or request status that is unclear until someone asks.</li>
+          <li>Manual copy-and-paste between systems, forms, or inboxes.</li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="section-kicker">Not a fit</p>
+        <h2>Work that wastes time</h2>
+        <ul>
+          <li>Vague requests to add AI everywhere.</li>
+          <li>Risky unsupervised automation where people still need judgment.</li>
+          <li>Brittle hacks that nobody can understand or maintain later.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="automation-section" aria-labelledby="process-heading">
+      <p class="section-kicker">How I work</p>
+      <h2 id="process-heading">
+        Translate messy work into systems people can use
+      </h2>
+      <p>
+        I start by understanding the pain point, then look for the smallest
+        useful change: a cleaner workflow, a repeatable report, a better tracking
+        view, or a small internal tool. I care about confidential business data,
+        customer lists, order details, and internal process information, so the
+        shape of the solution should fit the risk of the work.
+      </p>
+      <p>
+        When something is worth building, I document and teach enough that your
+        team knows what exists and how to use it. Ongoing help is optional; the
+        first goal is to make the next useful step clear.
+      </p>
+    </section>
+
+    <section class="cta-panel" aria-labelledby="cta-heading">
+      <div>
+        <p class="section-kicker">Start small</p>
+        <h2 id="cta-heading">Send me the pain points you have.</h2>
+        <p>
+          Reporting, tracking, understanding what is happening, or cleaning up a
+          process that keeps stealing time are all good places to start. I will
+          tell you whether it looks worth pursuing and what the smallest useful
+          next step could be.
+        </p>
+      </div>
+      <a class="primary-cta" href={emailHref}>Send me your pain points</a>
+    </section>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  @reference "tailwindcss";
+
+  .intro-panel,
+  .automation-section,
+  .cta-panel {
+    @apply rounded-md border border-gray-200/70 bg-white/70 p-6 shadow-sm dark:border-slate-800/70 dark:bg-slate-900/40;
+  }
+
+  .intro-panel,
+  .cta-panel {
+    @apply flex flex-col gap-6 md:flex-row md:items-center md:justify-between;
+  }
+
+  .problem-grid {
+    @apply mt-8 grid gap-6 md:grid-cols-2;
+  }
+
+  .problem-grid article {
+    @apply rounded-md border border-gray-200/70 bg-white/70 p-6 shadow-sm dark:border-slate-800/70 dark:bg-slate-900/40;
+  }
+
+  .automation-section,
+  .cta-panel {
+    @apply mt-8;
+  }
+
+  .section-kicker {
+    @apply text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400;
+  }
+
+  h2 {
+    @apply text-2xl font-bold text-gray-900 dark:text-gray-100;
+  }
+
+  h3 {
+    @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
+  }
+
+  p,
+  li {
+    @apply leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+
+  ul {
+    @apply mt-4 list-disc space-y-2 pl-5;
+  }
+
+  .intro-panel p,
+  .automation-section p,
+  .cta-panel p {
+    @apply mt-4;
+  }
+
+  .example-list {
+    @apply mt-5 grid gap-4 md:grid-cols-3;
+  }
+
+  .example-list article {
+    @apply rounded-md border border-gray-200/70 p-4 dark:border-slate-800/70;
+  }
+
+  .example-list p {
+    @apply text-sm;
+  }
+
+  .split-section {
+    @apply grid gap-8 md:grid-cols-2;
+  }
+
+  .primary-cta {
+    @apply inline-flex w-fit shrink-0 items-center justify-center rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:no-underline dark:bg-blue-500 dark:text-slate-950 dark:hover:bg-blue-400;
+  }
+</style>
