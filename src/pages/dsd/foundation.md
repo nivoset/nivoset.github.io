@@ -1,0 +1,233 @@
+---
+layout: ../../layouts/DSDLayout.astro
+title: "Foundation - Understanding the Zombie Metaphor"
+description: "Learn why the zombie metaphor helps organize React code and how to distinguish between UI components (zombies) and logic components (brains)."
+currentPath: "/dsd/foundation"
+---
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- Understand why the zombie metaphor helps organize React code
+- Distinguish between UI components (zombies) and logic components (brains)
+- Recognize the mental model shift from traditional React patterns
+
+## Why Zombies?
+
+When building React applications, one of the biggest challenges is keeping code organized and maintainable. Traditional React patterns often mix presentation logic with business logic, making it difficult to:
+
+- Find where data transformations happen
+- Understand component responsibilities
+- Test components in isolation
+- Refactor without breaking unrelated features
+
+The **Dead Simple Discipline** introduces a simple mental model: **zombies** (UI) and **brains** (logic). This metaphor helps us separate concerns and build more maintainable applications.
+
+## The Core Metaphor
+
+```
+Green = UI (Skin)    → Pure render, props-in/markup-out
+Pink = Logic (Brains) → State, rules, effects, orchestration
+```
+
+### 🟢 Zombies (UI Components)
+
+Zombies are pure presentation components. They:
+- Take props and render markup
+- Have no internal state (unless purely presentational)
+- Don't make API calls
+- Don't contain business logic
+- Are predictable and easy to test
+
+**Think of zombies as the "skin"** — they display information but don't think or make decisions.
+
+### 🧠 Brains (Logic Components)
+
+Brains handle all the thinking:
+- Manage state
+- Execute business rules
+- Orchestrate API calls
+- Handle side effects
+- Coordinate between multiple zombies
+
+**Think of brains as the "nervous system"** — they process information and make decisions.
+
+## Simple Analogies
+
+### Restaurant Analogy
+
+Imagine a restaurant:
+
+- **Waiters (Zombies)**: They take orders and serve food. They don't decide what's on the menu or how to cook. They simply present what the kitchen gives them.
+- **Chefs (Brains)**: They decide recipes, orchestrate cooking, manage inventory, and coordinate timing. They think and make decisions.
+
+In React terms:
+- A `CustomerCard` component (zombie) displays customer information
+- A `useCustomerData` hook (brain) fetches and processes customer data
+- The zombie receives data as props and renders it — no thinking required
+
+### Body Analogy
+
+Think of your application like a body:
+
+- **Skin (Zombies)**: Visible, displays information, responds to touch
+- **Nervous System (Brains)**: Processes signals, makes decisions, coordinates responses
+
+The skin doesn't decide when to sweat or shiver — the nervous system does. Similarly, UI components shouldn't decide what data to fetch or how to transform it.
+
+## Interactive Exercise: Before and After
+
+Let's look at a component that mixes concerns:
+
+```tsx
+// ❌ Bad: Mixed concerns
+function CustomerProfile() {
+  const [customer, setCustomer] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/customers/123')
+      .then(res => res.json())
+      .then(data => {
+        setCustomer(data);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  
+  return (
+    <div>
+      <h2>{customer.name}</h2>
+      <p>{customer.email}</p>
+      <button onClick={() => {
+        // Business logic mixed in!
+        if (customer.status === 'active') {
+          deactivateCustomer(customer.id);
+        }
+      }}>
+        Toggle Status
+      </button>
+    </div>
+  );
+}
+```
+
+Now let's separate it into zombies and brains:
+
+```tsx
+// ✅ Good: Separated concerns
+
+// Brain: Handles logic
+function useCustomerProfile(customerId: string) {
+  const [customer, setCustomer] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/customers/${customerId}`)
+      .then(res => res.json())
+      .then(data => {
+        setCustomer(data);
+        setLoading(false);
+      });
+  }, [customerId]);
+
+  const toggleStatus = () => {
+    if (customer?.status === 'active') {
+      deactivateCustomer(customer.id);
+    }
+  };
+
+  return { customer, loading, toggleStatus };
+}
+
+// Zombie: Pure presentation
+function CustomerProfile({ customer, loading, onToggleStatus }) {
+  if (loading) return <div>Loading...</div>;
+  
+  return (
+    <div>
+      <h2>{customer.name}</h2>
+      <p>{customer.email}</p>
+      <button onClick={onToggleStatus}>
+        Toggle Status
+      </button>
+    </div>
+  );
+}
+
+// Brain boundary: Connects brain to zombie
+function CustomerProfileView({ customerId }) {
+  const { customer, loading, toggleStatus } = useCustomerProfile(customerId);
+  
+  return (
+    <CustomerProfile
+      customer={customer}
+      loading={loading}
+      onToggleStatus={toggleStatus}
+    />
+  );
+}
+```
+
+**Key Differences:**
+- The zombie (`CustomerProfile`) is now pure — it just renders
+- The brain (`useCustomerProfile`) handles all logic
+- The boundary component (`CustomerProfileView`) connects them
+
+## Creative Application Task
+
+Look at this code sample and identify which parts are zombies and which are brains:
+
+```tsx
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => setProducts(data));
+  }, []);
+
+  const filteredProducts = products.filter(p => {
+    if (filter === 'all') return true;
+    return p.category === filter;
+  });
+
+  return (
+    <div>
+      <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <option value="all">All</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+      </select>
+      <ul>
+        {filteredProducts.map(product => (
+          <li key={product.id}>
+            <h3>{product.name}</h3>
+            <p>{product.price}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+**Questions to consider:**
+1. What parts handle state and logic? (Brains)
+2. What parts are pure presentation? (Zombies)
+3. How would you separate this into zombies and brains?
+
+## Key Takeaways
+
+- **Zombies** are pure UI components that receive props and render markup
+- **Brains** handle state, business logic, and side effects
+- Separating zombies from brains makes code more maintainable and testable
+- The zombie metaphor provides a simple mental model for organizing React code
+
+## Next Steps
+
+Now that you understand the foundation, you're ready to learn the 8 rules that guide the Dead Simple Discipline. Continue to [Rules Part 1](/dsd/rules-part1) to learn about starting undead, maintaining the horde ratio, and the 3-click brain rule.
