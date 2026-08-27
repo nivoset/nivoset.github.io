@@ -7,7 +7,13 @@ const logoPNG = "/assets/logo.png";
 const logoSVG = "/assets/logo.svg";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "projects" | "dsd";
+  activeNav?:
+    | "posts"
+    | "tags"
+    | "about"
+    | "search"
+    | "projects"
+    | "dsd";
 }
 
 const { activeNav } = Astro.props;
@@ -163,7 +169,7 @@ const { activeNav } = Astro.props;
   nav ul li:nth-child(6) a {
     @apply w-auto;
   }
-  
+
   nav ul li:nth-child(5),
   nav ul li:nth-child(6) {
     @apply col-span-1;
@@ -232,7 +238,7 @@ const { activeNav } = Astro.props;
 
   const iconContainer = document.querySelector(".icon-container")?.classList;
   const firstLine = document.querySelector("#first-line")?.classList;
-  const secondLine = document.querySelector("#second-line ")?.classList;
+  const secondLine = document.querySelector("#second-line")?.classList;
   const thirdLine = document.querySelector("#third-line")?.classList;
 
   menuBtn?.addEventListener("click", function () {

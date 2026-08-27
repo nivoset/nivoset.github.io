@@ -47,14 +47,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
         <div class="hero-description">
           <p>
-            So the name sounds odd I think, however some history. Back in elementary
-            school I used to draw comics in the margin of my homework. Then later I
-            made some funny short videos and it was Marginal Productions. Now I use
-            the name as a catchall for personal projects.
-          </p>
-          <p>
-            Though a fun sidenote is I got mail one for a video I made, where it cut
-            off the name as `Marginal Pro` which I honestly loved.
+            Notes on the tools, automation, and code I build — the name comes from
+            drawing comics in the margins of my homework as a kid, and it stuck as
+            the catchall for whatever I'm working on.
           </p>
         </div>
         
@@ -121,9 +116,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 </Layout>
 
 <style>
+  @reference "tailwindcss";
   /* ===== Hero Section ===== */
   .hero-section {
-    @apply pt-12 pb-16 sm:pt-16 sm:pb-20;
+    @apply pt-8 pb-10 sm:pt-10 sm:pb-12;
   }
   
   .hero-content {

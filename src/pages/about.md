@@ -38,10 +38,6 @@ Minimal space for things I am/have worked on. I'm a staff developer focusing mai
   <li>Qwik</li>
 </ul>
 
-## Thank you to AstroPaper
-
-If you like this theme, you can star/contribute to the [AstroPaper repo](https://github.com/satnaing/astro-paper).
-
 <style>
   .bullet-list {
     @apply gap-2;
