@@ -14,7 +14,9 @@ import { SOCIALS } from "@config";
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentAIPosts = sortedPosts
+  .filter(({ data }) => data.tags.some(tag => tag.toLowerCase() === "ai"))
+  .slice(0, 3);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 ---
@@ -66,12 +68,12 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     </section>
 
     {
-      featuredPosts.length > 0 && (
-        <section id="featured" class="content-section">
-          <h2 class="section-header">Featured Posts</h2>
-          <p class="section-subheader">Handpicked articles worth checking out</p>
+      recentAIPosts.length > 0 && (
+        <section id="ai-posts" class="content-section">
+          <h2 class="section-header">Recent AI Posts</h2>
+          <p class="section-subheader">The latest articles about AI</p>
           <ul class="card-grid">
-            {featuredPosts.map(({ data }) => (
+            {recentAIPosts.map(({ data }) => (
               <Card
                 href={`/posts/${slugify(data)}`}
                 frontmatter={data}
