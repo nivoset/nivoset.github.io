@@ -4,21 +4,12 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
-import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://nivoset.github.io",
   // base: '/my-repo',
-  integrations: [
-    react(),
-    sitemap(),
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
-  ],
+  integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {

@@ -16,7 +16,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.1.4",
     "@astrojs/rss": "^4.0.14",
     "@openreplay/tracker": "^17.0.1",
     "@resvg/resvg-js": "^2.6.2",
