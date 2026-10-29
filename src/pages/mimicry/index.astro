@@ -1,0 +1,107 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+---
+
+<Layout
+  title="Mimicry | Nivoset"
+  description="Mimicry is an AI-powered browser testing framework that learns from successful Playwright runs and repairs tests when applications change."
+>
+  <Header activeNav="mimicry" />
+  <Main
+    pageTitle="Mimicry"
+    pageDesc="AI-powered browser testing that learns what works, remembers verified runs, and adapts when your application changes."
+  >
+    <div class="mimicry-content">
+      <section class="project-panel" aria-labelledby="overview-title">
+        <p class="eyebrow">AI-powered browser testing</p>
+        <h2 id="overview-title">Describe the test. Mimicry makes it repeatable.</h2>
+        <p>
+          Write browser tests in plain language or Gherkin-style steps. Mimicry
+          uses AI to interpret the intent, find the right page elements, and
+          generate executable Playwright interactions. After a successful run,
+          it keeps a verified recording so later runs can repeat the behavior
+          without another model call.
+        </p>
+        <p>
+          When an application change breaks a test, Mimicry can inspect the
+          failure, reason about the updated interface, and repair the recorded
+          steps. AI is used to learn or adapt; stable tests stay fast and
+          deterministic.
+        </p>
+        <a class="project-link" href="https://github.com/nivoset/mimicry" target="_blank" rel="noopener noreferrer">
+          View Mimicry on GitHub <span aria-hidden="true">→</span>
+        </a>
+      </section>
+
+      <section class="project-panel" aria-labelledby="example-title">
+        <h2 id="example-title">A test in plain language</h2>
+        <pre><code>await mimicry`
+  navigate to https://playwright.dev/
+  click on "get started"
+  and click on "trace viewer"
+`;</code></pre>
+      </section>
+
+      <section aria-labelledby="lifecycle-title">
+        <p class="eyebrow">How it works</p>
+        <h2 id="lifecycle-title">Learn → Remember → Repeat → Troubleshoot &amp; Fix</h2>
+        <div class="lifecycle-grid">
+          <article class="project-panel">
+            <h3>1. Learn</h3>
+            <p>Interpret each instruction, reason about page structure, choose likely elements, and generate Playwright actions.</p>
+          </article>
+          <article class="project-panel">
+            <h3>2. Remember</h3>
+            <p>Save a verified recording of resolved interactions and the context needed to repeat them.</p>
+          </article>
+          <article class="project-panel">
+            <h3>3. Repeat</h3>
+            <p>Replay known-good behavior without AI calls while the application remains compatible.</p>
+          </article>
+          <article class="project-panel">
+            <h3>4. Troubleshoot &amp; Fix</h3>
+            <p>When a run breaks, analyze the failure, relearn the changed interface, repair the steps, and save a new verified recording.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="project-panel" aria-labelledby="stack-title">
+        <h2 id="stack-title">Technology</h2>
+        <ul class="stack-list">
+          <li>TypeScript</li>
+          <li>Node.js</li>
+          <li>Playwright</li>
+          <li>OpenAI-compatible providers</li>
+        </ul>
+        <p>Includes semantic element selection, navigation and form interactions, test repair, and token-usage tracking.</p>
+      </section>
+    </div>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  .mimicry-content { display: grid; gap: 2rem; }
+  .project-panel {
+    border: 1px solid rgb(148 163 184 / 0.35);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    background: rgb(255 255 255 / 0.65);
+  }
+  :global(html[data-theme="dark"]) .project-panel { background: rgb(15 23 42 / 0.65); }
+  .project-panel h2, .mimicry-content > section > h2 { margin: 0 0 1rem; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+  .project-panel h3 { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 650; }
+  .project-panel p { margin: 0 0 1rem; line-height: 1.7; color: rgb(71 85 105); }
+  :global(html[data-theme="dark"]) .project-panel p { color: rgb(203 213 225); }
+  .project-panel p:last-child { margin-bottom: 0; }
+  .eyebrow { margin: 0 0 0.5rem; color: rgb(37 99 235); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .project-link { display: inline-flex; gap: 0.5rem; margin-top: 0.5rem; color: rgb(37 99 235); font-weight: 650; }
+  .project-link:hover { text-decoration: underline; }
+  pre { overflow-x: auto; border-radius: 0.75rem; padding: 1rem; background: rgb(15 23 42); color: rgb(226 232 240); }
+  .lifecycle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
+  .stack-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+  .stack-list li { border: 1px solid rgb(148 163 184 / 0.45); border-radius: 999px; padding: 0.35rem 0.75rem; font-size: 0.9rem; }
+</style>

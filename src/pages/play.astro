@@ -1,0 +1,57 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import BearBear from "@components/BearBear.astro";
+import PlayLabCard from "@components/PlayLabCard.astro";
+import Randomizer from "@components/Randomizer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+
+const projects = [
+  {
+    title: "Horror Game Concept",
+    description: "A psychological horror game exploring workplace anxiety and collective action.",
+    category: "Game concept",
+  },
+  {
+    title: "Pro-Union Co-op Board Game",
+    description: "A cooperative board game where players organize together to win better conditions.",
+    category: "Game concept",
+  },
+  {
+    title: "Pixel Art Gallery",
+    description: "Pixel-art experiments and sprites, including Bear-Bear and other characters.",
+    category: "Art",
+  },
+  {
+    title: "HTML/CSS D-pad Widget",
+    description: "A pure CSS directional controller for small game prototypes and interface experiments.",
+    category: "Widget",
+  },
+];
+---
+
+<Layout
+  title="Play Lab | Nivoset"
+  description="Creative experiments, game prototypes, pixel art, and interactive widgets."
+>
+  <Header activeNav="play" />
+  <Main
+    pageTitle="Play Lab"
+    pageDesc="Creative experiments and playful projects exploring the intersection of technology, art, and organizing."
+  >
+    <div class="play-content">
+      <Randomizer />
+      <div class="project-grid" aria-label="Play Lab projects">
+        {projects.map((project) => <PlayLabCard {...project} />)}
+      </div>
+    </div>
+  </Main>
+  <Footer />
+  <BearBear />
+</Layout>
+
+<style>
+  .play-content { display: grid; gap: 1.5rem; }
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+</style>

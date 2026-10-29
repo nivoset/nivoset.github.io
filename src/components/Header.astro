@@ -13,7 +13,9 @@ export interface Props {
     | "about"
     | "search"
     | "projects"
-    | "dsd";
+    | "dsd"
+    | "mimicry"
+    | "play";
 }
 
 const { activeNav } = Astro.props;
@@ -50,7 +52,7 @@ const { activeNav } = Astro.props;
             <div id="third-line"></div>
           </div>
         </button>
-        <ul id="menu-items" class="display-none sm:flex">
+        <ul id="menu-items" class="hidden sm:flex">
           <li>
             <a href="/posts" class={activeNav === "posts" ? "active" : ""}>
               Blog
@@ -59,6 +61,16 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/dsd" class={activeNav === "dsd" ? "active" : ""}>
               Projects
+            </a>
+          </li>
+          <li>
+            <a href="/mimicry" class={activeNav === "mimicry" ? "active" : ""}>
+              Mimicry
+            </a>
+          </li>
+          <li>
+            <a href="/play" class={activeNav === "play" ? "active" : ""}>
+              Play Lab
             </a>
           </li>
           <li>
@@ -165,13 +177,13 @@ const { activeNav } = Astro.props;
     sm:w-auto sm:px-3 sm:py-2 transition-all;
   }
   
-  nav ul li:nth-child(5) a,
-  nav ul li:nth-child(6) a {
+  nav ul li:nth-child(7) a,
+  nav ul li:nth-child(8) a {
     @apply w-auto;
   }
 
-  nav ul li:nth-child(5),
-  nav ul li:nth-child(6) {
+  nav ul li:nth-child(7),
+  nav ul li:nth-child(8) {
     @apply col-span-1;
   }
   
@@ -219,16 +231,12 @@ const { activeNav } = Astro.props;
     @apply w-1/2;
   }
   
-  /* Mobile menu open state */
-  nav ul.display-none {
-    @apply hidden;
-  }
-  
   @media (max-width: 640px) {
-    nav ul:not(.display-none) {
+    nav ul:not(.hidden) {
       @apply bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-4;
     }
   }
+
 </style>
 
 <script>
@@ -246,7 +254,7 @@ const { activeNav } = Astro.props;
     if (menuExpanded === "false") {
       menuBtn?.setAttribute("aria-expanded", "true");
       menuBtn?.setAttribute("aria-label", "Close Menu");
-      menuItems?.remove("display-none");
+      menuItems?.remove("hidden");
 
       // icon animation
       iconContainer?.remove("flex");
@@ -257,7 +265,7 @@ const { activeNav } = Astro.props;
     } else {
       menuBtn?.setAttribute("aria-expanded", "false");
       menuBtn?.setAttribute("aria-label", "Open Menu");
-      menuItems?.add("display-none");
+      menuItems?.add("hidden");
 
       // icon animation
       iconContainer?.add("flex");
