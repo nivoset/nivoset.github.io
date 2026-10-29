@@ -1,0 +1,153 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { projects } from "@lib/projects";
+---
+
+<Layout
+  title="Projects | Nivoset"
+  description="Selected software projects, tools, and experiments by Nivoset."
+>
+  <Header activeNav="projects" />
+  <Main
+    pageTitle="Projects"
+    pageDesc="Selected tools, experiments, and software projects."
+  >
+    <div class="project-grid" aria-label="Projects">
+      {projects.length ? (
+        projects.map((project) => (
+          <article class="project-card" data-project-id={project.id}>
+            <h2>{project.title}</h2>
+            <p class="description">{project.description}</p>
+            {project.details && <p>{project.details}</p>}
+            {project.architecture && (
+              <p class="secondary">{project.architecture}</p>
+            )}
+            {project.stack?.length ? (
+              <ul class="metadata" aria-label={`${project.title} technology stack`}>
+                {project.stack.map((item) => <li>{item}</li>)}
+              </ul>
+            ) : null}
+            {project.tags?.length ? (
+              <ul class="metadata tags" aria-label={`${project.title} categories`}>
+                {project.tags.map((tag) => <li>{tag}</li>)}
+              </ul>
+            ) : null}
+            {(project.links?.github || project.links?.demo || project.links?.docs) && (
+              <div class="project-links" aria-label={`${project.title} links`}>
+                {project.links.github && (
+                  <a href={project.links.github} target="_blank" rel="noopener noreferrer">
+                    Source code <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                {project.links.demo && (
+                  <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
+                    Live demo <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                {project.links.docs && (
+                  <a href={project.links.docs} target="_blank" rel="noopener noreferrer">
+                    Documentation <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
+            )}
+          </article>
+        ))
+      ) : (
+        <p class="empty-state">No projects have been published yet.</p>
+      )}
+    </div>
+
+    <aside class="guide-link">
+      <p>
+        Looking for the code-organization guide? Visit
+        <a href="/dsd/">Dead Simple Discipline</a>.
+      </p>
+    </aside>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: 1rem;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    border: 1px solid rgb(148 163 184 / 0.35);
+    border-radius: 1rem;
+    padding: 1.4rem;
+    background: rgb(255 255 255 / 0.65);
+  }
+  :global(html[data-theme="dark"]) .project-card {
+    background: rgb(15 23 42 / 0.65);
+  }
+  .project-card h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .project-card p {
+    margin: 0;
+    line-height: 1.65;
+  }
+  .project-card .description {
+    font-weight: 600;
+  }
+  .project-card .secondary {
+    color: rgb(71 85 105);
+  }
+  :global(html[data-theme="dark"]) .project-card .secondary {
+    color: rgb(203 213 225);
+  }
+  .metadata,
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .metadata li {
+    border: 1px solid rgb(148 163 184 / 0.45);
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
+  }
+  .tags li {
+    border-color: rgb(59 130 246 / 0.35);
+    color: rgb(37 99 235);
+  }
+  .project-links {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .project-links a,
+  .guide-link a {
+    color: rgb(37 99 235);
+    font-weight: 650;
+  }
+  .project-links a:hover,
+  .guide-link a:hover {
+    text-decoration: underline;
+  }
+  .empty-state,
+  .guide-link {
+    border: 1px solid rgb(148 163 184 / 0.35);
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+  .empty-state { grid-column: 1 / -1; }
+  .guide-link { margin-top: 1.5rem; }
+  .guide-link p { margin: 0; }
+</style>

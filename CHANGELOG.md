@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * Restore the Mimicry project page and add the Play Lab route with its interactive prompt randomizer.
+* Add a data-driven projects catalogue, dedicated game-trial links, and project-entry instructions.
 
 ## [2.1.0](https://github.com/satnaing/astro-paper/compare/v2.0.0...v2.1.0) (2023-02-08)
 

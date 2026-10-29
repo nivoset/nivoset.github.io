@@ -3,15 +3,21 @@ interface Props {
   title: string;
   description: string;
   category: string;
+  href?: string;
 }
 
-const { title, description, category } = Astro.props;
+const { title, description, category, href } = Astro.props;
 ---
 
 <article class="play-card">
   <p class="category">{category}</p>
   <h2>{title}</h2>
   <p>{description}</p>
+  {href && (
+    <a class="play-link" href={href} target="_blank" rel="noopener noreferrer">
+      Play {title} <span aria-hidden="true">↗</span>
+    </a>
+  )}
 </article>
 
 <style>
@@ -23,7 +29,15 @@ const { title, description, category } = Astro.props;
   }
   :global(html[data-theme="dark"]) .play-card { background: rgb(15 23 42 / 0.65); }
   .play-card h2 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 700; }
-  .play-card p:last-child { margin: 0; line-height: 1.6; color: rgb(71 85 105); }
-  :global(html[data-theme="dark"]) .play-card p:last-child { color: rgb(203 213 225); }
+  .play-card > p:not(.category) { margin: 0; line-height: 1.6; color: rgb(71 85 105); }
+  .play-link {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-top: 1rem;
+    color: rgb(37 99 235);
+    font-weight: 650;
+  }
+  .play-link:hover { text-decoration: underline; }
+  :global(html[data-theme="dark"]) .play-card > p:not(.category) { color: rgb(203 213 225); }
   .play-card .category { margin: 0 0 0.5rem; color: rgb(37 99 235); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 </style>
