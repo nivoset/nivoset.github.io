@@ -170,6 +170,7 @@ export default function SearchBar({
           </svg>
         </span>
         <input
+          aria-label="Search articles"
           className="block w-full rounded border border-white/40 dark:border-slate-900/40 bg-white dark:bg-slate-900 py-3 pl-10 pr-3 placeholder:italic placeholder:text-opacity-75 focus:border-blue-600 dark:focus:border-orange-500 focus:outline-none"
           placeholder="Search for anything..."
           type="text"
@@ -183,7 +184,7 @@ export default function SearchBar({
       </label>
 
       {inputVal.length > 1 && (
-        <div className="mt-8">
+        <div className="mt-8" role="status" aria-live="polite">
           {semanticError
             ? "Semantic search is temporarily unavailable."
             : loading

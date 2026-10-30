@@ -5,7 +5,7 @@ description: "A comprehensive guide to organizing React code using the zombie ar
 currentPath: "/dsd"
 ---
 
-# Welcome to Dead Simple Discipline
+## Welcome to Dead Simple Discipline
 
 A comprehensive, beginner-to-intermediate friendly guide to organizing React code using a simple mental model: **zombies** (UI) and **brains** (logic).
 

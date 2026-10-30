@@ -33,7 +33,7 @@ const { activeNav } = Astro.props;
               height={LOGO_IMAGE.height}
             />
           ) : (
-            <span class="logo-text">{SITE.title}</span>
+            <span class="logo-text">{SITE.title}</span><span class="staff-label">Staff software engineer</span>
           )
         }
       </a>
@@ -51,36 +51,10 @@ const { activeNav } = Astro.props;
           </div>
         </button>
         <ul id="menu-items" class="hidden sm:flex">
-          <li>
-            <a href="/posts" class={activeNav === "posts" ? "active" : ""}>
-              Blog
-            </a>
-          </li>
-          <li>
-            <a href="/projects" class={activeNav === "projects" ? "active" : ""}>
-              Projects
-            </a>
-          </li>
-          <li>
-            <a href="/mimicry" class={activeNav === "mimicry" ? "active" : ""}>
-              Mimicry
-            </a>
-          </li>
-          <li>
-            <a href="/play" class={activeNav === "play" ? "active" : ""}>
-              Play Lab
-            </a>
-          </li>
-          <li>
-            <a href="/tags" class={activeNav === "tags" ? "active" : ""}>
-              Tags
-            </a>
-          </li>
-          <li>
-            <a href="/about" class={activeNav === "about" ? "active" : ""}>
-              About
-            </a>
-          </li>
+          <li><a href="/projects" class={activeNav === "projects" ? "active" : ""}>Work</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/posts" class={activeNav === "posts" ? "active" : ""}>Writing</a></li>
+          <li><a href="/about" class={activeNav === "about" ? "active" : ""}>About</a></li>
           <li>
             <LinkButton
               href="/search"
@@ -118,7 +92,6 @@ const { activeNav } = Astro.props;
                 </button>
               )
             }
-            <button id="palette-btn" class="focus-outline" title="Switch to purple theme" aria-label="Switch to purple theme">💜</button>
           </li>
         </ul>
       </nav>
@@ -127,6 +100,10 @@ const { activeNav } = Astro.props;
 </header>
 
 <style>
+.nav-container{max-width:1280px!important}.logo{white-space:nowrap}.logo-text{color:var(--site-foreground)!important;font-size:1.05rem!important}header{box-shadow:none!important}
+
+.staff-label{font: .65rem ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--site-muted);margin-left:1.3rem}@media(max-width:1000px){.staff-label{display:none}}
+
   @reference "../styles/base.css";
   #skip-to-content {
     @apply absolute -top-full left-4 z-50 rounded-md bg-accent px-4 py-2 font-medium text-white shadow-lg transition-all focus:top-4;
@@ -238,6 +215,15 @@ const { activeNav } = Astro.props;
 </style>
 
 <script>
+  document.querySelectorAll("#menu-items a").forEach(link => link.addEventListener("click", () => {
+    const toggle = document.querySelector<HTMLButtonElement>(".hamburger-menu");
+    if (toggle?.getAttribute("aria-expanded") === "true") toggle.click();
+  }));
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    const toggle = document.querySelector<HTMLButtonElement>(".hamburger-menu");
+    if (toggle?.getAttribute("aria-expanded") === "true") { toggle.click(); toggle.focus(); }
+  });
   // Toggle menu
   const menuBtn = document.querySelector(".hamburger-menu");
   const menuItems = document.querySelector("#menu-items")?.classList;

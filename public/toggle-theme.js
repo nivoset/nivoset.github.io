@@ -1,7 +1,8 @@
-const primaryColorScheme = ""; // "light" | "dark"
+const primaryColorScheme = "dark"; // "light" | "dark"
 
 const currentTheme = localStorage.getItem("theme");
-const currentPalette = localStorage.getItem("palette");
+// Retire the previous palette preference; purple is now the shared theme.
+localStorage.removeItem("palette");
 
 function getPreferTheme() {
   if (currentTheme === "light" || currentTheme === "dark") return currentTheme;
@@ -12,18 +13,13 @@ function getPreferTheme() {
 }
 
 let themeValue = getPreferTheme();
-let paletteValue = currentPalette === "purple" || currentTheme === "purple" ? "purple" : "green";
 
 function reflectPreference() {
   document.firstElementChild.setAttribute("data-theme", themeValue);
-  document.firstElementChild.setAttribute("data-palette", paletteValue);
-  const paletteButton = document.querySelector("#palette-btn");
-  if (paletteButton) {
-    const nextPalette = paletteValue === "green" ? "purple" : "green";
-    paletteButton.textContent = nextPalette === "purple" ? "💜" : "🌿";
-    paletteButton.setAttribute("aria-label", `Switch to ${nextPalette} theme`);
-    paletteButton.setAttribute("title", `Switch to ${nextPalette} theme`);
-  }
+  document.firstElementChild.removeAttribute("data-palette");
+  const themeButton = document.querySelector("#theme-btn");
+  if (themeButton) themeButton.setAttribute("aria-label", `Switch to ${themeValue === "dark" ? "light" : "dark"} mode`);
+
 }
 
 function setTheme(theme) {
@@ -32,11 +28,7 @@ function setTheme(theme) {
   reflectPreference();
 }
 
-function setPalette(palette) {
-  paletteValue = palette;
-  localStorage.setItem("palette", paletteValue);
-  reflectPreference();
-}
+
 
 reflectPreference();
 
@@ -45,9 +37,7 @@ window.onload = () => {
   document.querySelector("#theme-btn")?.addEventListener("click", () => {
     setTheme(themeValue === "light" ? "dark" : "light");
   });
-  document.querySelector("#palette-btn")?.addEventListener("click", () => {
-    setPalette(paletteValue === "green" ? "purple" : "green");
-  });
+
 };
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {

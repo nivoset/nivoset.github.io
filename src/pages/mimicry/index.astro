@@ -38,7 +38,7 @@ import Main from "@layouts/Main.astro";
 
       <section class="project-panel" aria-labelledby="example-title">
         <h2 id="example-title">A test in plain language</h2>
-        <pre><code>await mimicry`
+        <pre tabindex="0" aria-label="Mimicry code example"><code>await mimicry`
   navigate to https://playwright.dev/
   click on "get started"
   and click on "trace viewer"
@@ -84,21 +84,27 @@ import Main from "@layouts/Main.astro";
 </Layout>
 
 <style>
-  .mimicry-content { display: grid; gap: 2rem; }
+  .mimicry-content { min-width: 0; grid-template-columns: minmax(0, 1fr); display: grid; gap: 2rem; }
   .project-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     border: 1px solid rgb(148 163 184 / 0.35);
     border-radius: 1rem;
     padding: 1.5rem;
     background: rgb(255 255 255 / 0.65);
   }
-  :global(html[data-theme="dark"]) .project-panel { background: rgb(15 23 42 / 0.65); }
+  :global(html[data-theme="dark"]) .project-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0; background: rgb(15 23 42 / 0.65); }
   .project-panel h2, .mimicry-content > section > h2 { margin: 0 0 1rem; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
   .project-panel h3 { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 650; }
   .project-panel p { margin: 0 0 1rem; line-height: 1.7; color: rgb(71 85 105); }
   :global(html[data-theme="dark"]) .project-panel p { color: rgb(203 213 225); }
   .project-panel p:last-child { margin-bottom: 0; }
-  .eyebrow { margin: 0 0 0.5rem; color: rgb(37 99 235); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-  .project-link { display: inline-flex; gap: 0.5rem; margin-top: 0.5rem; color: rgb(37 99 235); font-weight: 650; }
+  .eyebrow { margin: 0 0 0.5rem; color: var(--site-accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .project-link { display: inline-flex; gap: 0.5rem; margin-top: 0.5rem; color: var(--site-accent); font-weight: 650; }
   .project-link:hover { text-decoration: underline; }
   pre { overflow-x: auto; border-radius: 0.75rem; padding: 1rem; background: rgb(15 23 42); color: rgb(226 232 240); }
   .lifecycle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }

@@ -20,7 +20,7 @@ const { title, description, currentPath } = Astro.props.frontmatter;
   <Header />
   <div class="dsd-container">
     <DSDNavigation currentPath={currentPath} />
-    <main class="dsd-main">
+    <main id="main-content" tabindex="-1" class="dsd-main">
       <article class="dsd-content prose prose-skin">
         <h1>{title}</h1>
         {description && <p class="dsd-description">{description}</p>}
@@ -32,7 +32,7 @@ const { title, description, currentPath } = Astro.props.frontmatter;
 </Layout>
 
 <style>
-  @reference "tailwindcss";
+  @reference "../styles/base.css";
   .dsd-container {
     @apply flex min-h-[calc(100vh-200px)] flex-col md:flex-row;
   }
@@ -65,7 +65,7 @@ const { title, description, currentPath } = Astro.props.frontmatter;
     @apply text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-gray-100;
   }
 
-  .dsd-content :global(.prose code) {
+  .dsd-content :global(.prose :not(pre) > code) {
     @apply bg-gray-300 dark:bg-orange-900 px-1.5 py-0.5 rounded text-sm;
   }
 

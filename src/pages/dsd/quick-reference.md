@@ -5,7 +5,7 @@ description: "A quick reference guide for the Dead Simple Discipline - all 8 rul
 currentPath: "/dsd/quick-reference"
 ---
 
-# Dead Simple Discipline - Quick Reference
+## Dead Simple Discipline - Quick Reference
 
 A quick reference guide for understanding and applying the Dead Simple Discipline.
 

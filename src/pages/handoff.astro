@@ -91,7 +91,7 @@ import Main from "@layouts/Main.astro";
 </Layout>
 
 <style>
-  @reference "tailwindcss";
+  @reference "../styles/base.css";
 
   .handoff-grid {
     @apply grid gap-6 md:grid-cols-2;
@@ -115,12 +115,12 @@ import Main from "@layouts/Main.astro";
   }
 
   h2 {
-    @apply text-2xl font-bold text-gray-900 dark:text-gray-100;
+    @apply text-2xl font-bold text-foreground;
   }
 
   p,
   li {
-    @apply leading-relaxed text-gray-700 dark:text-gray-300;
+    @apply leading-relaxed text-muted;
   }
 
   ul {
@@ -136,7 +136,7 @@ import Main from "@layouts/Main.astro";
   }
 
   .project-list span {
-    @apply block font-semibold text-gray-900 dark:text-gray-100;
+    @apply block font-semibold text-foreground;
   }
 
   .project-list p {

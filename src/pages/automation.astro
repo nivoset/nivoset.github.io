@@ -165,7 +165,7 @@ const emailHref = "mailto:nivoset@gmail.com?subject=Automation%20pain%20point";
 </Layout>
 
 <style>
-  @reference "tailwindcss";
+  @reference "../styles/base.css";
 
   .intro-panel,
   .automation-section,
@@ -196,16 +196,16 @@ const emailHref = "mailto:nivoset@gmail.com?subject=Automation%20pain%20point";
   }
 
   h2 {
-    @apply text-2xl font-bold text-gray-900 dark:text-gray-100;
+    @apply text-2xl font-bold text-foreground;
   }
 
   h3 {
-    @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
+    @apply text-lg font-semibold text-foreground;
   }
 
   p,
   li {
-    @apply leading-relaxed text-gray-700 dark:text-gray-300;
+    @apply leading-relaxed text-muted;
   }
 
   ul {

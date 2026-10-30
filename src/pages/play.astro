@@ -59,13 +59,13 @@ const projects = [
       <Randomizer />
       <section aria-labelledby="game-trials-heading">
         <h2 id="game-trials-heading">Game trials</h2>
-        <div class="project-grid" aria-label="Hosted game trials">
+        <div role="group" class="project-grid" aria-label="Hosted game trials">
           {gameTrials.map((game) => <PlayLabCard {...game} />)}
         </div>
       </section>
       <section aria-labelledby="experiments-heading">
         <h2 id="experiments-heading">Other experiments</h2>
-        <div class="project-grid" aria-label="Play Lab experiments">
+        <div role="group" class="project-grid" aria-label="Play Lab experiments">
           {projects.map((project) => <PlayLabCard {...project} />)}
         </div>
       </section>

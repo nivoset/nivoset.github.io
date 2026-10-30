@@ -45,33 +45,6 @@
 
 :root {
   color-scheme: light;
-  --site-canvas: #f4f2ed;
-  --site-surface: #fbfaf6;
-  --site-surface-raised: #fffefa;
-  --site-foreground: #1c2924;
-  --site-muted: #606c64;
-  --site-border: #deded5;
-  --site-accent: #255b47;
-  --site-accent-hover: #1d4638;
-  --site-accent-soft: #e5ebe3;
-  --site-accent-foreground: #fff;
-}
-
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --site-canvas: #17211d;
-  --site-surface: #202d27;
-  --site-surface-raised: #293831;
-  --site-foreground: #edf1eb;
-  --site-muted: #b4c0b7;
-  --site-border: #405148;
-  --site-accent: #9bc5a7;
-  --site-accent-hover: #c0dfc8;
-  --site-accent-soft: #34483b;
-  --site-accent-foreground: #17211d;
-}
-
-html[data-palette="purple"] {
   --site-canvas: #f5f0fa;
   --site-surface: #fbf8ff;
   --site-surface-raised: #fffaff;
@@ -84,15 +57,15 @@ html[data-palette="purple"] {
   --site-accent-foreground: #fff;
 }
 
-html[data-theme="dark"][data-palette="purple"] {
+html[data-theme="dark"] {
   color-scheme: dark;
-  --site-canvas: #211a29;
-  --site-surface: #2c2336;
-  --site-surface-raised: #382b44;
+  --site-canvas: #101416;
+  --site-surface: #161b1e;
+  --site-surface-raised: #1c2226;
   --site-foreground: #f2ebf7;
   --site-muted: #c3b5cf;
-  --site-border: #51415f;
-  --site-accent: #c4a0e8;
+  --site-border: #343b42;
+  --site-accent: #cf9bfa;
   --site-accent-hover: #d9c1f0;
   --site-accent-soft: #463653;
   --site-accent-foreground: #211a29;
@@ -248,4 +221,20 @@ html[data-theme="dark"][data-palette="purple"] {
   .section-subheader {
     @apply text-lg text-gray-600 dark:text-gray-400 mb-8;
   }
+}
+
+/* Preserve readable token colors within the fixed One Dark code surface. */
+pre.astro-code span[style*="#E06C75"], pre.astro-code span[style*="#e06c75"] { color: #ef8991 !important; }
+pre.astro-code span[style*="#7F848E"], pre.astro-code span[style*="#7f848e"] { color: #a0a7b4 !important; }
+:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 4px; }
+#main-content { scroll-margin-top: 6rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}
+
+pre.astro-code code { color: #abb2bf !important; background: transparent !important; border: 0 !important; padding: 0 !important; }
+
+@layer base {
+  .prose pre.astro-code, .prose pre.astro-code code { color: #abb2bf !important; }
+  .prose pre.astro-code code { background: transparent !important; border: 0; padding: 0; }
 }

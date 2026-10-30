@@ -15,7 +15,7 @@ import { projects } from "@lib/projects";
     pageTitle="Projects"
     pageDesc="Selected tools, experiments, and software projects."
   >
-    <div class="project-grid" aria-label="Projects">
+    <div role="group" class="project-grid" aria-label="Projects">
       {projects.length ? (
         projects.map((project) => (
           <article class="project-card" data-project-id={project.id}>
@@ -36,7 +36,7 @@ import { projects } from "@lib/projects";
               </ul>
             ) : null}
             {(project.links?.github || project.links?.demo || project.links?.docs) && (
-              <div class="project-links" aria-label={`${project.title} links`}>
+              <div role="group" class="project-links" aria-label={`${project.title} links`}>
                 {project.links.github && (
                   <a href={project.links.github} target="_blank" rel="noopener noreferrer">
                     Source code <span aria-hidden="true">↗</span>
@@ -126,7 +126,7 @@ import { projects } from "@lib/projects";
   }
   .tags li {
     border-color: rgb(59 130 246 / 0.35);
-    color: rgb(37 99 235);
+    color: var(--site-accent);
   }
   .project-links {
     margin-top: auto;
@@ -134,7 +134,7 @@ import { projects } from "@lib/projects";
   }
   .project-links a,
   .guide-link a {
-    color: rgb(37 99 235);
+    color: var(--site-accent);
     font-weight: 650;
   }
   .project-links a:hover,

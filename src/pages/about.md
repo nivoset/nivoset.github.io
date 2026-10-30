@@ -3,7 +3,7 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-I’m a staff software engineer. I started building for the web in middle school in the mid-1990s, before CSS was part of my toolkit. Since then, I’ve worked across frontend products, engineering tools, test automation, and industrial control systems.
+I’m a staff software engineer. I started building for the web in middle school in the mid-1990s, before CSS became a web standard. Since then, I’ve worked from firmware through to frontend, across industrial control systems, automation, engineering tools, and enterprise products. I write code at whatever scale the problem calls for.
 
 ## How I work
 

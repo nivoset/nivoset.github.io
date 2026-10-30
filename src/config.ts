@@ -4,7 +4,7 @@ export const SITE = {
   website: "https://nivoset.github.io/",
   author: "B. Koop",
   desc: "Marginal Notes — writing on the tools, automation, and things I build.",
-  title: "Nivoset",
+  title: "B. Koop",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerPage: 3,

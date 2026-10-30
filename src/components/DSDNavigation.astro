@@ -32,6 +32,7 @@ const navItems = [
         <li>
           <a
             href={item.path}
+            aria-current={isActive ? "page" : undefined}
             class={`dsd-nav-link ${isActive ? "active" : ""}`}
           >
             {item.label}
@@ -43,7 +44,7 @@ const navItems = [
 </nav>
 
 <style>
-  @reference "tailwindcss";
+  @reference "../styles/base.css";
   .dsd-nav {
     @apply flex flex-col border-r border-gray-200 dark:border-orange-700 bg-gray-200 dark:bg-slate-700;
     min-width: 240px;
@@ -71,7 +72,7 @@ const navItems = [
   }
 
   .dsd-nav-link.active {
-    @apply bg-blue-600 dark:bg-orange-500 text-white dark:text-slate-900 font-semibold;
+    @apply bg-accent text-[var(--site-accent-foreground)] font-semibold;
   }
 
   @media (max-width: 768px) {
