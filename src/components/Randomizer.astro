@@ -29,12 +29,11 @@ const items = [
 </script>
 
 <style>
-  .randomizer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid rgb(59 130 246 / 0.35); border-radius: 1rem; padding: 1.25rem; background: rgb(59 130 246 / 0.06); }
+  .randomizer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid var(--site-border); border-radius: 1rem; padding: 1.25rem; background: var(--site-accent-soft); }
   .randomizer h2 { margin: 0 0 0.35rem; font-size: 1.15rem; font-weight: 700; }
-  .randomizer p { margin: 0; color: rgb(71 85 105); }
-  :global(html[data-theme="dark"]) .randomizer p { color: rgb(203 213 225); }
-  .randomizer button { flex: none; border: 0; border-radius: 0.65rem; padding: 0.7rem 1rem; background: rgb(37 99 235); color: white; font-weight: 650; cursor: pointer; }
-  .randomizer button:hover { background: rgb(29 78 216); }
-  .randomizer button:focus-visible { outline: 3px solid rgb(96 165 250); outline-offset: 3px; }
+  .randomizer p { margin: 0; color: var(--site-muted); }
+  .randomizer button { flex: none; border: 0; border-radius: 0.65rem; padding: 0.7rem 1rem; background: var(--site-accent); color: var(--site-accent-foreground); font-weight: 650; cursor: pointer; }
+  .randomizer button:hover { background: var(--site-accent-hover); }
+  .randomizer button:focus-visible { outline: 3px solid var(--site-accent); outline-offset: 3px; }
   @media (max-width: 36rem) { .randomizer { align-items: stretch; flex-direction: column; } }
 </style>

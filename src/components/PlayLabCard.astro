@@ -22,22 +22,20 @@ const { title, description, category, href } = Astro.props;
 
 <style>
   .play-card {
-    border: 1px solid rgb(148 163 184 / 0.35);
+    border: 1px solid var(--site-border);
     border-radius: 1rem;
     padding: 1.25rem;
-    background: rgb(255 255 255 / 0.65);
+    background: var(--site-surface);
   }
-  :global(html[data-theme="dark"]) .play-card { background: rgb(15 23 42 / 0.65); }
   .play-card h2 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 700; }
-  .play-card > p:not(.category) { margin: 0; line-height: 1.6; color: rgb(71 85 105); }
+  .play-card > p:not(.category) { margin: 0; line-height: 1.6; color: var(--site-muted); }
   .play-link {
     display: inline-flex;
     gap: 0.35rem;
     margin-top: 1rem;
-    color: rgb(37 99 235);
+    color: var(--site-accent);
     font-weight: 650;
   }
-  .play-link:hover { text-decoration: underline; }
-  :global(html[data-theme="dark"]) .play-card > p:not(.category) { color: rgb(203 213 225); }
-  .play-card .category { margin: 0 0 0.5rem; color: rgb(37 99 235); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .play-link:hover { color: var(--site-accent-hover); text-decoration: underline; }
+  .play-card .category { margin: 0 0 0.5rem; color: var(--site-accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 </style>

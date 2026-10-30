@@ -1,6 +1,6 @@
 ---
 title: Formatting an input element while working in it
-author: Ben Koop
+author: B. Koop
 pubDatetime: 2023-03-12T20:26:31Z
 postSlug: input-auto-format
 featured: true

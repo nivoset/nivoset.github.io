@@ -12,12 +12,12 @@ export interface Props {
 const { noMarginTop = false } = Astro.props;
 ---
 
-<footer class={`${noMarginTop ? "" : "mt-auto"} border-t border-gray-200/30 dark:border-slate-800/30`}>
+<footer class={`${noMarginTop ? "" : "mt-auto"} border-t border-border/50`}>
   <div class="footer-wrapper">
     <div class="footer-content">
       <Socials centered />
       <div class="copyright-wrapper">
-        <span class="text-sm text-gray-600 dark:text-gray-400">
+        <span class="text-sm text-muted">
           Copyright &#169; {currentYear} {SITE.author}
         </span>
       </div>
@@ -26,9 +26,9 @@ const { noMarginTop = false } = Astro.props;
 </footer>
 
 <style>
-  @reference "tailwindcss";
+  @reference "../styles/base.css";
   footer {
-    @apply w-full bg-white/30 dark:bg-slate-900/30 backdrop-blur-sm;
+    @apply w-full bg-surface/50 backdrop-blur-sm;
   }
   
   .footer-wrapper {

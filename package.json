@@ -13,7 +13,8 @@
     "format:check": "prettier --plugin-search-dir=. --check .",
     "format": "prettier --plugin-search-dir=. --write .",
     "cz": "cz",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:search": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.14",

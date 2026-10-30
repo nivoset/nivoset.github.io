@@ -1,17 +1,101 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@theme {
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@theme inline {
   --breakpoint-sm: 640px;
-  
   --font-family-mono: "IBM Plex Mono", monospace;
   --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  
-  /* Modern color palette */
-  --color-primary: 59 130 246; /* blue-500 */
-  --color-primary-dark: 37 99 235; /* blue-600 */
-  --color-accent: 59 130 246; /* blue-500 */
-  --color-accent-dark: 37 99 235; /* blue-600 */
+  --color-canvas: var(--site-canvas);
+  --color-surface: var(--site-surface);
+  --color-surface-raised: var(--site-surface-raised);
+  --color-foreground: var(--site-foreground);
+  --color-muted: var(--site-muted);
+  --color-border: var(--site-border);
+  --color-accent: var(--site-accent);
+  --color-accent-hover: var(--site-accent-hover);
+  --color-accent-soft: var(--site-accent-soft);
+  --color-gray-50: var(--site-canvas);
+  --color-gray-100: var(--site-surface);
+  --color-gray-200: var(--site-border);
+  --color-gray-300: var(--site-border);
+  --color-gray-400: var(--site-muted);
+  --color-gray-500: var(--site-muted);
+  --color-gray-600: var(--site-muted);
+  --color-gray-700: var(--site-foreground);
+  --color-gray-800: var(--site-foreground);
+  --color-gray-900: var(--site-foreground);
+  --color-slate-700: var(--site-surface-raised);
+  --color-slate-800: var(--site-surface);
+  --color-slate-900: var(--site-canvas);
+  --color-slate-950: var(--site-canvas);
+  --color-blue-50: var(--site-accent-soft);
+  --color-blue-300: var(--site-accent);
+  --color-blue-400: var(--site-accent);
+  --color-blue-500: var(--site-accent);
+  --color-blue-600: var(--site-accent);
+  --color-blue-700: var(--site-accent-hover);
+  --color-blue-950: var(--site-accent-soft);
+  --color-orange-300: var(--site-accent);
+  --color-orange-400: var(--site-accent);
+  --color-orange-500: var(--site-accent);
+  --color-orange-700: var(--site-accent-hover);
+  --color-orange-900: var(--site-accent-soft);
+}
+
+:root {
+  color-scheme: light;
+  --site-canvas: #f4f2ed;
+  --site-surface: #fbfaf6;
+  --site-surface-raised: #fffefa;
+  --site-foreground: #1c2924;
+  --site-muted: #606c64;
+  --site-border: #deded5;
+  --site-accent: #255b47;
+  --site-accent-hover: #1d4638;
+  --site-accent-soft: #e5ebe3;
+  --site-accent-foreground: #fff;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --site-canvas: #17211d;
+  --site-surface: #202d27;
+  --site-surface-raised: #293831;
+  --site-foreground: #edf1eb;
+  --site-muted: #b4c0b7;
+  --site-border: #405148;
+  --site-accent: #9bc5a7;
+  --site-accent-hover: #c0dfc8;
+  --site-accent-soft: #34483b;
+  --site-accent-foreground: #17211d;
+}
+
+html[data-palette="purple"] {
+  --site-canvas: #f5f0fa;
+  --site-surface: #fbf8ff;
+  --site-surface-raised: #fffaff;
+  --site-foreground: #30233b;
+  --site-muted: #6d6178;
+  --site-border: #e2d8eb;
+  --site-accent: #7041a6;
+  --site-accent-hover: #593382;
+  --site-accent-soft: #eee4f7;
+  --site-accent-foreground: #fff;
+}
+
+html[data-theme="dark"][data-palette="purple"] {
+  color-scheme: dark;
+  --site-canvas: #211a29;
+  --site-surface: #2c2336;
+  --site-surface-raised: #382b44;
+  --site-foreground: #f2ebf7;
+  --site-muted: #c3b5cf;
+  --site-border: #51415f;
+  --site-accent: #c4a0e8;
+  --site-accent-hover: #d9c1f0;
+  --site-accent-soft: #463653;
+  --site-accent-foreground: #211a29;
 }
 
 @layer base {
@@ -25,7 +109,7 @@
   }
   
   html {
-    @apply bg-gray-50 dark:bg-slate-950;
+    @apply bg-canvas;
   }
   
   * {
@@ -33,11 +117,7 @@
   }
   
   body {
-    @apply flex min-h-screen flex-col bg-gradient-to-br from-gray-50/80 via-white/60 to-gray-50/80 
-    dark:from-slate-950/90 dark:via-slate-900/80 dark:to-slate-950/90 
-    font-sans text-gray-900 dark:text-gray-100 
-    selection:bg-blue-500/20 dark:selection:bg-blue-500/20 selection:text-gray-900 dark:selection:text-gray-100
-    antialiased;
+    @apply flex min-h-screen flex-col bg-canvas font-sans text-foreground antialiased;
   }
   
   section,
@@ -51,8 +131,7 @@
   }
   
   svg {
-    @apply inline-block h-6 w-6 fill-gray-900 dark:fill-gray-100 
-    group-hover:fill-blue-500 dark:group-hover:fill-blue-400;
+    @apply inline-block h-6 w-6 fill-foreground group-hover:fill-accent;
     transition: fill 0.2s ease;
   }
   
@@ -63,28 +142,28 @@
   }
   
   .prose {
-    @apply prose-headings:!mb-4 prose-headings:!mt-6 prose-headings:!text-gray-900 dark:prose-headings:!text-gray-100
+    @apply prose-headings:!mb-4 prose-headings:!mt-6 prose-headings:!text-foreground
     prose-headings:font-semibold prose-headings:tracking-tight
     prose-h1:!text-4xl prose-h1:!mb-6 prose-h1:!mt-0
     prose-h2:!text-3xl prose-h2:!mb-4 prose-h2:!mt-8
     prose-h3:!text-2xl prose-h3:italic prose-h3:!mb-3 prose-h3:!mt-6
-    prose-p:!text-gray-800 dark:prose-p:!text-gray-200 prose-p:!leading-relaxed prose-p:!mb-4
+    prose-p:!text-foreground prose-p:!leading-relaxed prose-p:!mb-4
     prose-a:!text-blue-600 dark:prose-a:!text-blue-400 prose-a:!decoration-2 prose-a:!decoration-dashed 
     prose-a:underline-offset-4 prose-a:font-medium
     hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 
     prose-blockquote:!border-l-4 prose-blockquote:!border-blue-500/50 dark:prose-blockquote:!border-blue-500/50 
     prose-blockquote:!pl-4 prose-blockquote:!italic prose-blockquote:opacity-90 prose-blockquote:!bg-gray-50 dark:prose-blockquote:!bg-slate-800/50 prose-blockquote:!py-2 prose-blockquote:!rounded-r
-    prose-figcaption:!text-gray-600 dark:prose-figcaption:!text-gray-400 prose-figcaption:opacity-80 prose-figcaption:text-sm
-    prose-strong:!text-gray-900 dark:prose-strong:!text-gray-100 prose-strong:font-semibold
+    prose-figcaption:!text-muted prose-figcaption:opacity-80 prose-figcaption:text-sm
+    prose-strong:!text-foreground prose-strong:font-semibold
     prose-code:rounded-md prose-code:bg-gray-100 dark:prose-code:bg-slate-800 prose-code:p-1.5 prose-code:!text-sm 
-    prose-code:!text-gray-900 dark:prose-code:!text-gray-100 prose-code:font-mono prose-code:border prose-code:border-gray-200 dark:prose-code:border-slate-700
+    prose-code:!text-foreground prose-code:font-mono prose-code:border prose-code:border-gray-200 dark:prose-code:border-slate-700
     prose-code:before:!content-[''] prose-code:after:!content-['']
-    prose-pre:!text-gray-100 dark:prose-pre:!text-gray-100 prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 
+    prose-pre:!text-foreground prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950
     prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-slate-700 prose-pre:rounded-lg prose-pre:p-4
-    prose-ol:!text-gray-800 dark:prose-ol:!text-gray-200 prose-ol:space-y-2
-    prose-ul:overflow-x-clip prose-ul:!text-gray-800 dark:prose-ul:!text-gray-200 prose-ul:space-y-2
+    prose-ol:!text-foreground prose-ol:space-y-2
+    prose-ul:overflow-x-clip prose-ul:!text-foreground prose-ul:space-y-2
     prose-li:marker:!text-blue-500 dark:prose-li:marker:!text-blue-400 prose-li:!leading-relaxed
-    prose-table:text-gray-800 dark:prose-table:text-gray-200 prose-th:border prose-th:border-gray-300 dark:prose-th:border-slate-700
+    prose-table:text-foreground prose-th:border prose-th:border-gray-300 dark:prose-th:border-slate-700
     prose-th:bg-gray-50 dark:prose-th:bg-slate-800 prose-th:font-semibold prose-th:p-3
     prose-td:border prose-td:border-gray-200 dark:prose-td:border-slate-700 prose-td:p-3
     prose-img:mx-auto prose-img:!mt-4 prose-img:!mb-4 prose-img:border-2 
@@ -107,7 +186,7 @@
   }
   
   .prose details {
-    @apply inline-block cursor-pointer select-none text-gray-900 dark:text-gray-100;
+    @apply inline-block cursor-pointer select-none text-foreground;
   }
   
   .prose summary {

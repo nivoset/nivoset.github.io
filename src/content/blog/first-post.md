@@ -1,6 +1,6 @@
 ---
 title: So I want to talk about things I work on
-author: Ben Koop
+author: B. Koop
 pubDatetime: 2023-03-09T20:26:31Z
 postSlug: first-post
 featured: false
