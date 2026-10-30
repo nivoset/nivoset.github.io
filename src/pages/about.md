@@ -3,45 +3,20 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-Minimal space for things I am/have worked on. I'm a staff developer focusing mainly on the frontend right now. I've developed embedded systems as well as frontend. I started web development back in the mid 90's in middleschool. The amount of changes ive seen feels insane. from no style sheets (think writing a site styled... without CSS) to frameworks like jquery and angular. Currently working in React, and playing with Qwik/Astro.
+I’m a staff software engineer. I started building for the web in middle school in the mid-1990s, before CSS was part of my toolkit. Since then, I’ve worked across frontend products, engineering tools, test automation, and industrial control systems.
 
-<div>
-  <img src="/assets/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
+## How I work
 
-## Tech I've used
+I look for the parts of engineering that create avoidable friction: unclear requirements, repeated manual work, brittle tests, or tools that make routine tasks harder than they need to be. I try to make those parts clearer and more dependable, so people can spend more time on the decisions that need their judgment.
 
-### Top level items
+That approach now shapes my work with AI-assisted development. I build reusable guidance and tools that give coding agents useful context and focused tasks, then add testing and review steps so their output can be checked. The goal is not to hand engineering over to a model; it is to make the work easier to direct and verify.
 
-<ul class="bullet-list">
-  <li>Typescript</li>
-  <li>Java</li>
-  <li>C/C++</li>
-  <li>Python</li>
-  <li>MongoDb</li>
-  <li>CassandraDb</li>
-  <li>Mysql</li>
-  <li>Mssql</li>
-  <li>Rust</li>
-  <li>HTML</li>
-  <li>CSS</li>
-</ul>
+## A few chapters
 
-### Libraries
+At Smartrise Engineering, I built automation for work that had been done by hand, including generating engineering drawings, software, and parts lists. I also designed hardware test stations and built interfaces for monitoring control systems with live job-site data.
 
-<ul class="bullet-list">
-  <li>React</li>
-  <li>Angular</li>
-  <li>Lit</li>
-  <li>Spring</li>
-  <li>AngularJs</li>
-  <li>Qwik</li>
-</ul>
+Later, I worked on large enterprise products at JPMorgan Chase and Routable. My work included modernizing frontend systems, building design-system components, and improving automated testing. I also taught engineering teams about testing, TypeScript, and system design.
 
-<style>
-  .bullet-list {
-    @apply gap-2;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
-  }
-</style>
+Today, I’m a staff software engineer at G2i, working on software-engineering environments for AI research. I also build shared AI-development guidance and validation workflows that help engineers use agents more deliberately.
+
+Across those roles, the tools and scale have changed. I keep coming back to the same question: how can we make the expected outcome clear, and make it easier to tell whether we got there?
