@@ -1,6 +1,6 @@
 ---
 title: A Token Tracker for Agentic Work
-author: Ben Koop
+author: B. Koop
 pubDatetime: 2026-08-13T18:00:00Z
 postSlug: token-tracker-agentic-work
 featured: false

@@ -2,7 +2,7 @@ import type { SocialObjects } from "./types";
 
 export const SITE = {
   website: "https://nivoset.github.io/",
-  author: "Ben Koop",
+  author: "B. Koop",
   desc: "Marginal Notes — writing on the tools, automation, and things I build.",
   title: "Nivoset",
   ogImage: "astropaper-og.jpg",

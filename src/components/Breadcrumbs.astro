@@ -49,13 +49,13 @@ breadcrumbList[0] === "posts" &&
     @apply inline;
   }
   .breadcrumb ul li a {
-    @apply capitalize opacity-70;
+    @apply capitalize;
+    color: var(--site-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .breadcrumb ul li span {
     @apply opacity-70;
   }
   @reference "tailwindcss";
-  .breadcrumb ul li:not(:last-child) a {
-    @apply hover:opacity-100;
-  }
 </style>

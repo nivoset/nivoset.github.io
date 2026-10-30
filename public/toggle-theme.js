@@ -1,52 +1,58 @@
 const primaryColorScheme = ""; // "light" | "dark"
 
-// Get theme data from local storage
 const currentTheme = localStorage.getItem("theme");
+const currentPalette = localStorage.getItem("palette");
 
 function getPreferTheme() {
-  // return theme value in local storage if it is set
-  if (currentTheme) return currentTheme;
-
-  // return primary color scheme if it is set
+  if (currentTheme === "light" || currentTheme === "dark") return currentTheme;
   if (primaryColorScheme) return primaryColorScheme;
-
-  // return user device's prefer color scheme
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
 let themeValue = getPreferTheme();
+let paletteValue = currentPalette === "purple" || currentTheme === "purple" ? "purple" : "green";
 
-function setPreference() {
+function reflectPreference() {
+  document.firstElementChild.setAttribute("data-theme", themeValue);
+  document.firstElementChild.setAttribute("data-palette", paletteValue);
+  const paletteButton = document.querySelector("#palette-btn");
+  if (paletteButton) {
+    const nextPalette = paletteValue === "green" ? "purple" : "green";
+    paletteButton.textContent = nextPalette === "purple" ? "💜" : "🌿";
+    paletteButton.setAttribute("aria-label", `Switch to ${nextPalette} theme`);
+    paletteButton.setAttribute("title", `Switch to ${nextPalette} theme`);
+  }
+}
+
+function setTheme(theme) {
+  themeValue = theme;
   localStorage.setItem("theme", themeValue);
   reflectPreference();
 }
 
-function reflectPreference() {
-  document.firstElementChild.setAttribute("data-theme", themeValue);
-
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+function setPalette(palette) {
+  paletteValue = palette;
+  localStorage.setItem("palette", paletteValue);
+  reflectPreference();
 }
 
-// set early so no page flashes / CSS is made aware
 reflectPreference();
 
 window.onload = () => {
-  // set on load so screen readers can get the latest value on the button
   reflectPreference();
-
-  // now this script can find and listen for clicks on the control
   document.querySelector("#theme-btn")?.addEventListener("click", () => {
-    themeValue = themeValue === "light" ? "dark" : "light";
-    setPreference();
+    setTheme(themeValue === "light" ? "dark" : "light");
+  });
+  document.querySelector("#palette-btn")?.addEventListener("click", () => {
+    setPalette(paletteValue === "green" ? "purple" : "green");
   });
 };
 
-// sync with system changes
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
-  });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+  if (!localStorage.getItem("theme") || localStorage.getItem("theme") === "purple") {
+    setTheme(isDark ? "dark" : "light");
+  }
+});
+

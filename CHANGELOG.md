@@ -6,8 +6,16 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* Add semantic search as a separate Cloudflare Pages deployment, with build-time post vectors and cached Workers AI query embeddings.
+
 * Restore the Mimicry project page and add the Play Lab route with its interactive prompt randomizer.
 * Add a data-driven projects catalogue, dedicated game-trial links, and project-entry instructions.
+
+### Bug Fixes
+
+* Improve contrast for homepage copy and controls, breadcrumbs, and blog cards across light and dark themes.
+* Let the mobile proof band bleed beyond the viewport without adding horizontal scrolling.
+* Fix low contrast in dark-mode article text, date icons, and tags by using theme foreground colors.
 
 ## [2.1.0](https://github.com/satnaing/astro-paper/compare/v2.0.0...v2.1.0) (2023-02-08)
 

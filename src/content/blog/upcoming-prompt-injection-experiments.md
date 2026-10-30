@@ -1,6 +1,6 @@
 ---
 title: A Small Queue of Benign Prompt-Injection Experiments
-author: Ben Koop
+author: B. Koop
 pubDatetime: 2026-08-14T18:00:00Z
 postSlug: upcoming-prompt-injection-experiments
 featured: false
