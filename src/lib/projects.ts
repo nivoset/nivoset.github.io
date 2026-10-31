@@ -12,8 +12,31 @@ export interface Project {
     docs?: string;
   };
 }
-
 export const projects: Project[] = [
+  {
+    id: "chat-lines",
+    title: "Chat Lines",
+    description:
+      "Explore local AI conversations as connected 3D semantic paths.",
+    tags: ["Visualization", "Local-first", "AI"],
+    stack: ["TypeScript", "React", "Three.js"],
+    details:
+      "A local viewer for Codex, Pi, and Pu.sh conversations. Messages and tool calls become nodes in a 3D path, with alternate views for exploring semantic relationships.",
+    architecture:
+      "Runs embeddings through a local Ollama or LM Studio runtime; transcript text and vectors stay in browser memory for the session.",
+  },
+  {
+    id: "vitest-adaptive",
+    title: "Vitest Adaptive",
+    description:
+      "Speed up local test iterations by selecting tests that cover changed code.",
+    tags: ["Testing", "Developer tools"],
+    stack: ["TypeScript", "Vitest"],
+    details:
+      "Records per-test coverage, maps a branch diff to affected source lines, and ranks tests that exercised those lines.",
+    architecture:
+      "Coverage-based selection gives faster feedback during development; run the full suite for broader confidence.",
+  },
   {
     id: "tendryl",
     title: "Tendryl",
