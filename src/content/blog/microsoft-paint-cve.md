@@ -22,14 +22,6 @@ The vulnerability was first described as a network attack with an 8.1 severity s
 
 Microsoft’s correction matters, but it also shows how quickly the story around a vulnerability can change. Early headlines can make a flaw sound more immediate or more mysterious than it is. The details still matter: what has to happen, which versions are affected, and whether anyone has actually exploited it.
 
-## Updating Paint is its own step
-
-There is another catch. Paint is updated through the Microsoft Store, separately from the regular Windows cumulative update. The fixed version is 11.2609.401.0 or later. Installing the normal Windows security update alone does not guarantee that Paint has been updated.
-
-That is a strange thing to have to explain about Paint, but modern apps are not always as simple as they look. They have their own components, update channels, and security history. If a built-in app can receive updates separately, then “I updated Windows” may not be the same as “all my apps are current.”
-
-This does not mean everyone should panic about opening images. Microsoft’s current listing says the flaw is not being exploited, and the updated description requires a user to open a crafted file. It does mean the file you open and the app opening it are both part of the security picture.
-
 ## The small lesson in a very silly headline
 
 I still find “Microsoft Paint CVE” a little absurd. But the lesson is straightforward: simple software still processes files made by other people, and that work can go wrong. The names of the apps we worry about do not always match the parts of our computer that need attention.
